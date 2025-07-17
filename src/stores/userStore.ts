@@ -11,8 +11,7 @@ type UserState = {
     balance: number;
     isLoading: boolean;
     error: string | null;
-    connectWallet: () => Promise<void>;
-    disconnectWallet: () => void;
+    updateWalletState: (state: Partial<Pick<UserState, 'isConnected' | 'walletAddress' | 'isLoading'>>) => void;
     updateProfile: (updates: { nickname: string; bio: string }) => void;
 };
 
@@ -27,31 +26,7 @@ export const useUserStore = create<UserState>()(
             balance: 0,
             isLoading: false,
             error: null,
-
-            connectWallet: async () => {
-                set({ isLoading: true, error: null });
-                try {
-                    // Mock implementation - will use TON Connect latter
-                    await new Promise(resolve => setTimeout(resolve, 1000));
-                    set({
-                        isConnected: true,
-                        walletAddress: "EQCvYbL7QD...Xr5qZ0",
-                        balance: 123.45,
-                        isLoading: false
-                    });
-                } catch (err) {
-                    console.log('Wallet connection failed: ', err)
-                    set({ error: "Wallet connection failed", isLoading: false });
-                }
-            },
-
-            disconnectWallet: () => {
-                set({
-                    isConnected: false,
-                    walletAddress: null,
-                    balance: 0
-                });
-            },
+            updateWalletState: (state) => set(state),
 
             updateProfile: ({ nickname, bio }) => {
                 set({ nickname, bio });

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { useUserStore } from '../../stores/userStore';
+import { WalletConnectButton } from '../WalletConnectButton';
 
 
 const PositionSection = ({ marketId }: { marketId: string }) => {
@@ -25,9 +26,7 @@ const PositionSection = ({ marketId }: { marketId: string }) => {
                 <h3 className="font-bold mb-4">Your Position</h3>
                 <div className="text-center py-6">
                     <p className="text-white/70 mb-4">Connect your wallet to view your position</p>
-                    <button className="bg-blue-500/20 hover:bg-blue-500/30 px-4 py-2 rounded-lg transition-colors">
-                        Connect Wallet
-                    </button>
+                    <WalletConnectButton />
                 </div>
             </motion.div>
         );

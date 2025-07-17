@@ -1,10 +1,12 @@
 import { motion } from 'framer-motion';
 import { useUserStore } from '../../stores/userStore';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
+import { useWalletConnection } from '../../hooks/useWalletConnection';
 
 
 const WalletCard = () => {
-    const { walletAddress, balance, disconnectWallet } = useUserStore();
+    const { walletAddress, balance } = useUserStore();
+    const { disconnect: disconnectWallet } = useWalletConnection();
 
     return (
         <motion.div

@@ -35,7 +35,7 @@ export const useTelegramStore = create<TelegramStore>((set) => ({
             const tgWebApp = (window as any).Telegram?.WebApp;
 
             if (tgWebApp) {
-                console.log('Got tgWebApp', tgWebApp.initDataUnsafe?.user);
+                console.log('tgWebApp user:', tgWebApp.initDataUnsafe?.user);
                 tgWebApp.ready();
                 set({
                     webApp: tgWebApp,

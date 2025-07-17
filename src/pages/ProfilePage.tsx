@@ -7,11 +7,13 @@ import StatsCard from '../components/profile/StatsCard';
 import EditProfileModal from '../components/profile/EditProfileModal';
 import LoadingShimmer from '../components/profile/LoadingShimmer';
 import TelegramProfileCard from '../components/profile/TelegramProfileCard';
+import { useWalletConnection } from '../hooks/useWalletConnection';
 
 
 const ProfilePage = () => {
     const [isEditing, setIsEditing] = useState(false);
-    const { isConnected, connectWallet, isLoading } = useUserStore();
+    const { isConnected, isLoading } = useUserStore();
+    const { connect: connectWallet } = useWalletConnection();
 
     if (isLoading) {
         return <LoadingShimmer />
