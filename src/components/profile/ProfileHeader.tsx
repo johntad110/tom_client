@@ -1,9 +1,15 @@
+import { useTelegram } from '../../hooks/useTelegram';
 import { motion } from 'framer-motion';
 import { useUserStore } from '../../stores/userStore';
 
 
 const ProfileHeader = ({ onEdit }: { onEdit: () => void }) => {
+    const { user: tgUser } = useTelegram();
     const { nickname, bio, profileImage, isConnected } = useUserStore();
+
+    const displayName = tgUser?.first_name || nickname;
+    const displayBio = tgUser?.username ? `@${tgUser.username}` : bio;
+    const displayImage = tgUser?.photo_url || profileImage;
 
     return (
         <motion.div
@@ -15,15 +21,15 @@ const ProfileHeader = ({ onEdit }: { onEdit: () => void }) => {
             <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
                     <div className="relative">
-                        {profileImage ? (
+                        {displayImage ? (
                             <img
-                                src={profileImage}
-                                alt={nickname}
+                                src={displayImage}
+                                alt={displayName}
                                 className="w-16 h-16 rounded-full object-cover border-2 border-white/30"
                             />
                         ) : (
                             <div className="bg-gradient-to-br from-purple-500 to-blue-500 w-16 h-16 rounded-full flex items-center justify-center">
-                                <span className="text-xl font-bold">{nickname.charAt(0)}</span>
+                                <span className="text-xl font-bold">{displayName.charAt(0)}</span>
                             </div>
                         )}
                         {isConnected && (
@@ -32,8 +38,8 @@ const ProfileHeader = ({ onEdit }: { onEdit: () => void }) => {
                     </div>
 
                     <div>
-                        <h2 className="text-xl font-bold">{nickname}</h2>
-                        <p className="text-white/70 text-sm">{bio}</p>
+                        <h2 className="text-xl font-bold">{displayName}</h2>
+                        <p className="text-white/70 text-sm">{displayBio}</p>
                     </div>
                 </div>
 

@@ -21,7 +21,7 @@ export const useUserStore = create<UserState>()(
         (set) => ({
             isConnected: false,
             walletAddress: null,
-            nickname: "Prediction Trader",
+            nickname: "Octo T-raider",
             bio: "Crypto enthusiast and prediction market expert",
             profileImage: null,
             balance: 0,

@@ -6,6 +6,7 @@ import WalletCard from '../components/profile/WalletCard';
 import StatsCard from '../components/profile/StatsCard';
 import EditProfileModal from '../components/profile/EditProfileModal';
 import LoadingShimmer from '../components/profile/LoadingShimmer';
+import TelegramProfileCard from '../components/profile/TelegramProfileCard';
 
 
 const ProfilePage = () => {
@@ -25,6 +26,7 @@ const ProfilePage = () => {
         >
             <div className="max-w-md mx-auto space-y-6">
                 <ProfileHeader onEdit={() => setIsEditing(true)} />
+                <TelegramProfileCard />
 
                 {isConnected ? (
                     <>
