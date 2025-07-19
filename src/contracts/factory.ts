@@ -1564,9 +1564,11 @@ type Factory_init_args = {
     $$type: 'Factory_init_args';
 }
 
+// @ts-expect-error src is not used
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function initFactory_init_args(src: Factory_init_args) {
     return (builder: Builder) => {
+        // @ts-expect-error b_0 is not used
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const b_0 = builder;
     };
