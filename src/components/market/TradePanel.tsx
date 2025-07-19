@@ -5,22 +5,58 @@ import QuantityStepper from './QuantityStepper';
 import { useUserStore } from '../../stores/userStore';
 import { useTradeStore } from '../../stores/tradeStore';
 import { useWalletConnection } from '../../hooks/useWalletConnection';
+import type { Market } from '../../types/market';
+import { Address, beginCell, toNano } from '@ton/core';
+import { useTonConnect } from '../../hooks/useTonConnect';
+import { useFactroyContract } from '../../hooks/useFactoryContract';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const TradePanel = ({ market }: { market: any }) => {
+const TradePanel = ({ market }: { market: Market }) => {
     const [outcome, setOutcome] = useState<'YES' | 'NO'>('YES');
     const [quantity, setQuantity] = useState(10);
-    const { isConnected } = useUserStore();
+    const [isLoading, setIsLoading] = useState(false);
+    const { isConnected, walletAddress } = useUserStore();
     const { setTradeParams } = useTradeStore();
-    const { connect } = useWalletConnection()
-
+    const { connect } = useWalletConnection();
+    const { sender } = useTonConnect();
+    const { marketAddresses } = useFactroyContract();
     const currentPrice = market.outcomes[outcome];
     const totalCost = currentPrice * quantity;
 
-    const handleSubmit = () => {
-        if (!isConnected) {
+    const handleSubmit = async () => {
+        if (!isConnected || !walletAddress) {
             connect();
             return;
+        }
+
+        setIsLoading(true);
+        try {
+            console.log(totalCost);
+            const marketAddress = marketAddresses[Number(market.id)];
+            const amount = toNano(totalCost);
+
+            let message;
+            if (outcome === 'YES') {
+                message = beginCell()
+                    .storeUint(0x1674727b, 32) // BuyYes opcode
+                    .storeCoins(amount)
+                    .endCell();
+            } else {
+                message = beginCell()
+                    .storeUint(0x4d689170, 32) // BuyNo opcode
+                    .storeCoins(amount)
+                    .endCell();
+            }
+
+            await sender.send({
+                to: Address.parse(marketAddress),
+                value: amount,
+                body: message
+            });
+
+        } catch (err) {
+            console.error('Trade failed:', err);
+        } finally {
+            setIsLoading(false);
         }
 
         // Set trade params and open confirmation modal (would be implemented elsewhere)
@@ -41,7 +77,11 @@ const TradePanel = ({ market }: { market: any }) => {
 
                 <div>
                     <label className="block text-sm text-white/70 mb-2">Quantity</label>
-                    <QuantityStepper quantity={quantity} setQuantity={setQuantity} />
+                    <QuantityStepper
+                        quantity={quantity}
+                        setQuantity={setQuantity}
+                        disable={isLoading}
+                    />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
@@ -62,7 +102,7 @@ const TradePanel = ({ market }: { market: any }) => {
                         : 'bg-blue-500/90 hover:bg-blue-500'
                         }`}
                 >
-                    {isConnected ? 'Buy Shares' : 'Connect Wallet'}
+                    {isConnected ? `Buy ${outcome} Shares` : 'Connect Wallet'}
                 </button>
             </div>
         </motion.div>

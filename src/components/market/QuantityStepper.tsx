@@ -1,6 +1,7 @@
-const QuantityStepper = ({ quantity, setQuantity }: {
+const QuantityStepper = ({ quantity, setQuantity, disable }: {
     quantity: number;
     setQuantity: (quantity: number) => void;
+    disable: boolean;
 }) => {
     const increment = () => setQuantity(quantity + 1);
     const decrement = () => quantity > 1 && setQuantity(quantity - 1);
@@ -8,6 +9,7 @@ const QuantityStepper = ({ quantity, setQuantity }: {
     return (
         <div className="flex items-center bg-white/10 rounded-lg overflow-hidden">
             <button
+                disabled={disable}
                 onClick={decrement}
                 className="px-4 py-3 bg-white/5 hover:bg-white/10 transition-colors"
             >
@@ -25,6 +27,7 @@ const QuantityStepper = ({ quantity, setQuantity }: {
             </div>
 
             <button
+                disabled={disable}
                 onClick={increment}
                 className="px-4 py-3 bg-white/5 hover:bg-white/10 transition-colors"
             >

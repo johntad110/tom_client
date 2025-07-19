@@ -13,13 +13,12 @@ const PositionSection = ({ marketId }: { marketId: string }) => {
     const { marketAddresses } = useFactoryStore();
     const { marketState, getUserPositions } = useMarketContract({ addr: marketAddresses[Number(marketId)] });
     const { positions, loading, fetchPositions } = userPositionStore();
-    const marketAddress = marketAddresses[Number(marketId)];
 
     useEffect(() => {
-        if (!isConnected && walletAddress && marketAddress) {
+        if (isConnected && walletAddress && !positions) {
             fetchPositions(marketId, Address.parse(walletAddress), getUserPositions);
         }
-    }, [isConnected, walletAddress, marketId, marketAddress, fetchPositions, getUserPositions]);
+    }, [walletAddress, marketId, fetchPositions, getUserPositions, isConnected, positions]);
 
     const { yesValue, noValue } = useMemo(() => {
         const defaultValues = {
