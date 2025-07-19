@@ -4,19 +4,19 @@ import FloatingFilterBar from '../components/home/FloatingFilterBar';
 import MarketCard from '../components/market/MarketCard';
 import { useMarketStore } from '../stores/marketStore';
 import LoadingShimmer from '../components/home/LoadingShimmer';
+import { useFactroyContract } from '../hooks/useFactoryContract';
+import { useTonClient } from '../hooks/useTonClient';
 
 const HomePage = () => {
     const { markets, filteredMarkets, loading, fetchMarkets, applyFilters } = useMarketStore();
+    const client = useTonClient();
+    useFactroyContract();
 
     useEffect(() => {
-        if (markets.length === 0) {
-            fetchMarkets();
-        }
-    }, [fetchMarkets, markets.length]);
+        if (client && markets.length === 0) { fetchMarkets(client); }
+    }, [client, fetchMarkets, markets.length]);
 
-    if (loading && markets.length === 0) {
-        return <LoadingShimmer />;
-    }
+    if (loading && markets.length === 0) { return <LoadingShimmer />; }
 
     return (
         <motion.div

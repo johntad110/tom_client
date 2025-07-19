@@ -1,43 +1,8 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-
-type MarketStatus = 'open' | 'closed' | 'resolving' | 'resolved';
-
-type Market = {
-    id: string;
-    question: string;
-    description: string;
-    status: MarketStatus;
-    probability: number; // 0-100
-    totalLiquidity: number; // TON in pool
-    volume: number; // Trading volume
-    history: {
-        timestamp: string;
-        probability: number;
-    }[];
-    outcomes: {
-        YES: number; // Current price of YES share (0-1)
-        NO: number; // Current price of NO share (0-1)
-    };
-    created: string;
-    resolutionDate?: string;
-    resolvedOutcome?: 'YES' | 'NO' | 'INVALID';
-};
-
-type MarketState = {
-    markets: Market[];
-    filteredMarkets: Market[];
-    loading: boolean;
-    error: string | null;
-    filters: {
-        status: MarketStatus | 'all';
-        sort: 'newest' | 'oldest' | 'liquidity' | 'volume';
-        search: string;
-    };
-    fetchMarkets: () => Promise<void>;
-    applyFilters: (filters: Partial<MarketState['filters']>) => void;
-    getMarketById: (id: string) => Market | undefined;
-};
+import { useFactoryStore } from './factoryStore';
+import type { MarketState } from '../types/market';
+import { fetchMarketData } from '../helpers/marketHelper';
 
 export const useMarketStore = create<MarketState>()(
     persist(
@@ -52,36 +17,31 @@ export const useMarketStore = create<MarketState>()(
                 search: ''
             },
 
-            fetchMarkets: async () => {
+            fetchMarkets: async (client) => {
+                const {
+                    nextMarketId,
+                    marketAddresses
+                } = useFactoryStore.getState();
+                if (!nextMarketId || nextMarketId === 0) {
+                    set({ markets: [], filteredMarkets: [], loading: false });
+                    return;
+                }
+
                 set({ loading: true, error: null });
+
                 try {
-                    // Simulate API call with mock data
-                    await new Promise(resolve => setTimeout(resolve, 200));
+                    const marketPromises = [];
+                    for (let id = 0; id < nextMarketId; id++) {
+                        const address = marketAddresses[id];
+                        if (!address) continue;
+                        marketPromises.push(fetchMarketData(client, address, id));
+                    }
 
-                    const mockMarkets: Market[] = [
-                        {
-                            id: '1',
-                            question: 'Will Bitcoin reach $100K by December 2024?',
-                            description: 'This market will resolve YES if Bitcoin reaches $100,000 or higher on any major exchange by December 31, 2024.',
-                            status: 'open',
-                            probability: 65,
-                            totalLiquidity: 24500,
-                            volume: 12000,
-                            outcomes: { YES: 0.65, NO: 0.35 },
-                            created: '2023-10-01',
-                            history: [
-                                { timestamp: '2023-10-01', probability: 55 },
-                                { timestamp: '2023-10-15', probability: 60 },
-                                { timestamp: '2023-11-01', probability: 62 },
-                                { timestamp: '2023-11-15', probability: 65 },
-                            ]
-                        },
-                        // More mock markets...
-                    ];
-
+                    const markets = await Promise.all(marketPromises);
+                    
                     set({
-                        markets: mockMarkets,
-                        filteredMarkets: mockMarkets,
+                        markets,
+                        filteredMarkets: markets,
                         loading: false
                     });
                 } catch (err) {

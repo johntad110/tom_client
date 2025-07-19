@@ -47,7 +47,7 @@ const MarketCard = ({ market }: MarketCardProps) => {
                             transition={{ duration: 0.8 }}
                         >
                             <span className="absolute top-1/2 left-2 transform -translate-y-1/2 text-xs font-bold text-white">
-                                YES {market.probability}%
+                                YES {market.probability.toFixed(2)}%
                             </span>
                         </motion.div>
                         <motion.div
@@ -57,7 +57,7 @@ const MarketCard = ({ market }: MarketCardProps) => {
                             transition={{ duration: 0.8 }}
                         >
                             <span className="absolute top-1/2 right-2 transform -translate-y-1/2 text-xs font-bold text-white">
-                                NO {100 - market.probability}%
+                                NO {(100 - market.probability).toFixed(2)}%
                             </span>
                         </motion.div>
                     </div>
