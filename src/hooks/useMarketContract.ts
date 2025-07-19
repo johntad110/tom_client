@@ -34,5 +34,6 @@ export function useMarketContract({ addr }: { addr: string; }) {
     return {
         marketState,
         address: marketContract?.address.toString(),
+        getUserPositions: async (addr: Address) => await marketContract?.getGetUserBalances(addr),
     }
 }

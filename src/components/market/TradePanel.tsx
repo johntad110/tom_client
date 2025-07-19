@@ -4,20 +4,22 @@ import OutcomeToggle from './OutcomeToggle';
 import QuantityStepper from './QuantityStepper';
 import { useUserStore } from '../../stores/userStore';
 import { useTradeStore } from '../../stores/tradeStore';
+import { useWalletConnection } from '../../hooks/useWalletConnection';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const TradePanel = ({ market }: { market: any }) => {
     const [outcome, setOutcome] = useState<'YES' | 'NO'>('YES');
     const [quantity, setQuantity] = useState(10);
-    const { isConnected, connectWallet } = useUserStore();
+    const { isConnected } = useUserStore();
     const { setTradeParams } = useTradeStore();
+    const { connect } = useWalletConnection()
 
     const currentPrice = market.outcomes[outcome];
     const totalCost = currentPrice * quantity;
 
     const handleSubmit = () => {
         if (!isConnected) {
-            connectWallet();
+            connect();
             return;
         }
 
@@ -56,8 +58,8 @@ const TradePanel = ({ market }: { market: any }) => {
                 <button
                     onClick={handleSubmit}
                     className={`w-full py-3 rounded-lg font-bold transition-colors ${isConnected
-                            ? 'bg-green-500/90 hover:bg-green-500'
-                            : 'bg-blue-500/90 hover:bg-blue-500'
+                        ? 'bg-green-500/90 hover:bg-green-500'
+                        : 'bg-blue-500/90 hover:bg-blue-500'
                         }`}
                 >
                     {isConnected ? 'Buy Shares' : 'Connect Wallet'}

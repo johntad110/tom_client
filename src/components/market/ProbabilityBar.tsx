@@ -10,7 +10,7 @@ const ProbabilityBar = ({ probability }: { probability: number }) => {
                 transition={{ duration: 0.8 }}
             >
                 <span className="absolute top-1/2 left-2 transform -translate-y-1/2 text-xs font-bold text-white">
-                    YES {probability}%
+                    YES {probability.toFixed(4)}%
                 </span>
             </motion.div>
             <motion.div
@@ -20,7 +20,7 @@ const ProbabilityBar = ({ probability }: { probability: number }) => {
                 transition={{ duration: 0.8 }}
             >
                 <span className="absolute top-1/2 right-2 transform -translate-y-1/2 text-xs font-bold text-white">
-                    NO {100 - probability}%
+                    NO {(100 - probability).toFixed(4)}%
                 </span>
             </motion.div>
         </div>

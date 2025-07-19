@@ -1,15 +1,14 @@
-import { useTonConnectUI, useTonWallet } from '@tonconnect/ui-react';
 import { motion } from 'framer-motion';
+import { useWalletConnection } from '../hooks/useWalletConnection';
 
 export const WalletConnectButton = () => {
-    const [tonConnectUI] = useTonConnectUI();
-    const wallet = useTonWallet();
-    const connect = () => tonConnectUI.openModal();
-    const disconnect = () => tonConnectUI.disconnect();
-
-    const walletAddress = wallet?.account.address;
-    const isConnected = wallet ? true : false;
-    const isLoading = false;
+    const {
+        connect,
+        disconnect,
+        walletAddress,
+        isConnected,
+        isLoading
+    } = useWalletConnection();
 
     const shortenedAddress = walletAddress
         ? `${walletAddress.slice(0, 4)}...${walletAddress.slice(-4)}`

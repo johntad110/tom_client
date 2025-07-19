@@ -44,7 +44,7 @@ const PriceChart = ({ history }: { history: { timestamp: string; probability: nu
                 </div>
             </div>
 
-            <div className="h-64">
+            <div className="h-64 border border-gray-600">
                 <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={data}>
                         <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />

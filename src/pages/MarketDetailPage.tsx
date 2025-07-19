@@ -7,12 +7,17 @@ import PositionSection from '../components/market/PositionSection';
 import TradePanel from '../components/market/TradePanel';
 import { useMarketStore } from '../stores/marketStore';
 import LoadingShimmer from '../components/home/LoadingShimmer';
+import { useTelegram } from '../hooks/useTelegram';
+import type { Market } from '../types/market';
+import { useFactoryStore } from '../stores/factoryStore';
 
 const MarketDetailPage = () => {
     const { id } = useParams();
     const { getMarketById, loading } = useMarketStore();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [market, setMarket] = useState<any>(null);
+    const { marketAddresses } = useFactoryStore();
+    const marketAddress = marketAddresses[(id !== undefined) ? Number(id) : 0]
+    const [market, setMarket] = useState<Market | null>(null);
+    const { backButton } = useTelegram();
 
     useEffect(() => {
         if (id) {
@@ -21,11 +26,17 @@ const MarketDetailPage = () => {
                 setMarket(foundMarket);
             }
         }
-    }, [id, getMarketById]);
+
+        backButton.show();
+        backButton.onClick(() => history.back());
+
+        return () => { backButton.hide(); }
+    }, [id, getMarketById, backButton, marketAddress]);
 
     if (loading || !market) {
         return <LoadingShimmer />;
     }
+    if (!id) { return <code>Brooooo, U in the wrong place!</code> }
 
     return (
         <motion.div
@@ -43,7 +54,7 @@ const MarketDetailPage = () => {
                 {/* Contract Links */}
                 <div className="flex space-x-4">
                     <a
-                        href={`https://tonscan.org/address/${market.id}`}
+                        href={`https://testnet.tonscan.org/address/${marketAddress}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex-1 text-center py-3 bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
@@ -51,7 +62,7 @@ const MarketDetailPage = () => {
                         View Contract
                     </a>
                     <a
-                        href={`https://tonscan.org/address/oracle-${market.id}`}
+                        href={`https://testnet.tonscan.org/address/${marketAddress}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex-1 text-center py-3 bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
