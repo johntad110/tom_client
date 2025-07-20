@@ -4,6 +4,7 @@ import { useTonClient } from "./useTonClient";
 import { Address, type OpenedContract } from "@ton/core";
 import { useAsyncInitialize } from "./useAsyncInitialize";
 import { useFactoryStore } from "../stores/factoryStore";
+import config from "../config";
 
 export function useFactroyContract() {
     const client = useTonClient();
@@ -18,7 +19,7 @@ export function useFactroyContract() {
     const factoryContract = useAsyncInitialize(async () => {
         if (!client) return;
         const contract = new Factory(
-            Address.parse('kQCtTa5Tlw7W2qflcdR8lN31KPzluJQA31mCsrfB0CgNuuJp')
+            Address.parse(config.contractAddresses.factory)
         );
         return client.open(contract) as OpenedContract<Factory>;
     }, [client]);
