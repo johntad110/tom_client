@@ -13,10 +13,10 @@ const HomePage = () => {
     useFactroyContract();
 
     useEffect(() => {
-        if (client && markets.length === 0) { fetchMarkets(client); }
+        if (client) { fetchMarkets(client); }
     }, [client, fetchMarkets, markets.length]);
 
-    if (loading && markets.length === 0) { return <LoadingShimmer />; }
+    if (loading) { return <LoadingShimmer />; }
 
     return (
         <motion.div
