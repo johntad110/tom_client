@@ -31,7 +31,7 @@ const MarketHeader = ({ market }: MarketHeaderProps) => {
             className="bg-white/5 backdrop-blur-lg rounded-2xl p-4 border border-white/20"
         >
             <div className="flex justify-between items-start mb-2">
-                <h1 className="text-2xl font-bold">{market.question}</h1>
+                <h1 className="text-xl">{market.question}</h1>
                 <span className={`text-sm px-3 py-1 rounded-full ${statusColors[market.status]}`}>
                     {market.status.charAt(0).toUpperCase() + market.status.slice(1)}
                 </span>

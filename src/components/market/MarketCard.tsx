@@ -32,7 +32,7 @@ const MarketCard = ({ market }: MarketCardProps) => {
             <Link to={`/market-detail/${market.id}`}>
                 <div className="p-4">
                     <div className="flex justify-between items-start">
-                        <h3 className="font-bold text-lg mb-2">{market.question}</h3>
+                        <h3 className="text-md mb-2">{market.question}</h3>
                         <span className={`text-xs px-2 py-1 rounded ${statusColors[market.status]}`}>
                             {market.status.charAt(0).toUpperCase() + market.status.slice(1)}
                         </span>
