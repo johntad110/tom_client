@@ -39,7 +39,7 @@ export async function fetchMarketData(
     return {
         id: marketId.toString(),
         question: marketState.question,
-        description: '',
+        description: marketState.clarification,
         status,
         probability,
         totalLiquidity,
