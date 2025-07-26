@@ -1,15 +1,18 @@
 import { create } from 'zustand';
 import { Address } from '@ton/core';
-import { type YesNoBalances } from '../contracts/market';
+import { fetchUserPositions } from '../helpers/positionHelper';
+import type { TonClient } from '@ton/ton';
+import type { YesNoBalances } from '../types/position';
 
 interface PositionStore {
     positions: Record<string, Partial<YesNoBalances>>; // key -> marketId
     loading: boolean;
     error: string | null;
     fetchPositions: (
-        marketId: string, 
-        userAddress: Address, 
-        getUserPositions: (userAddress: Address) => Promise<YesNoBalances | undefined>
+        client: TonClient,
+        marketId: string,
+        userAddress: Address,
+        marketAddress: Address,
     ) => Promise<void>;
     clearPositions: () => void;
 }
@@ -18,10 +21,10 @@ export const userPositionStore = create<PositionStore>((set) => ({
     positions: {},
     loading: false,
     error: null,
-    fetchPositions: async (marketId, userAddress, getUserPositions) => {
+    fetchPositions: async (client, marketId, userAddress, marketAddress) => {
         set({ loading: true, error: null });
         try {
-            const positions = await getUserPositions(userAddress);
+            const positions = await fetchUserPositions(client, marketAddress, userAddress)
 
             set((state) => ({
                 positions: {

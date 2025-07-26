@@ -6,19 +6,21 @@ import { useFactoryStore } from '../../stores/factoryStore';
 import { useEffect, useMemo } from 'react';
 import { Address } from '@ton/core';
 import { useMarketContract } from '../../hooks/useMarketContract';
+import { useTonClient } from '../../hooks/useTonClient';
 
 
 const PositionSection = ({ marketId }: { marketId: string }) => {
     const { isConnected, walletAddress } = useUserStore();
     const { marketAddresses } = useFactoryStore();
-    const { marketState, getUserPositions } = useMarketContract({ addr: marketAddresses[Number(marketId)] });
+    const { marketState } = useMarketContract({ addr: marketAddresses[Number(marketId)] });
     const { positions, loading, fetchPositions } = userPositionStore();
+    const client = useTonClient();
 
     useEffect(() => {
-        if (isConnected && walletAddress && !positions) {
-            fetchPositions(marketId, Address.parse(walletAddress), getUserPositions);
+        if (walletAddress && client) {
+            fetchPositions(client, marketId, Address.parse(walletAddress), Address.parse(marketAddresses[Number(marketId)]))
         }
-    }, [walletAddress, marketId, fetchPositions, getUserPositions, isConnected, positions]);
+    }, [marketId, walletAddress, client])
 
     const { yesValue, noValue } = useMemo(() => {
         const defaultValues = {
@@ -153,13 +155,13 @@ const PositionSection = ({ marketId }: { marketId: string }) => {
                             <p className="text-sm mb-1">Outcome</p>
                             <p className="text-xl font-bold">NO</p>
                         </div>
-                    </div>
+                        <div className="bg-red-500/20 p-3 rounded-lg text-red-300">
+                            <p className="text-sm mb-1">Value</p>
+                            <p className="text-xl font-bold">
+                                {noValue.toFixed(2)} TON
+                            </p>
+                        </div>
 
-                    <div className="bg-red-500/20 p-3 rounded-lg text-red-300">
-                        <p className="text-sm mb-1">Value</p>
-                        <p className="text-xl font-bold">
-                            {noValue.toFixed(2)} TON
-                        </p>
                     </div>
                 </div>
             )}
