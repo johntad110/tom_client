@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import type { IWebApp } from "../types/telegram";
 
 type TelegramUser = {
     id: number;
@@ -13,8 +14,7 @@ type TelegramUser = {
 };
 
 type TelegramStore = {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    webApp: any | null;
+    webApp: IWebApp | null;
     user: TelegramUser | null;
     init: () => void;
     backButton: {
@@ -37,6 +37,7 @@ export const useTelegramStore = create<TelegramStore>((set) => ({
             if (tgWebApp) {
                 console.log('tgWebApp user:', tgWebApp.initDataUnsafe?.user);
                 tgWebApp.ready();
+                tgWebApp.setHeaderColor('#131a29')
                 set({
                     webApp: tgWebApp,
                     user: tgWebApp.initDataUnsafe?.user
