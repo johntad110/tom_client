@@ -8,6 +8,7 @@ import PositionList from '../components/portfolio/PositionList';
 import PositionDetailModal from '../components/portfolio/PositionDetailModal';
 
 import type { Position, PortfolioSummary as PortfolioSummaryProps } from '../types/portfolio';
+import { WalletConnectButton } from '../components/WalletConnectButton';
 
 const PortfolioPage = () => {
     const { isConnected } = useUserStore();
@@ -119,9 +120,7 @@ const PortfolioPage = () => {
                         <p className="text-white/70 mb-6">
                             Connect your TON wallet to view your portfolio and trading positions
                         </p>
-                        <button className="bg-blue-500/20 hover:bg-blue-500/30 px-6 py-3 rounded-xl transition-colors">
-                            Connect Wallet
-                        </button>
+                        <WalletConnectButton />
                     </div>
                 )}
             </div>
