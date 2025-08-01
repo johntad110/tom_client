@@ -10,7 +10,7 @@ const config: AppConfig = {
     network: 'testnet',
     tonCenterApiKey: '_YADA_YADA',
     contractAddresses: {
-        factory: 'kQCtTa5Tlw7W2qflcdR8lN31KPzluJQA31mCsrfB0CgNuuJp',
+        factory: 'kQAdOHA_CvTj7QZO7pSJhwmAlyGdf4qH6cVN4SFZLp_WGM9H',
     },
 };
 
