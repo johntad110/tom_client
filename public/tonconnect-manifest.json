@@ -1,7 +1,7 @@
 {
-    "url": "https://t.me/the_open_market/",
+    "url": "https://t.me/opn_mkt_bot/trade",
     "name": "TOM",
-    "iconUrl": "https://githubusercontent.SVG",
+    "iconUrl": "https://raw.githubusercontent.com/johntad110/tom_client/refs/heads/master/public/TOM_logo_white.jpg",
     "termsOfUseUrl": "<terms-of-use-url>",
     "privacyPolicyUrl": "<privacy-policy-url>"
 }
