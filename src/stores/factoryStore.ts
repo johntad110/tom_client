@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 type FactoryState = {
     factoryAddress: string | null;
@@ -15,26 +16,31 @@ type FactoryState = {
 };
 
 export const useFactoryStore = create<FactoryState>()(
-    (set) => ({
-        factoryAddress: null,
-        nextMarketId: null,
-        marketAddresses: {},
-        loading: false,
-        error: null,
-        setFactoryData: (data) => set({
-            factoryAddress: data.factoryAddress,
-            nextMarketId: data.nextMarketId
-        }),
-        addMarketAddress: (marketId, address) => set((state) => ({
-            marketAddresses: {
-                ...state.marketAddresses,
-                [marketId]: address
-            }
-        })),
-        clearFactoryData: () => set({
+    persist(
+        (set) => ({
             factoryAddress: null,
             nextMarketId: null,
             marketAddresses: {},
-        })
-    })
+            loading: false,
+            error: null,
+            setFactoryData: (data) => set({
+                factoryAddress: data.factoryAddress,
+                nextMarketId: data.nextMarketId
+            }),
+            addMarketAddress: (marketId, address) => set((state) => ({
+                marketAddresses: {
+                    ...state.marketAddresses,
+                    [marketId]: address
+                }
+            })),
+            clearFactoryData: () => set({
+                factoryAddress: null,
+                nextMarketId: null,
+                marketAddresses: {},
+            })
+        }),
+        {
+            name: 'factory-storage'
+        }
+    )
 );
