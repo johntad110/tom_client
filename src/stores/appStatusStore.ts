@@ -49,7 +49,7 @@ export const useAppStatusStore = create<AppStatus>((set, get) => ({
             console.log('[AppStatus] Initializing TON client');
             let client;
             try {
-                const endpoint = await getHttpEndpoint({ network: 'testnet' });
+                const endpoint = await getHttpEndpoint({ network: config.network });
                 client = new TonClient({ endpoint });
                 console.log('[AppStatus] TON client initialized successfully');
             } catch (error) {

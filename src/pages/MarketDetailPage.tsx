@@ -9,6 +9,7 @@ import { useMarketStore } from '../stores/marketStore';
 import { useTelegram } from '../hooks/useTelegram';
 import type { Market } from '../types/market';
 import { useFactoryStore } from '../stores/factoryStore';
+import { tonScanUrl } from '../helpers/RPCEndpoints';
 
 const MarketDetailPage = () => {
     const { id } = useParams();
@@ -53,7 +54,7 @@ const MarketDetailPage = () => {
                 {/* Contract Links */}
                 <div className="flex space-x-4">
                     <a
-                        href={`https://testnet.tonscan.org/address/${marketAddress}`}
+                        href={`${tonScanUrl()}/address/${marketAddress}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex-1 text-center py-3 bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
@@ -61,7 +62,7 @@ const MarketDetailPage = () => {
                         View Contract
                     </a>
                     <a
-                        href={`https://testnet.tonscan.org/address/${marketAddress}`}
+                        href={`${tonScanUrl()}/address/${marketAddress}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex-1 text-center py-3 bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
