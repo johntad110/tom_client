@@ -1,20 +1,11 @@
-import { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import FloatingFilterBar from '../components/home/FloatingFilterBar';
 import MarketCard from '../components/market/MarketCard';
 import { useMarketStore } from '../stores/marketStore';
 import LoadingShimmer from '../components/home/LoadingShimmer';
-import { useFactroyContract } from '../hooks/useFactoryContract';
-import { useTonClient } from '../hooks/useTonClient';
 
 const HomePage = () => {
-    const { markets, filteredMarkets, loading, fetchMarkets, applyFilters } = useMarketStore();
-    const client = useTonClient();
-    useFactroyContract();
-
-    useEffect(() => {
-        if (client) { fetchMarkets(client); }
-    }, [client, fetchMarkets, markets.length]);
+    const { filteredMarkets, loading, applyFilters } = useMarketStore();
 
     if (loading) { return <LoadingShimmer />; }
 

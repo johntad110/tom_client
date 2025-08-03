@@ -6,14 +6,13 @@ import PriceChart from '../components/market/PriceChart';
 import PositionSection from '../components/market/PositionSection';
 import TradePanel from '../components/market/TradePanel';
 import { useMarketStore } from '../stores/marketStore';
-import LoadingShimmer from '../components/home/LoadingShimmer';
 import { useTelegram } from '../hooks/useTelegram';
 import type { Market } from '../types/market';
 import { useFactoryStore } from '../stores/factoryStore';
 
 const MarketDetailPage = () => {
     const { id } = useParams();
-    const { getMarketById, loading } = useMarketStore();
+    const { getMarketById } = useMarketStore();
     const { marketAddresses } = useFactoryStore();
     const marketAddress = marketAddresses[(id !== undefined) ? Number(id) : 0]
     const [market, setMarket] = useState<Market | null>(null);
@@ -33,8 +32,8 @@ const MarketDetailPage = () => {
         return () => { backButton.hide(); }
     }, [id, getMarketById, backButton, marketAddress]);
 
-    if (loading || !market) {
-        return <LoadingShimmer />;
+    if (!market) {
+        return <>Loading</>;
     }
     if (!id) { return <code>Brooooo, U in the wrong place!</code> }
 
