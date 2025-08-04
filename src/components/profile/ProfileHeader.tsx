@@ -7,7 +7,7 @@ const ProfileHeader = ({ onEdit }: { onEdit: () => void }) => {
     const { user: tgUser } = useTelegram();
     const { nickname, bio, profileImage, isConnected } = useUserStore();
 
-    const displayName = tgUser?.first_name || nickname;
+    const displayName = nickname;
     const displayBio = tgUser?.username ? `@${tgUser.username}` : bio;
     const displayImage = tgUser?.photo_url || profileImage;
 
@@ -38,7 +38,7 @@ const ProfileHeader = ({ onEdit }: { onEdit: () => void }) => {
                     </div>
 
                     <div>
-                        <h2 className="text-xl font-bold">{displayName}</h2>
+                        <h2 className="font-bold">{displayName}</h2>
                         <p className="text-white/70 text-sm">{displayBio}</p>
                     </div>
                 </div>

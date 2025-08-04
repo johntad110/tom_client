@@ -4,6 +4,14 @@ export interface AppConfig {
     contractAddresses: {
         factory: string;
     };
+    api: {
+        baseUrl: string;
+        endpoints: {
+            auth: {
+                telegram: string;
+            }
+        }
+    }
 }
 
 const config: AppConfig = {
@@ -12,6 +20,12 @@ const config: AppConfig = {
     contractAddresses: {
         factory: 'kQAdOHA_CvTj7QZO7pSJhwmAlyGdf4qH6cVN4SFZLp_WGM9H',
     },
+    api: {
+        baseUrl: 'http://localhost:3000/api',
+        endpoints: {
+            auth: { telegram: '/auth/telegram' },
+        }
+    }
 };
 
 export const isTestnet = config.network === 'testnet';

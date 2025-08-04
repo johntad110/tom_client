@@ -82,9 +82,10 @@ export const GlobalLoader = () => {
                     Initializing all required services...
                 </p>
 
-                {(errors.telegram || errors.tonClient) && (
+                {(errors.telegram || errors.auth || errors.tonClient) && (
                     <div className="bg-red-900/50 p-4 rounded-lg mb-4 max-w-md text-gray-400">
                         <h3 className="font-medium mb-2">Initialization Error</h3>
+                        {errors.auth && <p>• Failed to authenticate</p>}
                         {errors.telegram && <p>• Failed to connect to Telegram</p>}
                         {errors.tonClient && <p>• Failed to connect to TON network</p>}
 

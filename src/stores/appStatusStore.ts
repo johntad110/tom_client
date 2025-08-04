@@ -6,11 +6,13 @@ import { Address, TonClient, type OpenedContract } from "@ton/ton";
 import { getHttpEndpoint } from "@orbs-network/ton-access";
 import { Factory } from "../contracts/factory";
 import config from "../config";
+import { useUserStore } from "./userStore";
 
 type AppStatus = {
     initialized: boolean;
     errors: {
         telegram: boolean;
+        auth: boolean;
         tonClient: boolean;
         factory: boolean;
         markets: boolean;
@@ -23,6 +25,7 @@ export const useAppStatusStore = create<AppStatus>((set, get) => ({
     initialized: false,
     errors: {
         telegram: false,
+        auth: false,
         tonClient: false,
         factory: false,
         markets: false
@@ -32,12 +35,49 @@ export const useAppStatusStore = create<AppStatus>((set, get) => ({
         console.groupCollapsed('[AppStatus] Starting app initialization');
         try {
             console.log('[AppStatus] Resetting error states');
-            set({ errors: { telegram: false, tonClient: false, factory: false, markets: false } });
+            set({ errors: { telegram: false, auth: false, tonClient: false, factory: false, markets: false } });
 
             console.log('[AppStatus] Initializing Telegram');
             try {
                 await useTelegramStore.getState().init();
                 console.log('[AppStatus] Telegram initialized successfully');
+
+                // if tg init successfull let's attempt auth
+                console.log('[AppStatus] Attempting Telegram authentiation');
+                try {
+                    const webApp = useTelegramStore.getState().webApp;
+                    if (!webApp) throw new Error('Telegram WebApp not available');
+
+                    const response = await fetch(`${config.api.baseUrl}${config.api.endpoints.auth.telegram}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ initData: webApp.initData })
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Authentication failed');
+                    }
+
+                    const { token, user } = await response.json();
+
+                    useUserStore.getState().updateProfile({
+                        nickname: user.nickname,
+                        bio: user.bio || useUserStore.getState().bio,
+                    });
+
+                    useUserStore.getState().setToken(`${token}`)
+
+                    console.log('[AppStatus] Authentication successful');
+                } catch (authError) {
+                    console.error('[AppStatus] Authentication failed:', authError);
+                    set(state => ({
+                        errors: { ...state.errors, auth: true },
+                        initialized: false
+                    }));
+                }
             } catch (error) {
                 console.error('[AppStatus] Telegram initialization failed:', error);
                 set(state => {
@@ -117,12 +157,13 @@ export const useAppStatusStore = create<AppStatus>((set, get) => ({
             const { errors } = get();
             console.log('[AppStatus] Current error state:', errors);
 
-            if (!errors.telegram && !errors.tonClient) {
+            if (!errors.telegram && !errors.auth && !errors.tonClient) {
                 console.log('[AppStatus] No critical errors - marking app as initialized');
                 set({ initialized: true });
             } else {
                 console.warn('[AppStatus] Critical errors detected - app not initialized');
                 console.warn('Telegram error:', errors.telegram);
+                console.warn('Auth error:', errors.auth);
                 console.warn('TON Client error:', errors.tonClient);
             }
         } catch (err: any) {
