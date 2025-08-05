@@ -15,13 +15,13 @@ export interface AppConfig {
 }
 
 const config: AppConfig = {
-    network: 'testnet',
-    tonCenterApiKey: '_YADA_YADA',
+    network: import.meta.env.VITE_NETWORK! === 'mainnet' ? 'mainnet' : 'testnet',
+    tonCenterApiKey: import.meta.env.VITE_TON_CENTER_API_KEY!,
     contractAddresses: {
-        factory: 'kQAdOHA_CvTj7QZO7pSJhwmAlyGdf4qH6cVN4SFZLp_WGM9H',
+        factory: import.meta.env.VITE_FACTORY_CONTRACT_ADDRESS!,
     },
     api: {
-        baseUrl: 'http://localhost:3000/api',
+        baseUrl: import.meta.env.VITE_API_BASE_URL!,
         endpoints: {
             auth: { telegram: '/auth/telegram' },
         }
