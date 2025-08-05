@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useUserStore } from '../stores/userStore';
 import LoadingShimmer from '../components/portfolio/LoadingShimmer';
@@ -6,78 +6,72 @@ import PortfolioSummary from '../components/portfolio/PortfolioSummary';
 import PositionFilters from '../components/portfolio/PositionFilters';
 import PositionList from '../components/portfolio/PositionList';
 import PositionDetailModal from '../components/portfolio/PositionDetailModal';
-
-import type { Position, PortfolioSummary as PortfolioSummaryProps } from '../types/portfolio';
 import { WalletConnectButton } from '../components/WalletConnectButton';
+import { userPositionStore } from '../stores/positionStore';
+import { useTonClient } from '../hooks/useTonClient';
+import { Address } from '@ton/core';
+import { useMarketStore } from '../stores/marketStore';
+import type { Position, PortfolioSummary as PortfolioSummaryProps } from '../types/portfolio';
 
 const PortfolioPage = () => {
-    const { isConnected } = useUserStore();
+    const { isConnected, walletAddress } = useUserStore();
+    const { positions, loading, fetchAllPositions } = userPositionStore();
+    const { getMarketById } = useMarketStore();
+    const client = useTonClient();
+
     const [activeFilter, setActiveFilter] = useState<'active' | 'resolved'>('active');
     const [selectedPosition, setSelectedPosition] = useState<Position | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
 
-    // Mock data - will come from API in prod
-    const mockSummary: PortfolioSummaryProps = {
-        totalValue: 245.78,
-        unrealizedProfit: 32.45,
-        realizedProfit: 87.32,
-        activePositions: 8,
-        resolvedPositions: 16
+    useEffect(() => {
+        if (isConnected && client && walletAddress) {
+            const address = Address.parse(walletAddress);
+            fetchAllPositions(client, address);
+        }
+    }, [isConnected, client, walletAddress]);
+
+    // Transform position data for UI
+    const transformedPositions = Object.entries(positions).map(([marketId, position]) => {
+        const market = getMarketById(marketId);
+        const hasYes = position.data.yes && position.data.yes > 0;
+        const hasNo = position.data.no && position.data.no > 0;
+
+        return {
+            id: marketId,
+            marketId,
+            question: market?.question || `Market no ${marketId}`,
+            yesShares: position.data.yes || 0,
+            noShares: position.data.no || 0,
+            status: market?.status || 'open',
+            // These would be calculated based on market state
+            currentYesValue: hasYes ? 0.65 : undefined,
+            currentNoValue: hasNo ? 0.35 : undefined,
+            yesProfitLoss: hasYes ? 12.5 : undefined,
+            noProfitLoss: hasNo ? -5.2 : undefined,
+            resolvedOutcome: market?.resolvedOutcome,
+            resolutionDate: market?.resolutionDate
+        } as Position;
+    });
+
+    // Calculate summary data
+    const portfolioSummary: PortfolioSummaryProps = {
+        totalValue: transformedPositions.reduce((sum, p) => {
+            return sum +
+                (p.yesShares * (p.currentYesValue || 0)) +
+                (p.noShares * (p.currentNoValue || 0));
+        }, 0),
+        unrealizedProfit: transformedPositions.reduce((sum, p) => {
+            return sum +
+                (p.yesProfitLoss || 0) +
+                (p.noProfitLoss || 0);
+        }, 0),
+        realizedProfit: transformedPositions
+            .filter(p => p.status === 'resolved')
+            .reduce((sum, p) => sum + (p.yesProfitLoss || 0) + (p.noProfitLoss || 0), 0),
+        activePositions: transformedPositions.filter(p => p.status !== 'resolved').length,
+        resolvedPositions: transformedPositions.filter(p => p.status === 'resolved').length
     };
 
-    const mockPositions: Position[] = [
-        {
-            id: "1",
-            marketId: "m1",
-            question: "Will Bitcoin reach $100K by end of 2024?",
-            outcome: "YES",
-            shares: 15.2,
-            averagePrice: 0.65,
-            currentValue: 0.82,
-            profitLoss: 2.58,
-            status: "open"
-        },
-        {
-            id: "2",
-            marketId: "m2",
-            question: "Will Ethereum transition to PoS by June 2023?",
-            outcome: "YES",
-            shares: 8.5,
-            averagePrice: 0.45,
-            currentValue: 1.00,
-            profitLoss: 4.68,
-            status: "resolved",
-            resolvedOutcome: "YES",
-            resolutionDate: "2023-06-15"
-        },
-        {
-            id: "3",
-            marketId: "m3",
-            question: "Will TON become top 10 crypto by market cap?",
-            outcome: "NO",
-            shares: 22.1,
-            averagePrice: 0.32,
-            currentValue: 0.18,
-            profitLoss: -3.10,
-            status: "open"
-        },
-        {
-            id: "4",
-            marketId: "m4",
-            question: "Will the Fed cut rates before July 2023?",
-            outcome: "NO",
-            shares: 12.7,
-            averagePrice: 0.55,
-            currentValue: 0.05,
-            profitLoss: -6.35,
-            status: "resolving"
-        }
-    ];
-
-    // Simulate loading
-    setTimeout(() => setIsLoading(false), 1500);
-
-    if (isLoading) {
+    if (loading) {
         return <LoadingShimmer />;
     }
 
@@ -91,7 +85,7 @@ const PortfolioPage = () => {
             <div className="max-w-md mx-auto space-y-6">
                 {isConnected ? (
                     <>
-                        <PortfolioSummary summary={mockSummary} />
+                        <PortfolioSummary summary={portfolioSummary} />
 
                         <motion.div
                             initial={{ y: 20, opacity: 0 }}
@@ -105,7 +99,7 @@ const PortfolioPage = () => {
                             />
 
                             <PositionList
-                                positions={mockPositions.filter(p =>
+                                positions={transformedPositions.filter(p =>
                                     activeFilter === 'active'
                                         ? p.status !== 'resolved'
                                         : p.status === 'resolved'

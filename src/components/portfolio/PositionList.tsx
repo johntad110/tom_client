@@ -21,7 +21,7 @@ const PositionList = ({ positions, onSelect }: PositionListProps) => {
         <div className="space-y-3">
             <AnimatePresence>
                 {positions.map((position, index) => (
-                    <motion.div
+                    ((position.noShares || position.yesShares) && <motion.div
                         key={position.id}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -32,7 +32,7 @@ const PositionList = ({ positions, onSelect }: PositionListProps) => {
                             position={position}
                             onClick={() => onSelect(position)}
                         />
-                    </motion.div>
+                    </motion.div>)
                 ))}
             </AnimatePresence>
         </div>

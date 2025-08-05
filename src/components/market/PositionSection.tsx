@@ -32,7 +32,7 @@ const PositionSection = ({ marketId }: { marketId: string }) => {
 
         if (!marketState || !positions[marketId]) return defaultValues;
 
-        const userPositions = positions[marketId];
+        const userPositions = positions[marketId].data;
         const reserveYes = Number(marketState.reserveYes);
         const reserveNo = Number(marketState.reserveNo);
 
@@ -87,7 +87,7 @@ const PositionSection = ({ marketId }: { marketId: string }) => {
         )
     }
 
-    const userPositions = positions[marketId] || { yes: null, no: null };
+    const userPositions = positions[marketId].data || { yes: null, no: null };
     const hasYesPosition = userPositions.yes !== null && userPositions.yes && userPositions.yes > 0n;
     const hasNoPosition = userPositions.no !== null && userPositions.no && userPositions.no > 0n;
 
