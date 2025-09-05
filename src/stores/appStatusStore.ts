@@ -32,6 +32,13 @@ export const useAppStatusStore = create<AppStatus>((set, get) => ({
     },
 
     initializeApp: async () => {
+        // When retrying by clicking the `MainButton`... it stays active 
+        // so let's disable it evreytime we start the initialize function
+        // That's if we habe the webApp object 
+        // if we don't have it... we won't have Retry button in the first place...
+        const webApp = useTelegramStore.getState().webApp;
+        if (webApp) { webApp?.MainButton.hide() }
+
         console.groupCollapsed('[AppStatus] Starting app initialization');
         try {
             console.log('[AppStatus] Resetting error states');
@@ -165,6 +172,15 @@ export const useAppStatusStore = create<AppStatus>((set, get) => ({
                 console.warn('Telegram error:', errors.telegram);
                 console.warn('Auth error:', errors.auth);
                 console.warn('TON Client error:', errors.tonClient);
+
+                // Show the `MainButton`
+                const webApp = useTelegramStore.getState().webApp;
+                if (webApp) {
+                    webApp?.MainButton.setParams({ text: "Retry", has_shine_effect: true });
+                    webApp?.MainButton.onClick(get().retryInitialization);
+                    webApp?.MainButton.show();
+
+                }
             }
         } catch (err: any) {
             console.error('[AppStatus] App initialization failed:', err);
