@@ -40,8 +40,8 @@ export interface IWebApp {
     safeAreaInset: ISafeAreaInset;
     contentSafeAreaInset: IContentSafeAreaInset;
     BackButton: IBackButton;
-    MainButton: IBackButton;
-    SecondaryButton: IBackButton;
+    MainButton: IBottomButton;
+    SecondaryButton: IBottomButton;
     SettingsButton: ISettingsButton;
     HapticFeedback: IHapticFeedback;
     CloudStorage: ICloudStorage;
@@ -135,9 +135,44 @@ export interface ILocationManager {
     openSettings: Function; // Note that this method can be called only in response to user interaction with the Mini App interface (e.g., a click inside the Mini App or on the main button).
 }
 
+export interface IBottomButton {
+    type: String;	//Readonly. Type of the button. It can be either main for the main button or secondary for the secondary button.
+    text: String;	//Current button text. Set to Continue for the main button and Cancel for the secondary button by default.
+    color: String;	//Current button color. Set to themeParams.button_color for the main button and themeParams.bottom_bar_bg_color for the secondary button by default.
+    textColor: String;	//Current button text color. Set to themeParams.button_text_color for the main button and themeParams.button_color for the secondary button by default.
+    isVisible: Boolean;	//Shows whether the button is visible. Set to false by default.
+    isActive: Boolean;	//Shows whether the button is active. Set to true by default.
+    hasShineEffect: Boolean;	//Bot API 7.10+ Shows whether the button has a shine effect. Set to false by default.
+    position: String;	//Bot API 7.10+ Position of the secondary button. Not defined for the main button. It applies only if both the main and secondary buttons are visible. Set to left by default.
+    //// Supported values
+    ////- left, displayed to the left of the main button,
+    //- right, displayed to the right of the main button,
+    //- top, displayed above the main button,
+    //- bottom, displayed below the main button.
+    isProgressVisible: Boolean; ///	Readonly. Shows whether the button is displaying a loading indicator.
+    setText(text: Function): Function;	//A method to set the button text.
+    onClick(callback: Function): Function;	//A method that sets the button's press event handler. An alias for Telegram.WebApp.onEvent('mainButtonClicked', callback)
+    offClick(callback: Function): Function;	//A method that removes the button's press event handler. An alias for Telegram.WebApp.offEvent('mainButtonClicked', callback)
+    show(): Function;	//A method to make the button visible.
+    //Note that opening the Mini App from the attachment menu hides the main button until the user interacts with the Mini App interface.
+    hide(): Function; 	//A method to hide the button.
+    enable(): Function; //	A method to enable the button.
+    disable(): Function; //	A method to disable the button.
+    showProgress(leaveActive: boolean): Function;//	A method to show a loading indicator on the button.
+    // It is recommended to display loading progress if the action tied to the button may take a long time. By default, the button is disabled while the action is in progress. If the parameter leaveActive=true is passed, the button remains enabled.
+    hideProgress(): Function;	// A method to hide the loading indicator.
+    setParams(params: any): Function;	//A method to set the button parameters. The params parameter is an object containing one or several fields that need to be changed:
+    // text - button text;
+    // color - button color;
+    // text_color - button text color;
+    // has_shine_effect - Bot API 7.10+ enable shine effect;
+    // position - position of the secondary button;
+    // is_active - enable the button;
+    // is_visible - show the button.
+}
+
 export interface ISafeAreaInset { }
 export interface IContentSafeAreaInset { }
-export interface IBottomButton { }
 export interface ISettingsButton { }
 export interface IHapticFeedback { }
 export interface ICloudStorage { }
