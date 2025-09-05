@@ -37,8 +37,6 @@ export const useTelegramStore = create<TelegramStore>((set) => ({
             if (tgWebApp) {
                 console.log('tgWebApp user:', tgWebApp.initDataUnsafe?.user);
                 tgWebApp.ready();
-                tgWebApp.setHeaderColor('#101828')
-                tgWebApp.setBottomBarColor('#101828')
                 set({
                     webApp: tgWebApp,
                     user: tgWebApp.initDataUnsafe?.user
