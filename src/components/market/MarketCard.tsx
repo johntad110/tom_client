@@ -19,21 +19,6 @@ const MarketCard = ({ market }: MarketCardProps) => {
     const { webApp } = useTelegramStore();
     const theme = webApp?.themeParams || {};
 
-    // Status color mapping
-    // const statusColors = {
-    //     open: 'bg-blue-500/20 text-blue-300',
-    //     closed: 'bg-gray-500/20 text-gray-300',
-    //     resolving: 'bg-orange-500/20 text-orange-300',
-    //     resolved: 'bg-gray-700/20 text-gray-400',
-    // };
-
-    // const statusColors = {
-    //     open: `bg-[${theme.button_color || '#2481cc'}]/20 text-[${theme.button_text_color || '#ffffff'}]`,
-    //     closed: `bg-[${theme.hint_color || '#999999'}]/20 text-[${theme.hint_color || '#999999'}]`,
-    //     resolving: `bg-[${theme.accent_text_color || '#ff9f0a'}]/20 text-[${theme.accent_text_color || '#ff9f0a'}]`,
-    //     resolved: `bg-[${theme.secondary_bg_color || '#2c2c2c'}] text-[${theme.hint_color || '#999999'}]`,
-    // };
-
     // Format probability for display
     const displayProbability = market.probability < 1 ? '<1%' : `${Math.round(market.probability)}%`;
 
