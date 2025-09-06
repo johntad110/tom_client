@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { StarIcon } from '@heroicons/react/24/solid';
+import { useTelegramStore } from '../../stores/telegramStore';
 
 type MarketCardProps = {
     market: {
@@ -8,76 +10,135 @@ type MarketCardProps = {
         status: 'open' | 'closed' | 'resolving' | 'resolved';
         probability: number;
         totalLiquidity: number;
+        isNew?: boolean;
+        bannerImage?: string;
     };
 };
 
 const MarketCard = ({ market }: MarketCardProps) => {
-    // Status color mapping
-    const statusColors = {
-        open: 'bg-blue-500/20 text-blue-300',
-        closed: 'bg-gray-500/20 text-gray-300',
-        resolving: 'bg-orange-500/20 text-orange-300',
-        resolved: 'bg-gray-700/20 text-gray-400',
-    };
+    const { webApp } = useTelegramStore();
+    const theme = webApp?.themeParams || {};
 
-    // Probability bar colors
-    const yesWidth = `${market.probability}%`;
-    const noWidth = `${100 - market.probability}%`;
+    // Status color mapping
+    // const statusColors = {
+    //     open: 'bg-blue-500/20 text-blue-300',
+    //     closed: 'bg-gray-500/20 text-gray-300',
+    //     resolving: 'bg-orange-500/20 text-orange-300',
+    //     resolved: 'bg-gray-700/20 text-gray-400',
+    // };
+
+    // const statusColors = {
+    //     open: `bg-[${theme.button_color || '#2481cc'}]/20 text-[${theme.button_text_color || '#ffffff'}]`,
+    //     closed: `bg-[${theme.hint_color || '#999999'}]/20 text-[${theme.hint_color || '#999999'}]`,
+    //     resolving: `bg-[${theme.accent_text_color || '#ff9f0a'}]/20 text-[${theme.accent_text_color || '#ff9f0a'}]`,
+    //     resolved: `bg-[${theme.secondary_bg_color || '#2c2c2c'}] text-[${theme.hint_color || '#999999'}]`,
+    // };
+
+    // Format probability for display
+    const displayProbability = market.probability < 1 ? '<1%' : `${Math.round(market.probability)}%`;
 
     return (
         <motion.div
-            whileHover={{ y: -5 }}
-            className="bg-white/5 backdrop-blur-lg rounded-2xl border border-white/20 shadow-lg overflow-hidden"
+            // whileHover={{ y: -3 }}
+            className="-rounded-xl overflow-hidden -border"
+            style={{
+                backgroundColor: theme.secondary_bg_color || '#2c2c2c',
+                borderColor: theme.section_separator_color || '#3a3a3a'
+            }}
         >
             <Link to={`/market-detail/${market.id}`}>
                 <div className="p-4">
-                    <div className="flex justify-between items-start">
-                        <h3 className="text-md mb-2">{market.question}</h3>
-                        <span className={`text-xs px-2 py-1 rounded ${statusColors[market.status]}`}>
+                    {/* Header section, title and banner */}
+                    <div className="flex justify-between items-start mb-3">
+                        <h3
+                            className="text-sm font-medium flex-1 pr-2"
+                            style={{ color: theme.text_color || '#ffffff' }}
+                        >
+                            {market.question}
+                        </h3>
+
+                        {/* Banner image */}
+                        <div className="w-12 h-12 rounded-md overflow-hidden flex-shrink-0 ml-2">
+                            {market.bannerImage ? (
+                                <img
+                                    src={market.bannerImage}
+                                    alt="Market banner"
+                                    className="w-full h-full object-cover"
+                                />
+                            ) : (
+                                <div
+                                    className="w-full h-full flex items-center justify-center"
+                                    style={{ backgroundColor: theme.hint_color || '#999999' }}
+                                >
+                                    <span
+                                        className="text-xs"
+                                        style={{ color: theme.bg_color || '#000000' }}
+                                    >
+                                        No Image
+                                    </span>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Status and probability row */}
+                    <div className="flex justify-between items-center mb-3">
+                        <span
+                            className={`text-xs py-0.5 rounded`}
+                            style={{ color: theme.hint_color }}
+                        >
                             {market.status.charAt(0).toUpperCase() + market.status.slice(1)}
                         </span>
-                    </div>
 
-                    {/* Probability Bar */}
-                    <div className="relative h-4 bg-white/10 rounded-full overflow-hidden mb-3">
-                        <motion.div
-                            className="absolute top-0 left-0 h-full bg-green-500/70"
-                            initial={{ width: '0%' }}
-                            animate={{ width: yesWidth }}
-                            transition={{ duration: 0.8 }}
-                        >
-                            <span className="absolute top-1/2 left-2 transform -translate-y-1/2 text-xs font-bold text-white">
-                                YES {market.probability.toFixed(2)}%
+                        <div className="flex items-center">
+                            <span
+                                className="text-sm font-bold mr-1"
+                                style={{ color: theme.text_color || '#ffffff' }}
+                            >
+                                {displayProbability}
                             </span>
-                        </motion.div>
-                        <motion.div
-                            className="absolute top-0 right-0 h-full bg-red-500/70"
-                            initial={{ width: '0%' }}
-                            animate={{ width: noWidth }}
-                            transition={{ duration: 0.8 }}
-                        >
-                            <span className="absolute top-1/2 right-2 transform -translate-y-1/2 text-xs font-bold text-white">
-                                NO {(100 - market.probability).toFixed(2)}%
+                            <span
+                                className="text-xs"
+                                style={{ color: theme.hint_color || '#999999' }}
+                            >
+                                YES
                             </span>
-                        </motion.div>
-                    </div>
-
-                    <div className="flex justify-between items-center mt-4">
-                        <div className="text-sm">
-                            <p className="text-white/70">Liquidity</p>
-                            <p className="font-medium">{market.totalLiquidity.toLocaleString()} TON</p>
-                        </div>
-                        <div className="text-sm">
-                            <p className="text-white/70">Status</p>
-                            <p className="font-medium capitalize">{market.status}</p>
                         </div>
                     </div>
-                </div>
 
-                <div className="border-t border-white/10 p-3 bg-white/5">
-                    <button className="w-full py-2 bg-blue-500/20 hover:bg-blue-500/30 rounded-lg transition-colors">
-                        {market.status === 'open' ? 'Trade' : 'View'}
-                    </button>
+                    {/* Probability indicator */}
+                    <div className="mb-3">
+                        <div
+                            className="h-1.5 rounded-full overflow-hidden"
+                            style={{ backgroundColor: theme.section_separator_color || '#3a3a3a' }}
+                        >
+                            <motion.div
+                                className="h-full rounded-full"
+                                initial={{ width: 0 }}
+                                animate={{ width: `${market.probability}%` }}
+                                transition={{ duration: 1, ease: "easeOut" }}
+                                style={{
+                                    background: `linear-gradient(90deg, ${theme.button_color || '#2481cc'}, ${theme.accent_text_color || '#ff9f0a'})`
+                                }}
+                            />
+                        </div>
+                    </div>
+
+                    {/* "New" indicator if applicable */}
+                    {market.isNew && (
+                        <div className="flex items-center justify-end mt-2">
+                            <div
+                                className="flex items-center px-2 py-1 rounded-md"
+                                style={{
+                                    backgroundColor: theme.accent_text_color ? `${theme.accent_text_color}20` : '#fff3cd',
+                                    color: theme.accent_text_color || '#856404'
+                                }}
+                            >
+                                <span className="text-xs mr-1">New</span>
+                                <StarIcon className="h-3 w-3" />
+                            </div>
+                        </div>
+                    )}
                 </div>
             </Link>
         </motion.div>
