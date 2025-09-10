@@ -178,6 +178,7 @@ export const useAppStatusStore = create<AppStatus>((set, get) => ({
                 if (webApp) {
                     webApp?.MainButton.setParams({ text: "Retry", has_shine_effect: true });
                     webApp?.MainButton.onClick(get().retryInitialization);
+                    webApp?.MainButton.enable();
                     webApp?.MainButton.show();
 
                 }
