@@ -13,6 +13,7 @@ const ContractLinks = ({
     const { webApp } = useTelegramStore();
     const theme = webApp?.themeParams;
 
+    console.log(oracleAddress);
     return (
         <motion.div
             initial={{ opacity: 0 }}
