@@ -1,11 +1,14 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import FloatingFilterBar from '../components/home/FloatingFilterBar';
 import MarketCard from '../components/market/MarketCard';
 import { useMarketStore } from '../stores/marketStore';
 import LoadingShimmer from '../components/home/LoadingShimmer';
+import SearchBar from '../components/home/SearchBar';
+import { useTelegramStore } from '../stores/telegramStore';
 
 const HomePage = () => {
     const { filteredMarkets, loading, applyFilters } = useMarketStore();
+    const { webApp } = useTelegramStore();
+    const theme = webApp?.themeParams;
 
     if (loading) { return <LoadingShimmer />; }
 
@@ -15,7 +18,7 @@ const HomePage = () => {
             animate={{ opacity: 1 }}
             className="min-h-screen"
         >
-            <FloatingFilterBar />
+            <SearchBar />
 
             <div className="max-w-md mx-auto space-y-3">
                 <AnimatePresence>
@@ -34,12 +37,13 @@ const HomePage = () => {
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 text-center border border-white/20"
+                            className="p-8 text-center "
                         >
-                            <p className="text-white/70">No markets match your filters</p>
+                            <p className="text-sm" style={{ color: theme?.text_color }}>No markets match your filters</p>
                             <button
                                 onClick={() => applyFilters({ status: 'all', search: '' })}
-                                className="mt-4 bg-blue-500/20 hover:bg-blue-500/30 px-4 py-2 rounded-lg transition-colors"
+                                className="mt-4 px-4 py-2 transition-colors text-sm"
+                                style={{ color: theme?.button_text_color, backgroundColor: theme?.button_color }}
                             >
                                 Reset Filters
                             </button>
