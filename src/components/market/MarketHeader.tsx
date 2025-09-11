@@ -1,22 +1,17 @@
 import { motion } from 'framer-motion';
-import ProbabilityBar from './ProbabilityBar';
+import { useTelegramStore } from '../../stores/telegramStore';
+import { StarIcon } from '@heroicons/react/24/solid';
+import type { Market } from '../../types/market';
 
 type MarketHeaderProps = {
-    market: {
-        id: string;
-        question: string;
-        description: string;
-        status: 'open' | 'closed' | 'resolving' | 'resolved';
-        probability: number;
-        totalLiquidity: number;
-        volume: number;
-        created: string;
-        resolutionDate?: string;
-        resolvedOutcome?: 'YES' | 'NO' | 'INVALID';
-    };
+    market: Market;
+    isNew?: Boolean;
 };
 
-const MarketHeader = ({ market }: MarketHeaderProps) => {
+const MarketHeader = ({ market, isNew }: MarketHeaderProps) => {
+    const { webApp } = useTelegramStore();
+    const theme = webApp?.themeParams || {};
+
     const statusColors = {
         open: 'bg-blue-500/20 text-blue-300',
         closed: 'bg-gray-500/20 text-gray-300',
@@ -28,38 +23,53 @@ const MarketHeader = ({ market }: MarketHeaderProps) => {
         <motion.div
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            className="bg-white/5 backdrop-blur-lg rounded-2xl p-4 border border-white/20"
+            className="px-4 py-2"
+            style={{ backgroundColor: theme.bg_color }}
         >
-            <div className="flex justify-between items-start mb-2">
-                <h1 className="text-xl">{market.question}</h1>
-                <span className={`text-sm px-3 py-1 rounded-full ${statusColors[market.status]}`}>
+            <div className="flex gap-2 mb-4">
+                <span className={`flex text-xs px-2 py-1 ${statusColors[market.status]}`}>
                     {market.status.charAt(0).toUpperCase() + market.status.slice(1)}
                 </span>
+                {isNew && (
+                    <div
+                        className="flex items-center px-2 py-1 rounded-md"
+                        style={{
+                            backgroundColor: theme.accent_text_color ? `${theme.accent_text_color}20` : '#fff3cd',
+                            color: theme.accent_text_color || '#856404'
+                        }}
+                    >
+                        <span className="text-xs mr-1">New</span>
+                        <StarIcon className="h-3 w-3" />
+                    </div>
+                )}
             </div>
 
-            {market.description && (
-                <p className="text-white/70 mb-4">{market.description}</p>
-            )}
+            <div className="flex justify-between items-start mb-2">
+                <h1 className="text-sm pr-2" style={{ color: theme.text_color }}>{market.question}</h1>
 
-            <ProbabilityBar probability={market.probability} />
-
-            <div className="grid grid-cols-2 gap-4 mt-4">
-                <div className="bg-black/20 p-3 rounded-lg">
-                    <p className="text-sm text-white/70 mb-1">Liquidity</p>
-                    <p className="text-xl font-bold">{market.totalLiquidity.toLocaleString()} TON</p>
-                </div>
-                <div className="bg-black/20 p-3 rounded-lg">
-                    <p className="text-sm text-white/70 mb-1">Volume</p>
-                    <p className="text-xl font-bold">{market.volume.toLocaleString()} TON</p>
+                {/* Banner image */}
+                <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 ml-2">
+                    {market.bannerImage ? (
+                        <img
+                            src={market.bannerImage}
+                            alt="Market banner"
+                            className="w-full h-full object-cover"
+                        />
+                    ) : (
+                        <div
+                            className="w-full h-full flex items-center justify-center"
+                            style={{ backgroundColor: theme.hint_color || '#999999' }}
+                        >
+                            <span
+                                className="text-xs"
+                                style={{ color: theme.bg_color || '#000000' }}
+                            >
+                                NoImg
+                            </span>
+                        </div>
+                    )}
                 </div>
             </div>
-
-            {market.resolutionDate && (
-                <div className="mt-4 text-sm">
-                    <p className="text-white/70">Resolution Date</p>
-                    <p className="text-white">{market.resolutionDate}</p>
-                </div>
-            )}
         </motion.div>
     );
 };

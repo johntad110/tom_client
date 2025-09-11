@@ -7,14 +7,17 @@ import { useEffect, useMemo } from 'react';
 import { Address } from '@ton/core';
 import { useMarketContract } from '../../hooks/useMarketContract';
 import { useTonClient } from '../../hooks/useTonClient';
+import { useTelegramStore } from '../../stores/telegramStore';
 
-
-const PositionSection = ({ marketId }: { marketId: string }) => {
+const PositionSection = ({ marketId, setUserIntent, setModalOpen, marketOpen }: { marketId: string; setUserIntent: any; setModalOpen: any; marketOpen: boolean }) => {
     const { isConnected, walletAddress } = useUserStore();
     const { marketAddresses } = useFactoryStore();
     const { marketState } = useMarketContract({ addr: marketAddresses[Number(marketId)] });
     const { positions, loading, fetchPositions } = userPositionStore();
     const client = useTonClient();
+
+    const { webApp } = useTelegramStore();
+    const theme = webApp?.themeParams;
 
     useEffect(() => {
         if (walletAddress && client) {
@@ -22,37 +25,52 @@ const PositionSection = ({ marketId }: { marketId: string }) => {
         }
     }, [marketId, walletAddress, client])
 
-    const { yesValue, noValue } = useMemo(() => {
-        const defaultValues = {
-            yesValue: 0,
-            noValue: 0,
+    const positionData = useMemo(() => {
+        const defaultData = {
+            yesShares: 0,
+            noShares: 0,
+            currentYesValue: 0,
+            currentNoValue: 0,
+            resolvedYesValue: 0,
+            resolvedNoValue: 0,
             currentYesPrice: 0,
             currentNoPrice: 0
         };
 
-        if (!marketState || !positions[marketId]) return defaultValues;
+        if (!marketState || !positions[marketId]) return defaultData;
 
         const userPositions = positions[marketId].data;
         const reserveYes = Number(marketState.reserveYes);
         const reserveNo = Number(marketState.reserveNo);
+        const totalReserves = reserveYes + reserveNo;
 
-        if (reserveYes === 0 || reserveNo === 0) return defaultValues;
+        if (reserveYes === 0 || reserveNo === 0) return defaultData;
 
         const yesShares = userPositions.yes ? Number(userPositions.yes) : 0;
         const noShares = userPositions.no ? Number(userPositions.no) : 0;
 
-        const currentYesPrice = reserveNo / reserveYes;
-        const currentNoPrice = reserveYes / reserveNo;
+        const currentYesPrice = reserveNo / totalReserves;
+        const currentNoPrice = reserveYes / totalReserves;
+
+        // Current market value
+        const currentYesValue = yesShares * currentYesPrice;
+        const currentNoValue = noShares * currentNoPrice;
+
+        // Resolved value (if market ended now)
+        const resolvedYesValue = yesShares * 1; // Each YES shares worth 1 TON if resolved Yes
+        const resolvedNoValue = noShares * 1;   // Each NO shares worth 1 TON if resolved No
 
         return {
-            yesValue: yesShares * currentYesPrice,
-            noValue: noShares * currentNoPrice,
+            yesShares,
+            noShares,
+            currentYesValue,
+            currentNoValue,
+            resolvedYesValue,
+            resolvedNoValue,
             currentYesPrice,
             currentNoPrice
         };
     }, [marketState, positions, marketId]);
-
-    const totalValue = yesValue + noValue;
 
     if (!isConnected) {
         return (
@@ -60,11 +78,14 @@ const PositionSection = ({ marketId }: { marketId: string }) => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 }}
-                className="bg-white/5 backdrop-blur-lg rounded-2xl p-4 border border-white/20 mt-6"
+                className="p-4"
+                style={{ backgroundColor: theme?.bg_color }}
             >
-                <h3 className="font-bold mb-4">Your Position</h3>
-                <div className="text-center py-6">
-                    <p className="text-white/70 mb-4">Connect your wallet to view your position</p>
+                <h3 className="mb-4 text-sm font-bold" style={{ color: theme?.accent_text_color }}>
+                    Your Position
+                </h3>
+                <div className="text-center py-4">
+                    <p className="text-white/70 mb-3 text-sm">Connect wallet to view positions</p>
                     <WalletConnectButton />
                 </div>
             </motion.div>
@@ -77,19 +98,21 @@ const PositionSection = ({ marketId }: { marketId: string }) => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 }}
-                className="bg-white/5 backdrop-blur-lg rounded-2xl p-4 bborder border-white/20 mt-6"
+                className="p-4"
+                style={{ backgroundColor: theme?.bg_color }}
             >
-                <h3 className="font-bold mb-4">Your Position</h3>
-                <div className="text-center py-6">
-                    <p className="text-white/70">Loading positions...</p>
+                <h3 className="mb-4 text-sm font-bold" style={{ color: theme?.accent_text_color }}>
+                    Your Position
+                </h3>
+                <div className="text-center py-4">
+                    <p className="text-sm" style={{ color: theme?.hint_color }}>Loading positions...</p>
                 </div>
-            </ motion.div >
-        )
+            </motion.div>
+        );
     }
 
-    const userPositions = positions[marketId].data || { yes: null, no: null };
-    const hasYesPosition = userPositions.yes !== null && userPositions.yes && userPositions.yes > 0n;
-    const hasNoPosition = userPositions.no !== null && userPositions.no && userPositions.no > 0n;
+    const hasYesPosition = positionData.yesShares > 0;
+    const hasNoPosition = positionData.noShares > 0;
 
     if (!hasYesPosition && !hasNoPosition) {
         return (
@@ -97,11 +120,14 @@ const PositionSection = ({ marketId }: { marketId: string }) => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 }}
-                className="bg-white/5 backdrop-blur-lg rounded-2xl p-4 border border-white/20 mt-6"
+                className="p-4"
+                style={{ backgroundColor: theme?.bg_color }}
             >
-                <h3 className="font-bold mb-4">Your Position</h3>
-                <div className="text-center py-6">
-                    <p className="text-white/70">You have no positions in this market</p>
+                <h3 className="mb-4 text-sm font-bold" style={{ color: theme?.accent_text_color }}>
+                    Your Position
+                </h3>
+                <div className="text-center py-4">
+                    <p className="text-white/70 text-sm">No positions in this market</p>
                 </div>
             </motion.div>
         );
@@ -112,64 +138,84 @@ const PositionSection = ({ marketId }: { marketId: string }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="bg-white/5 backdrop-blur-lg rounded-2xl p-4 border border-white/20 mt-6"
+            className="p-4"
+            style={{ backgroundColor: theme?.bg_color }}
         >
-            <h3 className="font-bold mb-4">Your Position</h3>
+            <h3 className="mb-4 text-sm font-bold" style={{ color: theme?.accent_text_color }}>
+                Your Position
+            </h3>
 
-            {hasYesPosition && (
-                <div className="mb-6">
-                    <h4 className="text-sm text-white/70 mb-2">YES Position</h4>
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="bg-black/20 p-3 rounded-lg">
-                            <p className="text-sm text-white/70 mb-1">Shares</p>
-                            <p className="text-xl font-bold">
-                                {Number(userPositions.yes).toFixed(2)}
-                            </p>
+            <div className="space-y-3">
+                {hasYesPosition && (
+                    <div
+                        className={`p-3 rounded-lg ${marketOpen && 'hover:cursor-pointer'}`}
+                        style={{ backgroundColor: theme?.secondary_bg_color }}
+                        onClick={() => { if (marketOpen) { setUserIntent("SELL_YES"); setModalOpen(true); } }}
+                    >
+                        <div className="flex justify-between items-center mb-2">
+                            <span className="text-sm text-green-500 font-medium">YES Shares</span>
+                            <span
+                                className=""
+                                style={{ color: theme?.text_color }}
+                            >
+                                {positionData.yesShares.toFixed(2)}</span>
                         </div>
-                        <div className="bg-green-500/20 p-3 rounded-lg text-green-300">
-                            <p className="text-sm mb-1">Outcome</p>
-                            <p className="text-xl font-bold">YES</p>
-                        </div>
-
-                        <div className="bg-green-500/20 p-3 rounded-lg text-green-300">
-                            <p className="text-sm mb-1">Value</p>
-                            <p className="text-xl font-bold">
-                                {yesValue.toFixed(2)} TON
-                            </p>
+                        <div className="grid grid-cols-2 gap-2 text-xs">
+                            <div>
+                                <span
+                                    className=""
+                                    style={{ color: theme?.hint_color }}
+                                >Current:</span>
+                                <span className="ml-1" style={{ color: theme?.text_color }}>{positionData.currentYesValue.toFixed(2)} TON</span>
+                            </div>
+                            <div>
+                                <span className="" style={{ color: theme?.hint_color }}>If Yes:</span>
+                                <span className="ml-1 text-green-500">{positionData.resolvedYesValue.toFixed(2)} TON</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            )}
+                )}
 
-            {hasNoPosition && (
-                <div className="mb-6">
-                    <h4 className="text-sm text-white/70 mb-2">NO Position</h4>
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="bg-black/20 p-3 rounded-lg">
-                            <p className="text-sm text-white/70 mb-1">Shares</p>
-                            <p className="text-xl font-bold">
-                                {Number(userPositions.no).toFixed(2)}
-                            </p>
+                {hasNoPosition && (
+                    <div
+                        className={`p-3 rounded-lg ${marketOpen && 'hover:cursor-pointer'}`}
+                        style={{ backgroundColor: theme?.secondary_bg_color }}
+                        onClick={() => { if (marketOpen) { setUserIntent("SELL_YES"); setModalOpen(true); } }}
+                    >
+                        <div className="flex justify-between items-center mb-2">
+                            <span className="text-sm text-red-500 font-medium">NO Shares</span>
+                            <span
+                                className=""
+                                style={{ color: theme?.text_color }}
+                            >
+                                {positionData.noShares.toFixed(2)}</span>
                         </div>
-                        <div className="bg-red-500/20 p-3 rounded-lg text-red-300">
-                            <p className="text-sm mb-1">Outcome</p>
-                            <p className="text-xl font-bold">NO</p>
+                        <div className="grid grid-cols-2 gap-2 text-xs">
+                            <div>
+                                <span className="" style={{ color: theme?.hint_color }}>Current:</span>
+                                <span className="ml-1" style={{ color: theme?.text_color }}>{positionData.currentNoValue.toFixed(2)} TON</span>
+                            </div>
+                            <div>
+                                <span className="" style={{ color: theme?.hint_color }}>If No:</span>
+                                <span className="ml-1 text-red-500">{positionData.resolvedNoValue.toFixed(2)} TON</span>
+                            </div>
                         </div>
-                        <div className="bg-red-500/20 p-3 rounded-lg text-red-300">
-                            <p className="text-sm mb-1">Value</p>
-                            <p className="text-xl font-bold">
-                                {noValue.toFixed(2)} TON
-                            </p>
-                        </div>
-
                     </div>
-                </div>
-            )}
-
-            <div className="mt-4 pt-4 border-t border-white/10">
-                <p className="text-sm text-white/70 mb-1">Total Estimated Value</p>
-                <p className="text-2xl font-bold">{totalValue.toFixed(2)} TON</p>
+                )}
             </div>
+
+            {/* Total summary */}
+            {(hasYesPosition || hasNoPosition) && (
+                <div className={`mt-4`}>
+                    <div className='w-full h-[1px] mb-3' style={{ backgroundColor: theme?.hint_color }}></div>
+                    <div className="flex justify-between items-center text-sm">
+                        <span className="" style={{ color: theme?.hint_color }}>Total Value:</span>
+                        <span className="font-medium" style={{ color: theme?.text_color }}>
+                            {(positionData.currentYesValue + positionData.currentNoValue).toFixed(2)} TON
+                        </span>
+                    </div>
+                </div>
+            )}
         </motion.div>
     );
 };

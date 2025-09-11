@@ -13,11 +13,11 @@ const HomePage = () => {
         <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="min-h-screen pt-16 px-4 pb-24"
+            className="min-h-screen"
         >
             <FloatingFilterBar />
 
-            <div className="max-w-md mx-auto space-y-6">
+            <div className="max-w-md mx-auto space-y-3">
                 <AnimatePresence>
                     {filteredMarkets.length > 0 ? (
                         filteredMarkets.map((market, index) => (

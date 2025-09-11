@@ -9,7 +9,13 @@ import { useMarketStore } from '../stores/marketStore';
 import { useTelegram } from '../hooks/useTelegram';
 import type { Market } from '../types/market';
 import { useFactoryStore } from '../stores/factoryStore';
-import { tonScanUrl } from '../helpers/RPCEndpoints';
+import { useTelegramStore } from '../stores/telegramStore';
+import AboutSection from '../components/market/AboutSection';
+import OverviewSection from '../components/market/OverviewSection';
+import ContractLinks from '../components/market/ContractLinks';
+import CountdownTimer from '../components/market/CountdownTimer';
+import TradeModal from '../components/TradeModal';
+import { ScaleLoader } from 'react-spinners';
 
 const MarketDetailPage = () => {
     const { id } = useParams();
@@ -19,7 +25,26 @@ const MarketDetailPage = () => {
     const [market, setMarket] = useState<Market | null>(null);
     const { backButton } = useTelegram();
 
+    const { webApp } = useTelegramStore();
+    const mainButton = webApp?.MainButton;
+    const secondaryButton = webApp?.SecondaryButton;
+
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [userIntent, setUserIntent] = useState<'BUY_YES' | 'BUY_NO' | 'SELL_YES' | 'SELL_NO'>("BUY_YES");
+
     useEffect(() => {
+        mainButton?.setParams({ text: "Buy YES", has_shine_effect: true });
+        if (market?.status !== "open") { mainButton?.disable(); }
+        else { mainButton?.enable(); }
+        mainButton?.onClick(() => { setUserIntent("BUY_YES"); setModalOpen(true); });
+        mainButton?.show();
+
+        secondaryButton?.setParams({ text: "Buy NO", has_shine_effect: true, position: "right", color: webApp?.themeParams.secondary_bg_color });
+        if (market?.status !== "open") { secondaryButton?.disable(); }
+        else { secondaryButton?.enable(); }
+        secondaryButton?.onClick(() => { setUserIntent("BUY_NO"); setModalOpen(true); });
+        secondaryButton?.show();
+
         if (id) {
             const foundMarket = getMarketById(id);
             if (foundMarket) {
@@ -30,47 +55,51 @@ const MarketDetailPage = () => {
         backButton.show();
         backButton.onClick(() => history.back());
 
-        return () => { backButton.hide(); }
+        return () => {
+            backButton.hide();
+            mainButton?.hide()
+            secondaryButton?.hide()
+        }
     }, [id, getMarketById, backButton, marketAddress]);
 
     if (!market) {
-        return <>Loading</>;
+        return (
+            <div
+                className='h-[80vh] w-[95%] flex justify-center items-center'
+            >
+                <ScaleLoader color={webApp?.themeParams.hint_color} />
+            </div>
+        );
     }
     if (!id) { return <code>Brooooo, U in the wrong place!</code> }
+
 
     return (
         <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="min-h-screen pt-4 px-4 pb-24"
+            className="min-h-screen"
+            style={{ backgroundColor: webApp?.themeParams.secondary_bg_color }}
         >
-            <div className="max-w-md mx-auto space-y-6">
-                <MarketHeader market={market} />
-                <PriceChart history={market.history} />
-                <PositionSection marketId={market.id} />
-
+            <div className="max-w-md mx-auto space-y-2">
+                <MarketHeader market={market} isNew={true} />
+                {market.resolutionDate && <CountdownTimer resolutionDate={market.resolutionDate} marketStatus={market.status} />}
+                <PriceChart history={market.history} priceNow={market.probabilities.yes} />
+                <PositionSection marketId={market.id} setUserIntent={setUserIntent} setModalOpen={setModalOpen} marketOpen={market.status === "open"} />
                 {market.status === 'open' && <TradePanel market={market} />}
-
-                {/* Contract Links */}
-                <div className="flex space-x-4">
-                    <a
-                        href={`${tonScanUrl()}/address/${marketAddress}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-1 text-center py-3 bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
-                    >
-                        View Contract
-                    </a>
-                    <a
-                        href={`${tonScanUrl()}/address/${marketAddress}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-1 text-center py-3 bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
-                    >
-                        View Oracle
-                    </a>
-                </div>
+                <AboutSection description={market.description} />
+                <OverviewSection market={market} />
+                <ContractLinks marketAddress={marketAddress} oracleAddress={market.oracleAddr.toString()} />
             </div>
+
+            <TradeModal
+                isOpen={isModalOpen}
+                onClose={() => setModalOpen(false)}
+                action={userIntent}
+                marketId={market.id}
+                currentYesPrice={market.probabilities.yes}
+                currentNoPrice={market.probabilities.no}
+            />
         </motion.div>
     );
 };

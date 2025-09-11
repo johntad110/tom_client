@@ -607,204 +607,6 @@ export function dictValueParserBasechainAddress(): DictionaryValue<BasechainAddr
     }
 }
 
-export type Deploy = {
-    $$type: 'Deploy';
-    queryId: bigint;
-}
-
-export function storeDeploy(src: Deploy) {
-    return (builder: Builder) => {
-        const b_0 = builder;
-        b_0.storeUint(2490013878, 32);
-        b_0.storeUint(src.queryId, 64);
-    };
-}
-
-export function loadDeploy(slice: Slice) {
-    const sc_0 = slice;
-    if (sc_0.loadUint(32) !== 2490013878) { throw Error('Invalid prefix'); }
-    const _queryId = sc_0.loadUintBig(64);
-    return { $$type: 'Deploy' as const, queryId: _queryId };
-}
-
-export function loadTupleDeploy(source: TupleReader) {
-    const _queryId = source.readBigNumber();
-    return { $$type: 'Deploy' as const, queryId: _queryId };
-}
-
-export function loadGetterTupleDeploy(source: TupleReader) {
-    const _queryId = source.readBigNumber();
-    return { $$type: 'Deploy' as const, queryId: _queryId };
-}
-
-export function storeTupleDeploy(source: Deploy) {
-    const builder = new TupleBuilder();
-    builder.writeNumber(source.queryId);
-    return builder.build();
-}
-
-export function dictValueParserDeploy(): DictionaryValue<Deploy> {
-    return {
-        serialize: (src, builder) => {
-            builder.storeRef(beginCell().store(storeDeploy(src)).endCell());
-        },
-        parse: (src) => {
-            return loadDeploy(src.loadRef().beginParse());
-        }
-    }
-}
-
-export type DeployOk = {
-    $$type: 'DeployOk';
-    queryId: bigint;
-}
-
-export function storeDeployOk(src: DeployOk) {
-    return (builder: Builder) => {
-        const b_0 = builder;
-        b_0.storeUint(2952335191, 32);
-        b_0.storeUint(src.queryId, 64);
-    };
-}
-
-export function loadDeployOk(slice: Slice) {
-    const sc_0 = slice;
-    if (sc_0.loadUint(32) !== 2952335191) { throw Error('Invalid prefix'); }
-    const _queryId = sc_0.loadUintBig(64);
-    return { $$type: 'DeployOk' as const, queryId: _queryId };
-}
-
-export function loadTupleDeployOk(source: TupleReader) {
-    const _queryId = source.readBigNumber();
-    return { $$type: 'DeployOk' as const, queryId: _queryId };
-}
-
-export function loadGetterTupleDeployOk(source: TupleReader) {
-    const _queryId = source.readBigNumber();
-    return { $$type: 'DeployOk' as const, queryId: _queryId };
-}
-
-export function storeTupleDeployOk(source: DeployOk) {
-    const builder = new TupleBuilder();
-    builder.writeNumber(source.queryId);
-    return builder.build();
-}
-
-export function dictValueParserDeployOk(): DictionaryValue<DeployOk> {
-    return {
-        serialize: (src, builder) => {
-            builder.storeRef(beginCell().store(storeDeployOk(src)).endCell());
-        },
-        parse: (src) => {
-            return loadDeployOk(src.loadRef().beginParse());
-        }
-    }
-}
-
-export type FactoryDeploy = {
-    $$type: 'FactoryDeploy';
-    queryId: bigint;
-    cashback: Address;
-}
-
-export function storeFactoryDeploy(src: FactoryDeploy) {
-    return (builder: Builder) => {
-        const b_0 = builder;
-        b_0.storeUint(1829761339, 32);
-        b_0.storeUint(src.queryId, 64);
-        b_0.storeAddress(src.cashback);
-    };
-}
-
-export function loadFactoryDeploy(slice: Slice) {
-    const sc_0 = slice;
-    if (sc_0.loadUint(32) !== 1829761339) { throw Error('Invalid prefix'); }
-    const _queryId = sc_0.loadUintBig(64);
-    const _cashback = sc_0.loadAddress();
-    return { $$type: 'FactoryDeploy' as const, queryId: _queryId, cashback: _cashback };
-}
-
-export function loadTupleFactoryDeploy(source: TupleReader) {
-    const _queryId = source.readBigNumber();
-    const _cashback = source.readAddress();
-    return { $$type: 'FactoryDeploy' as const, queryId: _queryId, cashback: _cashback };
-}
-
-export function loadGetterTupleFactoryDeploy(source: TupleReader) {
-    const _queryId = source.readBigNumber();
-    const _cashback = source.readAddress();
-    return { $$type: 'FactoryDeploy' as const, queryId: _queryId, cashback: _cashback };
-}
-
-export function storeTupleFactoryDeploy(source: FactoryDeploy) {
-    const builder = new TupleBuilder();
-    builder.writeNumber(source.queryId);
-    builder.writeAddress(source.cashback);
-    return builder.build();
-}
-
-export function dictValueParserFactoryDeploy(): DictionaryValue<FactoryDeploy> {
-    return {
-        serialize: (src, builder) => {
-            builder.storeRef(beginCell().store(storeFactoryDeploy(src)).endCell());
-        },
-        parse: (src) => {
-            return loadFactoryDeploy(src.loadRef().beginParse());
-        }
-    }
-}
-
-export type MarketInit = {
-    $$type: 'MarketInit';
-    factory: Address;
-    marketId: bigint;
-}
-
-export function storeMarketInit(src: MarketInit) {
-    return (builder: Builder) => {
-        const b_0 = builder;
-        b_0.storeAddress(src.factory);
-        b_0.storeUint(src.marketId, 64);
-    };
-}
-
-export function loadMarketInit(slice: Slice) {
-    const sc_0 = slice;
-    const _factory = sc_0.loadAddress();
-    const _marketId = sc_0.loadUintBig(64);
-    return { $$type: 'MarketInit' as const, factory: _factory, marketId: _marketId };
-}
-
-export function loadTupleMarketInit(source: TupleReader) {
-    const _factory = source.readAddress();
-    const _marketId = source.readBigNumber();
-    return { $$type: 'MarketInit' as const, factory: _factory, marketId: _marketId };
-}
-
-export function loadGetterTupleMarketInit(source: TupleReader) {
-    const _factory = source.readAddress();
-    const _marketId = source.readBigNumber();
-    return { $$type: 'MarketInit' as const, factory: _factory, marketId: _marketId };
-}
-
-export function storeTupleMarketInit(source: MarketInit) {
-    const builder = new TupleBuilder();
-    builder.writeAddress(source.factory);
-    builder.writeNumber(source.marketId);
-    return builder.build();
-}
-
-export function dictValueParserMarketInit(): DictionaryValue<MarketInit> {
-    return {
-        serialize: (src, builder) => {
-            builder.storeRef(beginCell().store(storeMarketInit(src)).endCell());
-        },
-        parse: (src) => {
-            return loadMarketInit(src.loadRef().beginParse());
-        }
-    }
-}
-
 export type CreateMarket = {
     $$type: 'CreateMarket';
     question: string;
@@ -814,6 +616,10 @@ export type CreateMarket = {
     feeBps: bigint;
     initialLiquidity: bigint;
     initialProbability: bigint;
+    creator: Address | null;
+    createdBy: string | null;
+    askedBy: string | null;
+    bannerImage: string | null;
 }
 
 export function storeCreateMarket(src: CreateMarket) {
@@ -827,6 +633,12 @@ export function storeCreateMarket(src: CreateMarket) {
         b_0.storeUint(src.feeBps, 16);
         b_0.storeCoins(src.initialLiquidity);
         b_0.storeUint(src.initialProbability, 8);
+        b_0.storeAddress(src.creator);
+        const b_1 = new Builder();
+        if (src.createdBy !== null && src.createdBy !== undefined) { b_1.storeBit(true).storeStringRefTail(src.createdBy); } else { b_1.storeBit(false); }
+        if (src.askedBy !== null && src.askedBy !== undefined) { b_1.storeBit(true).storeStringRefTail(src.askedBy); } else { b_1.storeBit(false); }
+        if (src.bannerImage !== null && src.bannerImage !== undefined) { b_1.storeBit(true).storeStringRefTail(src.bannerImage); } else { b_1.storeBit(false); }
+        b_0.storeRef(b_1.endCell());
     };
 }
 
@@ -840,7 +652,12 @@ export function loadCreateMarket(slice: Slice) {
     const _feeBps = sc_0.loadUintBig(16);
     const _initialLiquidity = sc_0.loadCoins();
     const _initialProbability = sc_0.loadUintBig(8);
-    return { $$type: 'CreateMarket' as const, question: _question, clarification: _clarification, closeTimestamp: _closeTimestamp, oracleAddr: _oracleAddr, feeBps: _feeBps, initialLiquidity: _initialLiquidity, initialProbability: _initialProbability };
+    const _creator = sc_0.loadMaybeAddress();
+    const sc_1 = sc_0.loadRef().beginParse();
+    const _createdBy = sc_1.loadBit() ? sc_1.loadStringRefTail() : null;
+    const _askedBy = sc_1.loadBit() ? sc_1.loadStringRefTail() : null;
+    const _bannerImage = sc_1.loadBit() ? sc_1.loadStringRefTail() : null;
+    return { $$type: 'CreateMarket' as const, question: _question, clarification: _clarification, closeTimestamp: _closeTimestamp, oracleAddr: _oracleAddr, feeBps: _feeBps, initialLiquidity: _initialLiquidity, initialProbability: _initialProbability, creator: _creator, createdBy: _createdBy, askedBy: _askedBy, bannerImage: _bannerImage };
 }
 
 export function loadTupleCreateMarket(source: TupleReader) {
@@ -851,7 +668,11 @@ export function loadTupleCreateMarket(source: TupleReader) {
     const _feeBps = source.readBigNumber();
     const _initialLiquidity = source.readBigNumber();
     const _initialProbability = source.readBigNumber();
-    return { $$type: 'CreateMarket' as const, question: _question, clarification: _clarification, closeTimestamp: _closeTimestamp, oracleAddr: _oracleAddr, feeBps: _feeBps, initialLiquidity: _initialLiquidity, initialProbability: _initialProbability };
+    const _creator = source.readAddressOpt();
+    const _createdBy = source.readStringOpt();
+    const _askedBy = source.readStringOpt();
+    const _bannerImage = source.readStringOpt();
+    return { $$type: 'CreateMarket' as const, question: _question, clarification: _clarification, closeTimestamp: _closeTimestamp, oracleAddr: _oracleAddr, feeBps: _feeBps, initialLiquidity: _initialLiquidity, initialProbability: _initialProbability, creator: _creator, createdBy: _createdBy, askedBy: _askedBy, bannerImage: _bannerImage };
 }
 
 export function loadGetterTupleCreateMarket(source: TupleReader) {
@@ -862,7 +683,11 @@ export function loadGetterTupleCreateMarket(source: TupleReader) {
     const _feeBps = source.readBigNumber();
     const _initialLiquidity = source.readBigNumber();
     const _initialProbability = source.readBigNumber();
-    return { $$type: 'CreateMarket' as const, question: _question, clarification: _clarification, closeTimestamp: _closeTimestamp, oracleAddr: _oracleAddr, feeBps: _feeBps, initialLiquidity: _initialLiquidity, initialProbability: _initialProbability };
+    const _creator = source.readAddressOpt();
+    const _createdBy = source.readStringOpt();
+    const _askedBy = source.readStringOpt();
+    const _bannerImage = source.readStringOpt();
+    return { $$type: 'CreateMarket' as const, question: _question, clarification: _clarification, closeTimestamp: _closeTimestamp, oracleAddr: _oracleAddr, feeBps: _feeBps, initialLiquidity: _initialLiquidity, initialProbability: _initialProbability, creator: _creator, createdBy: _createdBy, askedBy: _askedBy, bannerImage: _bannerImage };
 }
 
 export function storeTupleCreateMarket(source: CreateMarket) {
@@ -874,6 +699,10 @@ export function storeTupleCreateMarket(source: CreateMarket) {
     builder.writeNumber(source.feeBps);
     builder.writeNumber(source.initialLiquidity);
     builder.writeNumber(source.initialProbability);
+    builder.writeAddress(source.creator);
+    builder.writeString(source.createdBy);
+    builder.writeString(source.askedBy);
+    builder.writeString(source.bannerImage);
     return builder.build();
 }
 
@@ -931,216 +760,6 @@ export function dictValueParserWithdraw(): DictionaryValue<Withdraw> {
         },
         parse: (src) => {
             return loadWithdraw(src.loadRef().beginParse());
-        }
-    }
-}
-
-export type Factory$Data = {
-    $$type: 'Factory$Data';
-    nextMarketId: bigint;
-}
-
-export function storeFactory$Data(src: Factory$Data) {
-    return (builder: Builder) => {
-        const b_0 = builder;
-        b_0.storeUint(src.nextMarketId, 64);
-    };
-}
-
-export function loadFactory$Data(slice: Slice) {
-    const sc_0 = slice;
-    const _nextMarketId = sc_0.loadUintBig(64);
-    return { $$type: 'Factory$Data' as const, nextMarketId: _nextMarketId };
-}
-
-export function loadTupleFactory$Data(source: TupleReader) {
-    const _nextMarketId = source.readBigNumber();
-    return { $$type: 'Factory$Data' as const, nextMarketId: _nextMarketId };
-}
-
-export function loadGetterTupleFactory$Data(source: TupleReader) {
-    const _nextMarketId = source.readBigNumber();
-    return { $$type: 'Factory$Data' as const, nextMarketId: _nextMarketId };
-}
-
-export function storeTupleFactory$Data(source: Factory$Data) {
-    const builder = new TupleBuilder();
-    builder.writeNumber(source.nextMarketId);
-    return builder.build();
-}
-
-export function dictValueParserFactory$Data(): DictionaryValue<Factory$Data> {
-    return {
-        serialize: (src, builder) => {
-            builder.storeRef(beginCell().store(storeFactory$Data(src)).endCell());
-        },
-        parse: (src) => {
-            return loadFactory$Data(src.loadRef().beginParse());
-        }
-    }
-}
-
-export type MarketState = {
-    $$type: 'MarketState';
-    reserveYes: bigint;
-    reserveNo: bigint;
-    k: bigint;
-    feeBps: bigint;
-    oracleAddr: Address;
-    closeTimestamp: bigint;
-    resolved: boolean;
-    outcome: boolean | null;
-    factory: Address;
-    marketId: bigint;
-    question: string;
-    clarification: string;
-}
-
-export function storeMarketState(src: MarketState) {
-    return (builder: Builder) => {
-        const b_0 = builder;
-        b_0.storeCoins(src.reserveYes);
-        b_0.storeCoins(src.reserveNo);
-        b_0.storeCoins(src.k);
-        b_0.storeUint(src.feeBps, 16);
-        b_0.storeAddress(src.oracleAddr);
-        b_0.storeUint(src.closeTimestamp, 64);
-        b_0.storeBit(src.resolved);
-        if (src.outcome !== null && src.outcome !== undefined) { b_0.storeBit(true).storeBit(src.outcome); } else { b_0.storeBit(false); }
-        b_0.storeAddress(src.factory);
-        const b_1 = new Builder();
-        b_1.storeUint(src.marketId, 64);
-        b_1.storeStringRefTail(src.question);
-        b_1.storeStringRefTail(src.clarification);
-        b_0.storeRef(b_1.endCell());
-    };
-}
-
-export function loadMarketState(slice: Slice) {
-    const sc_0 = slice;
-    const _reserveYes = sc_0.loadCoins();
-    const _reserveNo = sc_0.loadCoins();
-    const _k = sc_0.loadCoins();
-    const _feeBps = sc_0.loadUintBig(16);
-    const _oracleAddr = sc_0.loadAddress();
-    const _closeTimestamp = sc_0.loadUintBig(64);
-    const _resolved = sc_0.loadBit();
-    const _outcome = sc_0.loadBit() ? sc_0.loadBit() : null;
-    const _factory = sc_0.loadAddress();
-    const sc_1 = sc_0.loadRef().beginParse();
-    const _marketId = sc_1.loadUintBig(64);
-    const _question = sc_1.loadStringRefTail();
-    const _clarification = sc_1.loadStringRefTail();
-    return { $$type: 'MarketState' as const, reserveYes: _reserveYes, reserveNo: _reserveNo, k: _k, feeBps: _feeBps, oracleAddr: _oracleAddr, closeTimestamp: _closeTimestamp, resolved: _resolved, outcome: _outcome, factory: _factory, marketId: _marketId, question: _question, clarification: _clarification };
-}
-
-export function loadTupleMarketState(source: TupleReader) {
-    const _reserveYes = source.readBigNumber();
-    const _reserveNo = source.readBigNumber();
-    const _k = source.readBigNumber();
-    const _feeBps = source.readBigNumber();
-    const _oracleAddr = source.readAddress();
-    const _closeTimestamp = source.readBigNumber();
-    const _resolved = source.readBoolean();
-    const _outcome = source.readBooleanOpt();
-    const _factory = source.readAddress();
-    const _marketId = source.readBigNumber();
-    const _question = source.readString();
-    const _clarification = source.readString();
-    return { $$type: 'MarketState' as const, reserveYes: _reserveYes, reserveNo: _reserveNo, k: _k, feeBps: _feeBps, oracleAddr: _oracleAddr, closeTimestamp: _closeTimestamp, resolved: _resolved, outcome: _outcome, factory: _factory, marketId: _marketId, question: _question, clarification: _clarification };
-}
-
-export function loadGetterTupleMarketState(source: TupleReader) {
-    const _reserveYes = source.readBigNumber();
-    const _reserveNo = source.readBigNumber();
-    const _k = source.readBigNumber();
-    const _feeBps = source.readBigNumber();
-    const _oracleAddr = source.readAddress();
-    const _closeTimestamp = source.readBigNumber();
-    const _resolved = source.readBoolean();
-    const _outcome = source.readBooleanOpt();
-    const _factory = source.readAddress();
-    const _marketId = source.readBigNumber();
-    const _question = source.readString();
-    const _clarification = source.readString();
-    return { $$type: 'MarketState' as const, reserveYes: _reserveYes, reserveNo: _reserveNo, k: _k, feeBps: _feeBps, oracleAddr: _oracleAddr, closeTimestamp: _closeTimestamp, resolved: _resolved, outcome: _outcome, factory: _factory, marketId: _marketId, question: _question, clarification: _clarification };
-}
-
-export function storeTupleMarketState(source: MarketState) {
-    const builder = new TupleBuilder();
-    builder.writeNumber(source.reserveYes);
-    builder.writeNumber(source.reserveNo);
-    builder.writeNumber(source.k);
-    builder.writeNumber(source.feeBps);
-    builder.writeAddress(source.oracleAddr);
-    builder.writeNumber(source.closeTimestamp);
-    builder.writeBoolean(source.resolved);
-    builder.writeBoolean(source.outcome);
-    builder.writeAddress(source.factory);
-    builder.writeNumber(source.marketId);
-    builder.writeString(source.question);
-    builder.writeString(source.clarification);
-    return builder.build();
-}
-
-export function dictValueParserMarketState(): DictionaryValue<MarketState> {
-    return {
-        serialize: (src, builder) => {
-            builder.storeRef(beginCell().store(storeMarketState(src)).endCell());
-        },
-        parse: (src) => {
-            return loadMarketState(src.loadRef().beginParse());
-        }
-    }
-}
-
-export type YesNoBalances = {
-    $$type: 'YesNoBalances';
-    yes: bigint | null;
-    no: bigint | null;
-}
-
-export function storeYesNoBalances(src: YesNoBalances) {
-    return (builder: Builder) => {
-        const b_0 = builder;
-        if (src.yes !== null && src.yes !== undefined) { b_0.storeBit(true).storeInt(src.yes, 257); } else { b_0.storeBit(false); }
-        if (src.no !== null && src.no !== undefined) { b_0.storeBit(true).storeInt(src.no, 257); } else { b_0.storeBit(false); }
-    };
-}
-
-export function loadYesNoBalances(slice: Slice) {
-    const sc_0 = slice;
-    const _yes = sc_0.loadBit() ? sc_0.loadIntBig(257) : null;
-    const _no = sc_0.loadBit() ? sc_0.loadIntBig(257) : null;
-    return { $$type: 'YesNoBalances' as const, yes: _yes, no: _no };
-}
-
-export function loadTupleYesNoBalances(source: TupleReader) {
-    const _yes = source.readBigNumberOpt();
-    const _no = source.readBigNumberOpt();
-    return { $$type: 'YesNoBalances' as const, yes: _yes, no: _no };
-}
-
-export function loadGetterTupleYesNoBalances(source: TupleReader) {
-    const _yes = source.readBigNumberOpt();
-    const _no = source.readBigNumberOpt();
-    return { $$type: 'YesNoBalances' as const, yes: _yes, no: _no };
-}
-
-export function storeTupleYesNoBalances(source: YesNoBalances) {
-    const builder = new TupleBuilder();
-    builder.writeNumber(source.yes);
-    builder.writeNumber(source.no);
-    return builder.build();
-}
-
-export function dictValueParserYesNoBalances(): DictionaryValue<YesNoBalances> {
-    return {
-        serialize: (src, builder) => {
-            builder.storeRef(beginCell().store(storeYesNoBalances(src)).endCell());
-        },
-        parse: (src) => {
-            return loadYesNoBalances(src.loadRef().beginParse());
         }
     }
 }
@@ -1427,8 +1046,67 @@ export function dictValueParserRedeem(): DictionaryValue<Redeem> {
     }
 }
 
-export type BinaryMarket$Data = {
-    $$type: 'BinaryMarket$Data';
+export type EditMarketDetails = {
+    $$type: 'EditMarketDetails';
+    field: string;
+    newValue: string;
+    reason: string;
+}
+
+export function storeEditMarketDetails(src: EditMarketDetails) {
+    return (builder: Builder) => {
+        const b_0 = builder;
+        b_0.storeUint(2390919679, 32);
+        b_0.storeStringRefTail(src.field);
+        b_0.storeStringRefTail(src.newValue);
+        b_0.storeStringRefTail(src.reason);
+    };
+}
+
+export function loadEditMarketDetails(slice: Slice) {
+    const sc_0 = slice;
+    if (sc_0.loadUint(32) !== 2390919679) { throw Error('Invalid prefix'); }
+    const _field = sc_0.loadStringRefTail();
+    const _newValue = sc_0.loadStringRefTail();
+    const _reason = sc_0.loadStringRefTail();
+    return { $$type: 'EditMarketDetails' as const, field: _field, newValue: _newValue, reason: _reason };
+}
+
+export function loadTupleEditMarketDetails(source: TupleReader) {
+    const _field = source.readString();
+    const _newValue = source.readString();
+    const _reason = source.readString();
+    return { $$type: 'EditMarketDetails' as const, field: _field, newValue: _newValue, reason: _reason };
+}
+
+export function loadGetterTupleEditMarketDetails(source: TupleReader) {
+    const _field = source.readString();
+    const _newValue = source.readString();
+    const _reason = source.readString();
+    return { $$type: 'EditMarketDetails' as const, field: _field, newValue: _newValue, reason: _reason };
+}
+
+export function storeTupleEditMarketDetails(source: EditMarketDetails) {
+    const builder = new TupleBuilder();
+    builder.writeString(source.field);
+    builder.writeString(source.newValue);
+    builder.writeString(source.reason);
+    return builder.build();
+}
+
+export function dictValueParserEditMarketDetails(): DictionaryValue<EditMarketDetails> {
+    return {
+        serialize: (src, builder) => {
+            builder.storeRef(beginCell().store(storeEditMarketDetails(src)).endCell());
+        },
+        parse: (src) => {
+            return loadEditMarketDetails(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type MarketState = {
+    $$type: 'MarketState';
     reserveYes: bigint;
     reserveNo: bigint;
     k: bigint;
@@ -1439,15 +1117,20 @@ export type BinaryMarket$Data = {
     outcome: boolean | null;
     factory: Address;
     marketId: bigint;
+    marketType: string;
     question: string;
     clarification: string;
-    yesBalances: Dictionary<Address, bigint>;
-    noBalances: Dictionary<Address, bigint>;
-    winningTotalSupply: bigint;
-    winningPayoutPool: bigint;
+    version: bigint;
+    totalVolume: bigint;
+    yesVolume: bigint;
+    noVolume: bigint;
+    creator: Address | null;
+    createdBy: string | null;
+    askedBy: string | null;
+    bannerImage: string | null;
 }
 
-export function storeBinaryMarket$Data(src: BinaryMarket$Data) {
+export function storeMarketState(src: MarketState) {
     return (builder: Builder) => {
         const b_0 = builder;
         b_0.storeCoins(src.reserveYes);
@@ -1461,17 +1144,24 @@ export function storeBinaryMarket$Data(src: BinaryMarket$Data) {
         b_0.storeAddress(src.factory);
         const b_1 = new Builder();
         b_1.storeUint(src.marketId, 64);
+        b_1.storeStringRefTail(src.marketType);
         b_1.storeStringRefTail(src.question);
         b_1.storeStringRefTail(src.clarification);
-        b_1.storeDict(src.yesBalances, Dictionary.Keys.Address(), Dictionary.Values.BigVarUint(4));
-        b_1.storeDict(src.noBalances, Dictionary.Keys.Address(), Dictionary.Values.BigVarUint(4));
-        b_1.storeUint(src.winningTotalSupply, 64);
-        b_1.storeUint(src.winningPayoutPool, 64);
+        b_1.storeUint(src.version, 8);
+        b_1.storeInt(src.totalVolume, 257);
+        b_1.storeInt(src.yesVolume, 257);
+        b_1.storeInt(src.noVolume, 257);
+        const b_2 = new Builder();
+        b_2.storeAddress(src.creator);
+        if (src.createdBy !== null && src.createdBy !== undefined) { b_2.storeBit(true).storeStringRefTail(src.createdBy); } else { b_2.storeBit(false); }
+        if (src.askedBy !== null && src.askedBy !== undefined) { b_2.storeBit(true).storeStringRefTail(src.askedBy); } else { b_2.storeBit(false); }
+        if (src.bannerImage !== null && src.bannerImage !== undefined) { b_2.storeBit(true).storeStringRefTail(src.bannerImage); } else { b_2.storeBit(false); }
+        b_1.storeRef(b_2.endCell());
         b_0.storeRef(b_1.endCell());
     };
 }
 
-export function loadBinaryMarket$Data(slice: Slice) {
+export function loadMarketState(slice: Slice) {
     const sc_0 = slice;
     const _reserveYes = sc_0.loadCoins();
     const _reserveNo = sc_0.loadCoins();
@@ -1484,16 +1174,22 @@ export function loadBinaryMarket$Data(slice: Slice) {
     const _factory = sc_0.loadAddress();
     const sc_1 = sc_0.loadRef().beginParse();
     const _marketId = sc_1.loadUintBig(64);
+    const _marketType = sc_1.loadStringRefTail();
     const _question = sc_1.loadStringRefTail();
     const _clarification = sc_1.loadStringRefTail();
-    const _yesBalances = Dictionary.load(Dictionary.Keys.Address(), Dictionary.Values.BigVarUint(4), sc_1);
-    const _noBalances = Dictionary.load(Dictionary.Keys.Address(), Dictionary.Values.BigVarUint(4), sc_1);
-    const _winningTotalSupply = sc_1.loadUintBig(64);
-    const _winningPayoutPool = sc_1.loadUintBig(64);
-    return { $$type: 'BinaryMarket$Data' as const, reserveYes: _reserveYes, reserveNo: _reserveNo, k: _k, feeBps: _feeBps, oracleAddr: _oracleAddr, closeTimestamp: _closeTimestamp, resolved: _resolved, outcome: _outcome, factory: _factory, marketId: _marketId, question: _question, clarification: _clarification, yesBalances: _yesBalances, noBalances: _noBalances, winningTotalSupply: _winningTotalSupply, winningPayoutPool: _winningPayoutPool };
+    const _version = sc_1.loadUintBig(8);
+    const _totalVolume = sc_1.loadIntBig(257);
+    const _yesVolume = sc_1.loadIntBig(257);
+    const _noVolume = sc_1.loadIntBig(257);
+    const sc_2 = sc_1.loadRef().beginParse();
+    const _creator = sc_2.loadMaybeAddress();
+    const _createdBy = sc_2.loadBit() ? sc_2.loadStringRefTail() : null;
+    const _askedBy = sc_2.loadBit() ? sc_2.loadStringRefTail() : null;
+    const _bannerImage = sc_2.loadBit() ? sc_2.loadStringRefTail() : null;
+    return { $$type: 'MarketState' as const, reserveYes: _reserveYes, reserveNo: _reserveNo, k: _k, feeBps: _feeBps, oracleAddr: _oracleAddr, closeTimestamp: _closeTimestamp, resolved: _resolved, outcome: _outcome, factory: _factory, marketId: _marketId, marketType: _marketType, question: _question, clarification: _clarification, version: _version, totalVolume: _totalVolume, yesVolume: _yesVolume, noVolume: _noVolume, creator: _creator, createdBy: _createdBy, askedBy: _askedBy, bannerImage: _bannerImage };
 }
 
-export function loadTupleBinaryMarket$Data(source: TupleReader) {
+export function loadTupleMarketState(source: TupleReader) {
     const _reserveYes = source.readBigNumber();
     const _reserveNo = source.readBigNumber();
     const _k = source.readBigNumber();
@@ -1504,17 +1200,22 @@ export function loadTupleBinaryMarket$Data(source: TupleReader) {
     const _outcome = source.readBooleanOpt();
     const _factory = source.readAddress();
     const _marketId = source.readBigNumber();
+    const _marketType = source.readString();
     const _question = source.readString();
     const _clarification = source.readString();
-    const _yesBalances = Dictionary.loadDirect(Dictionary.Keys.Address(), Dictionary.Values.BigVarUint(4), source.readCellOpt());
-    const _noBalances = Dictionary.loadDirect(Dictionary.Keys.Address(), Dictionary.Values.BigVarUint(4), source.readCellOpt());
+    const _version = source.readBigNumber();
     source = source.readTuple();
-    const _winningTotalSupply = source.readBigNumber();
-    const _winningPayoutPool = source.readBigNumber();
-    return { $$type: 'BinaryMarket$Data' as const, reserveYes: _reserveYes, reserveNo: _reserveNo, k: _k, feeBps: _feeBps, oracleAddr: _oracleAddr, closeTimestamp: _closeTimestamp, resolved: _resolved, outcome: _outcome, factory: _factory, marketId: _marketId, question: _question, clarification: _clarification, yesBalances: _yesBalances, noBalances: _noBalances, winningTotalSupply: _winningTotalSupply, winningPayoutPool: _winningPayoutPool };
+    const _totalVolume = source.readBigNumber();
+    const _yesVolume = source.readBigNumber();
+    const _noVolume = source.readBigNumber();
+    const _creator = source.readAddressOpt();
+    const _createdBy = source.readStringOpt();
+    const _askedBy = source.readStringOpt();
+    const _bannerImage = source.readStringOpt();
+    return { $$type: 'MarketState' as const, reserveYes: _reserveYes, reserveNo: _reserveNo, k: _k, feeBps: _feeBps, oracleAddr: _oracleAddr, closeTimestamp: _closeTimestamp, resolved: _resolved, outcome: _outcome, factory: _factory, marketId: _marketId, marketType: _marketType, question: _question, clarification: _clarification, version: _version, totalVolume: _totalVolume, yesVolume: _yesVolume, noVolume: _noVolume, creator: _creator, createdBy: _createdBy, askedBy: _askedBy, bannerImage: _bannerImage };
 }
 
-export function loadGetterTupleBinaryMarket$Data(source: TupleReader) {
+export function loadGetterTupleMarketState(source: TupleReader) {
     const _reserveYes = source.readBigNumber();
     const _reserveNo = source.readBigNumber();
     const _k = source.readBigNumber();
@@ -1525,16 +1226,21 @@ export function loadGetterTupleBinaryMarket$Data(source: TupleReader) {
     const _outcome = source.readBooleanOpt();
     const _factory = source.readAddress();
     const _marketId = source.readBigNumber();
+    const _marketType = source.readString();
     const _question = source.readString();
     const _clarification = source.readString();
-    const _yesBalances = Dictionary.loadDirect(Dictionary.Keys.Address(), Dictionary.Values.BigVarUint(4), source.readCellOpt());
-    const _noBalances = Dictionary.loadDirect(Dictionary.Keys.Address(), Dictionary.Values.BigVarUint(4), source.readCellOpt());
-    const _winningTotalSupply = source.readBigNumber();
-    const _winningPayoutPool = source.readBigNumber();
-    return { $$type: 'BinaryMarket$Data' as const, reserveYes: _reserveYes, reserveNo: _reserveNo, k: _k, feeBps: _feeBps, oracleAddr: _oracleAddr, closeTimestamp: _closeTimestamp, resolved: _resolved, outcome: _outcome, factory: _factory, marketId: _marketId, question: _question, clarification: _clarification, yesBalances: _yesBalances, noBalances: _noBalances, winningTotalSupply: _winningTotalSupply, winningPayoutPool: _winningPayoutPool };
+    const _version = source.readBigNumber();
+    const _totalVolume = source.readBigNumber();
+    const _yesVolume = source.readBigNumber();
+    const _noVolume = source.readBigNumber();
+    const _creator = source.readAddressOpt();
+    const _createdBy = source.readStringOpt();
+    const _askedBy = source.readStringOpt();
+    const _bannerImage = source.readStringOpt();
+    return { $$type: 'MarketState' as const, reserveYes: _reserveYes, reserveNo: _reserveNo, k: _k, feeBps: _feeBps, oracleAddr: _oracleAddr, closeTimestamp: _closeTimestamp, resolved: _resolved, outcome: _outcome, factory: _factory, marketId: _marketId, marketType: _marketType, question: _question, clarification: _clarification, version: _version, totalVolume: _totalVolume, yesVolume: _yesVolume, noVolume: _noVolume, creator: _creator, createdBy: _createdBy, askedBy: _askedBy, bannerImage: _bannerImage };
 }
 
-export function storeTupleBinaryMarket$Data(source: BinaryMarket$Data) {
+export function storeTupleMarketState(source: MarketState) {
     const builder = new TupleBuilder();
     builder.writeNumber(source.reserveYes);
     builder.writeNumber(source.reserveNo);
@@ -1546,12 +1252,409 @@ export function storeTupleBinaryMarket$Data(source: BinaryMarket$Data) {
     builder.writeBoolean(source.outcome);
     builder.writeAddress(source.factory);
     builder.writeNumber(source.marketId);
+    builder.writeString(source.marketType);
     builder.writeString(source.question);
     builder.writeString(source.clarification);
+    builder.writeNumber(source.version);
+    builder.writeNumber(source.totalVolume);
+    builder.writeNumber(source.yesVolume);
+    builder.writeNumber(source.noVolume);
+    builder.writeAddress(source.creator);
+    builder.writeString(source.createdBy);
+    builder.writeString(source.askedBy);
+    builder.writeString(source.bannerImage);
+    return builder.build();
+}
+
+export function dictValueParserMarketState(): DictionaryValue<MarketState> {
+    return {
+        serialize: (src, builder) => {
+            builder.storeRef(beginCell().store(storeMarketState(src)).endCell());
+        },
+        parse: (src) => {
+            return loadMarketState(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type YesNoBalances = {
+    $$type: 'YesNoBalances';
+    yes: bigint | null;
+    no: bigint | null;
+}
+
+export function storeYesNoBalances(src: YesNoBalances) {
+    return (builder: Builder) => {
+        const b_0 = builder;
+        if (src.yes !== null && src.yes !== undefined) { b_0.storeBit(true).storeInt(src.yes, 257); } else { b_0.storeBit(false); }
+        if (src.no !== null && src.no !== undefined) { b_0.storeBit(true).storeInt(src.no, 257); } else { b_0.storeBit(false); }
+    };
+}
+
+export function loadYesNoBalances(slice: Slice) {
+    const sc_0 = slice;
+    const _yes = sc_0.loadBit() ? sc_0.loadIntBig(257) : null;
+    const _no = sc_0.loadBit() ? sc_0.loadIntBig(257) : null;
+    return { $$type: 'YesNoBalances' as const, yes: _yes, no: _no };
+}
+
+export function loadTupleYesNoBalances(source: TupleReader) {
+    const _yes = source.readBigNumberOpt();
+    const _no = source.readBigNumberOpt();
+    return { $$type: 'YesNoBalances' as const, yes: _yes, no: _no };
+}
+
+export function loadGetterTupleYesNoBalances(source: TupleReader) {
+    const _yes = source.readBigNumberOpt();
+    const _no = source.readBigNumberOpt();
+    return { $$type: 'YesNoBalances' as const, yes: _yes, no: _no };
+}
+
+export function storeTupleYesNoBalances(source: YesNoBalances) {
+    const builder = new TupleBuilder();
+    builder.writeNumber(source.yes);
+    builder.writeNumber(source.no);
+    return builder.build();
+}
+
+export function dictValueParserYesNoBalances(): DictionaryValue<YesNoBalances> {
+    return {
+        serialize: (src, builder) => {
+            builder.storeRef(beginCell().store(storeYesNoBalances(src)).endCell());
+        },
+        parse: (src) => {
+            return loadYesNoBalances(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type Probabilities = {
+    $$type: 'Probabilities';
+    yes: bigint;
+    no: bigint;
+}
+
+export function storeProbabilities(src: Probabilities) {
+    return (builder: Builder) => {
+        const b_0 = builder;
+        b_0.storeInt(src.yes, 257);
+        b_0.storeInt(src.no, 257);
+    };
+}
+
+export function loadProbabilities(slice: Slice) {
+    const sc_0 = slice;
+    const _yes = sc_0.loadIntBig(257);
+    const _no = sc_0.loadIntBig(257);
+    return { $$type: 'Probabilities' as const, yes: _yes, no: _no };
+}
+
+export function loadTupleProbabilities(source: TupleReader) {
+    const _yes = source.readBigNumber();
+    const _no = source.readBigNumber();
+    return { $$type: 'Probabilities' as const, yes: _yes, no: _no };
+}
+
+export function loadGetterTupleProbabilities(source: TupleReader) {
+    const _yes = source.readBigNumber();
+    const _no = source.readBigNumber();
+    return { $$type: 'Probabilities' as const, yes: _yes, no: _no };
+}
+
+export function storeTupleProbabilities(source: Probabilities) {
+    const builder = new TupleBuilder();
+    builder.writeNumber(source.yes);
+    builder.writeNumber(source.no);
+    return builder.build();
+}
+
+export function dictValueParserProbabilities(): DictionaryValue<Probabilities> {
+    return {
+        serialize: (src, builder) => {
+            builder.storeRef(beginCell().store(storeProbabilities(src)).endCell());
+        },
+        parse: (src) => {
+            return loadProbabilities(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type MarketVolume = {
+    $$type: 'MarketVolume';
+    totalVolume: bigint;
+    yesVolume: bigint;
+    noVolume: bigint;
+}
+
+export function storeMarketVolume(src: MarketVolume) {
+    return (builder: Builder) => {
+        const b_0 = builder;
+        b_0.storeInt(src.totalVolume, 257);
+        b_0.storeInt(src.yesVolume, 257);
+        b_0.storeInt(src.noVolume, 257);
+    };
+}
+
+export function loadMarketVolume(slice: Slice) {
+    const sc_0 = slice;
+    const _totalVolume = sc_0.loadIntBig(257);
+    const _yesVolume = sc_0.loadIntBig(257);
+    const _noVolume = sc_0.loadIntBig(257);
+    return { $$type: 'MarketVolume' as const, totalVolume: _totalVolume, yesVolume: _yesVolume, noVolume: _noVolume };
+}
+
+export function loadTupleMarketVolume(source: TupleReader) {
+    const _totalVolume = source.readBigNumber();
+    const _yesVolume = source.readBigNumber();
+    const _noVolume = source.readBigNumber();
+    return { $$type: 'MarketVolume' as const, totalVolume: _totalVolume, yesVolume: _yesVolume, noVolume: _noVolume };
+}
+
+export function loadGetterTupleMarketVolume(source: TupleReader) {
+    const _totalVolume = source.readBigNumber();
+    const _yesVolume = source.readBigNumber();
+    const _noVolume = source.readBigNumber();
+    return { $$type: 'MarketVolume' as const, totalVolume: _totalVolume, yesVolume: _yesVolume, noVolume: _noVolume };
+}
+
+export function storeTupleMarketVolume(source: MarketVolume) {
+    const builder = new TupleBuilder();
+    builder.writeNumber(source.totalVolume);
+    builder.writeNumber(source.yesVolume);
+    builder.writeNumber(source.noVolume);
+    return builder.build();
+}
+
+export function dictValueParserMarketVolume(): DictionaryValue<MarketVolume> {
+    return {
+        serialize: (src, builder) => {
+            builder.storeRef(beginCell().store(storeMarketVolume(src)).endCell());
+        },
+        parse: (src) => {
+            return loadMarketVolume(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type BinaryMarket$Data = {
+    $$type: 'BinaryMarket$Data';
+    reserveYes: bigint;
+    reserveNo: bigint;
+    k: bigint;
+    feeBps: bigint;
+    collectedFees: bigint;
+    oracleAddr: Address;
+    closeTimestamp: bigint;
+    resolved: boolean;
+    outcome: boolean | null;
+    factory: Address;
+    marketId: bigint;
+    marketType: string;
+    question: string;
+    clarification: string;
+    version: bigint;
+    editHistory: Dictionary<number, EditLog>;
+    creator: Address | null;
+    createdBy: string | null;
+    askedBy: string | null;
+    bannerImage: string | null;
+    lastActive: bigint | null;
+    yesBalances: Dictionary<Address, bigint>;
+    noBalances: Dictionary<Address, bigint>;
+    winningTotalSupply: bigint;
+    winningPayoutPool: bigint;
+    totalVolume: bigint;
+    yesVolume: bigint;
+    noVolume: bigint;
+    nextActionId: bigint;
+    marketHistory: Dictionary<bigint, MarketHistory>;
+}
+
+export function storeBinaryMarket$Data(src: BinaryMarket$Data) {
+    return (builder: Builder) => {
+        const b_0 = builder;
+        b_0.storeCoins(src.reserveYes);
+        b_0.storeCoins(src.reserveNo);
+        b_0.storeCoins(src.k);
+        b_0.storeUint(src.feeBps, 16);
+        b_0.storeInt(src.collectedFees, 257);
+        b_0.storeAddress(src.oracleAddr);
+        b_0.storeUint(src.closeTimestamp, 64);
+        b_0.storeBit(src.resolved);
+        if (src.outcome !== null && src.outcome !== undefined) { b_0.storeBit(true).storeBit(src.outcome); } else { b_0.storeBit(false); }
+        const b_1 = new Builder();
+        b_1.storeAddress(src.factory);
+        b_1.storeUint(src.marketId, 64);
+        b_1.storeStringRefTail(src.marketType);
+        b_1.storeStringRefTail(src.question);
+        b_1.storeStringRefTail(src.clarification);
+        b_1.storeInt(src.version, 257);
+        const b_2 = new Builder();
+        b_2.storeDict(src.editHistory, Dictionary.Keys.Uint(8), dictValueParserEditLog());
+        b_2.storeAddress(src.creator);
+        if (src.createdBy !== null && src.createdBy !== undefined) { b_2.storeBit(true).storeStringRefTail(src.createdBy); } else { b_2.storeBit(false); }
+        if (src.askedBy !== null && src.askedBy !== undefined) { b_2.storeBit(true).storeStringRefTail(src.askedBy); } else { b_2.storeBit(false); }
+        const b_3 = new Builder();
+        if (src.bannerImage !== null && src.bannerImage !== undefined) { b_3.storeBit(true).storeStringRefTail(src.bannerImage); } else { b_3.storeBit(false); }
+        if (src.lastActive !== null && src.lastActive !== undefined) { b_3.storeBit(true).storeInt(src.lastActive, 257); } else { b_3.storeBit(false); }
+        b_3.storeDict(src.yesBalances, Dictionary.Keys.Address(), Dictionary.Values.BigVarUint(4));
+        b_3.storeDict(src.noBalances, Dictionary.Keys.Address(), Dictionary.Values.BigVarUint(4));
+        b_3.storeUint(src.winningTotalSupply, 64);
+        b_3.storeUint(src.winningPayoutPool, 64);
+        b_3.storeInt(src.totalVolume, 257);
+        b_3.storeInt(src.yesVolume, 257);
+        const b_4 = new Builder();
+        b_4.storeInt(src.noVolume, 257);
+        b_4.storeInt(src.nextActionId, 257);
+        b_4.storeDict(src.marketHistory, Dictionary.Keys.BigInt(257), dictValueParserMarketHistory());
+        b_3.storeRef(b_4.endCell());
+        b_2.storeRef(b_3.endCell());
+        b_1.storeRef(b_2.endCell());
+        b_0.storeRef(b_1.endCell());
+    };
+}
+
+export function loadBinaryMarket$Data(slice: Slice) {
+    const sc_0 = slice;
+    const _reserveYes = sc_0.loadCoins();
+    const _reserveNo = sc_0.loadCoins();
+    const _k = sc_0.loadCoins();
+    const _feeBps = sc_0.loadUintBig(16);
+    const _collectedFees = sc_0.loadIntBig(257);
+    const _oracleAddr = sc_0.loadAddress();
+    const _closeTimestamp = sc_0.loadUintBig(64);
+    const _resolved = sc_0.loadBit();
+    const _outcome = sc_0.loadBit() ? sc_0.loadBit() : null;
+    const sc_1 = sc_0.loadRef().beginParse();
+    const _factory = sc_1.loadAddress();
+    const _marketId = sc_1.loadUintBig(64);
+    const _marketType = sc_1.loadStringRefTail();
+    const _question = sc_1.loadStringRefTail();
+    const _clarification = sc_1.loadStringRefTail();
+    const _version = sc_1.loadIntBig(257);
+    const sc_2 = sc_1.loadRef().beginParse();
+    const _editHistory = Dictionary.load(Dictionary.Keys.Uint(8), dictValueParserEditLog(), sc_2);
+    const _creator = sc_2.loadMaybeAddress();
+    const _createdBy = sc_2.loadBit() ? sc_2.loadStringRefTail() : null;
+    const _askedBy = sc_2.loadBit() ? sc_2.loadStringRefTail() : null;
+    const sc_3 = sc_2.loadRef().beginParse();
+    const _bannerImage = sc_3.loadBit() ? sc_3.loadStringRefTail() : null;
+    const _lastActive = sc_3.loadBit() ? sc_3.loadIntBig(257) : null;
+    const _yesBalances = Dictionary.load(Dictionary.Keys.Address(), Dictionary.Values.BigVarUint(4), sc_3);
+    const _noBalances = Dictionary.load(Dictionary.Keys.Address(), Dictionary.Values.BigVarUint(4), sc_3);
+    const _winningTotalSupply = sc_3.loadUintBig(64);
+    const _winningPayoutPool = sc_3.loadUintBig(64);
+    const _totalVolume = sc_3.loadIntBig(257);
+    const _yesVolume = sc_3.loadIntBig(257);
+    const sc_4 = sc_3.loadRef().beginParse();
+    const _noVolume = sc_4.loadIntBig(257);
+    const _nextActionId = sc_4.loadIntBig(257);
+    const _marketHistory = Dictionary.load(Dictionary.Keys.BigInt(257), dictValueParserMarketHistory(), sc_4);
+    return { $$type: 'BinaryMarket$Data' as const, reserveYes: _reserveYes, reserveNo: _reserveNo, k: _k, feeBps: _feeBps, collectedFees: _collectedFees, oracleAddr: _oracleAddr, closeTimestamp: _closeTimestamp, resolved: _resolved, outcome: _outcome, factory: _factory, marketId: _marketId, marketType: _marketType, question: _question, clarification: _clarification, version: _version, editHistory: _editHistory, creator: _creator, createdBy: _createdBy, askedBy: _askedBy, bannerImage: _bannerImage, lastActive: _lastActive, yesBalances: _yesBalances, noBalances: _noBalances, winningTotalSupply: _winningTotalSupply, winningPayoutPool: _winningPayoutPool, totalVolume: _totalVolume, yesVolume: _yesVolume, noVolume: _noVolume, nextActionId: _nextActionId, marketHistory: _marketHistory };
+}
+
+export function loadTupleBinaryMarket$Data(source: TupleReader) {
+    const _reserveYes = source.readBigNumber();
+    const _reserveNo = source.readBigNumber();
+    const _k = source.readBigNumber();
+    const _feeBps = source.readBigNumber();
+    const _collectedFees = source.readBigNumber();
+    const _oracleAddr = source.readAddress();
+    const _closeTimestamp = source.readBigNumber();
+    const _resolved = source.readBoolean();
+    const _outcome = source.readBooleanOpt();
+    const _factory = source.readAddress();
+    const _marketId = source.readBigNumber();
+    const _marketType = source.readString();
+    const _question = source.readString();
+    const _clarification = source.readString();
+    source = source.readTuple();
+    const _version = source.readBigNumber();
+    const _editHistory = Dictionary.loadDirect(Dictionary.Keys.Uint(8), dictValueParserEditLog(), source.readCellOpt());
+    const _creator = source.readAddressOpt();
+    const _createdBy = source.readStringOpt();
+    const _askedBy = source.readStringOpt();
+    const _bannerImage = source.readStringOpt();
+    const _lastActive = source.readBigNumberOpt();
+    const _yesBalances = Dictionary.loadDirect(Dictionary.Keys.Address(), Dictionary.Values.BigVarUint(4), source.readCellOpt());
+    const _noBalances = Dictionary.loadDirect(Dictionary.Keys.Address(), Dictionary.Values.BigVarUint(4), source.readCellOpt());
+    const _winningTotalSupply = source.readBigNumber();
+    const _winningPayoutPool = source.readBigNumber();
+    const _totalVolume = source.readBigNumber();
+    const _yesVolume = source.readBigNumber();
+    const _noVolume = source.readBigNumber();
+    source = source.readTuple();
+    const _nextActionId = source.readBigNumber();
+    const _marketHistory = Dictionary.loadDirect(Dictionary.Keys.BigInt(257), dictValueParserMarketHistory(), source.readCellOpt());
+    return { $$type: 'BinaryMarket$Data' as const, reserveYes: _reserveYes, reserveNo: _reserveNo, k: _k, feeBps: _feeBps, collectedFees: _collectedFees, oracleAddr: _oracleAddr, closeTimestamp: _closeTimestamp, resolved: _resolved, outcome: _outcome, factory: _factory, marketId: _marketId, marketType: _marketType, question: _question, clarification: _clarification, version: _version, editHistory: _editHistory, creator: _creator, createdBy: _createdBy, askedBy: _askedBy, bannerImage: _bannerImage, lastActive: _lastActive, yesBalances: _yesBalances, noBalances: _noBalances, winningTotalSupply: _winningTotalSupply, winningPayoutPool: _winningPayoutPool, totalVolume: _totalVolume, yesVolume: _yesVolume, noVolume: _noVolume, nextActionId: _nextActionId, marketHistory: _marketHistory };
+}
+
+export function loadGetterTupleBinaryMarket$Data(source: TupleReader) {
+    const _reserveYes = source.readBigNumber();
+    const _reserveNo = source.readBigNumber();
+    const _k = source.readBigNumber();
+    const _feeBps = source.readBigNumber();
+    const _collectedFees = source.readBigNumber();
+    const _oracleAddr = source.readAddress();
+    const _closeTimestamp = source.readBigNumber();
+    const _resolved = source.readBoolean();
+    const _outcome = source.readBooleanOpt();
+    const _factory = source.readAddress();
+    const _marketId = source.readBigNumber();
+    const _marketType = source.readString();
+    const _question = source.readString();
+    const _clarification = source.readString();
+    const _version = source.readBigNumber();
+    const _editHistory = Dictionary.loadDirect(Dictionary.Keys.Uint(8), dictValueParserEditLog(), source.readCellOpt());
+    const _creator = source.readAddressOpt();
+    const _createdBy = source.readStringOpt();
+    const _askedBy = source.readStringOpt();
+    const _bannerImage = source.readStringOpt();
+    const _lastActive = source.readBigNumberOpt();
+    const _yesBalances = Dictionary.loadDirect(Dictionary.Keys.Address(), Dictionary.Values.BigVarUint(4), source.readCellOpt());
+    const _noBalances = Dictionary.loadDirect(Dictionary.Keys.Address(), Dictionary.Values.BigVarUint(4), source.readCellOpt());
+    const _winningTotalSupply = source.readBigNumber();
+    const _winningPayoutPool = source.readBigNumber();
+    const _totalVolume = source.readBigNumber();
+    const _yesVolume = source.readBigNumber();
+    const _noVolume = source.readBigNumber();
+    const _nextActionId = source.readBigNumber();
+    const _marketHistory = Dictionary.loadDirect(Dictionary.Keys.BigInt(257), dictValueParserMarketHistory(), source.readCellOpt());
+    return { $$type: 'BinaryMarket$Data' as const, reserveYes: _reserveYes, reserveNo: _reserveNo, k: _k, feeBps: _feeBps, collectedFees: _collectedFees, oracleAddr: _oracleAddr, closeTimestamp: _closeTimestamp, resolved: _resolved, outcome: _outcome, factory: _factory, marketId: _marketId, marketType: _marketType, question: _question, clarification: _clarification, version: _version, editHistory: _editHistory, creator: _creator, createdBy: _createdBy, askedBy: _askedBy, bannerImage: _bannerImage, lastActive: _lastActive, yesBalances: _yesBalances, noBalances: _noBalances, winningTotalSupply: _winningTotalSupply, winningPayoutPool: _winningPayoutPool, totalVolume: _totalVolume, yesVolume: _yesVolume, noVolume: _noVolume, nextActionId: _nextActionId, marketHistory: _marketHistory };
+}
+
+export function storeTupleBinaryMarket$Data(source: BinaryMarket$Data) {
+    const builder = new TupleBuilder();
+    builder.writeNumber(source.reserveYes);
+    builder.writeNumber(source.reserveNo);
+    builder.writeNumber(source.k);
+    builder.writeNumber(source.feeBps);
+    builder.writeNumber(source.collectedFees);
+    builder.writeAddress(source.oracleAddr);
+    builder.writeNumber(source.closeTimestamp);
+    builder.writeBoolean(source.resolved);
+    builder.writeBoolean(source.outcome);
+    builder.writeAddress(source.factory);
+    builder.writeNumber(source.marketId);
+    builder.writeString(source.marketType);
+    builder.writeString(source.question);
+    builder.writeString(source.clarification);
+    builder.writeNumber(source.version);
+    builder.writeCell(source.editHistory.size > 0 ? beginCell().storeDictDirect(source.editHistory, Dictionary.Keys.Uint(8), dictValueParserEditLog()).endCell() : null);
+    builder.writeAddress(source.creator);
+    builder.writeString(source.createdBy);
+    builder.writeString(source.askedBy);
+    builder.writeString(source.bannerImage);
+    builder.writeNumber(source.lastActive);
     builder.writeCell(source.yesBalances.size > 0 ? beginCell().storeDictDirect(source.yesBalances, Dictionary.Keys.Address(), Dictionary.Values.BigVarUint(4)).endCell() : null);
     builder.writeCell(source.noBalances.size > 0 ? beginCell().storeDictDirect(source.noBalances, Dictionary.Keys.Address(), Dictionary.Values.BigVarUint(4)).endCell() : null);
     builder.writeNumber(source.winningTotalSupply);
     builder.writeNumber(source.winningPayoutPool);
+    builder.writeNumber(source.totalVolume);
+    builder.writeNumber(source.yesVolume);
+    builder.writeNumber(source.noVolume);
+    builder.writeNumber(source.nextActionId);
+    builder.writeCell(source.marketHistory.size > 0 ? beginCell().storeDictDirect(source.marketHistory, Dictionary.Keys.BigInt(257), dictValueParserMarketHistory()).endCell() : null);
     return builder.build();
 }
 
@@ -1562,6 +1665,255 @@ export function dictValueParserBinaryMarket$Data(): DictionaryValue<BinaryMarket
         },
         parse: (src) => {
             return loadBinaryMarket$Data(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type MarketInit = {
+    $$type: 'MarketInit';
+    factory: Address;
+    marketId: bigint;
+}
+
+export function storeMarketInit(src: MarketInit) {
+    return (builder: Builder) => {
+        const b_0 = builder;
+        b_0.storeAddress(src.factory);
+        b_0.storeUint(src.marketId, 64);
+    };
+}
+
+export function loadMarketInit(slice: Slice) {
+    const sc_0 = slice;
+    const _factory = sc_0.loadAddress();
+    const _marketId = sc_0.loadUintBig(64);
+    return { $$type: 'MarketInit' as const, factory: _factory, marketId: _marketId };
+}
+
+export function loadTupleMarketInit(source: TupleReader) {
+    const _factory = source.readAddress();
+    const _marketId = source.readBigNumber();
+    return { $$type: 'MarketInit' as const, factory: _factory, marketId: _marketId };
+}
+
+export function loadGetterTupleMarketInit(source: TupleReader) {
+    const _factory = source.readAddress();
+    const _marketId = source.readBigNumber();
+    return { $$type: 'MarketInit' as const, factory: _factory, marketId: _marketId };
+}
+
+export function storeTupleMarketInit(source: MarketInit) {
+    const builder = new TupleBuilder();
+    builder.writeAddress(source.factory);
+    builder.writeNumber(source.marketId);
+    return builder.build();
+}
+
+export function dictValueParserMarketInit(): DictionaryValue<MarketInit> {
+    return {
+        serialize: (src, builder) => {
+            builder.storeRef(beginCell().store(storeMarketInit(src)).endCell());
+        },
+        parse: (src) => {
+            return loadMarketInit(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type Factory$Data = {
+    $$type: 'Factory$Data';
+    nextMarketId: bigint;
+}
+
+export function storeFactory$Data(src: Factory$Data) {
+    return (builder: Builder) => {
+        const b_0 = builder;
+        b_0.storeUint(src.nextMarketId, 64);
+    };
+}
+
+export function loadFactory$Data(slice: Slice) {
+    const sc_0 = slice;
+    const _nextMarketId = sc_0.loadUintBig(64);
+    return { $$type: 'Factory$Data' as const, nextMarketId: _nextMarketId };
+}
+
+export function loadTupleFactory$Data(source: TupleReader) {
+    const _nextMarketId = source.readBigNumber();
+    return { $$type: 'Factory$Data' as const, nextMarketId: _nextMarketId };
+}
+
+export function loadGetterTupleFactory$Data(source: TupleReader) {
+    const _nextMarketId = source.readBigNumber();
+    return { $$type: 'Factory$Data' as const, nextMarketId: _nextMarketId };
+}
+
+export function storeTupleFactory$Data(source: Factory$Data) {
+    const builder = new TupleBuilder();
+    builder.writeNumber(source.nextMarketId);
+    return builder.build();
+}
+
+export function dictValueParserFactory$Data(): DictionaryValue<Factory$Data> {
+    return {
+        serialize: (src, builder) => {
+            builder.storeRef(beginCell().store(storeFactory$Data(src)).endCell());
+        },
+        parse: (src) => {
+            return loadFactory$Data(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type MarketHistory = {
+    $$type: 'MarketHistory';
+    timestamp: bigint;
+    price: bigint;
+    action: boolean;
+    outcome: bigint;
+    address: Address;
+}
+
+export function storeMarketHistory(src: MarketHistory) {
+    return (builder: Builder) => {
+        const b_0 = builder;
+        b_0.storeInt(src.timestamp, 257);
+        b_0.storeInt(src.price, 257);
+        b_0.storeBit(src.action);
+        b_0.storeUint(src.outcome, 8);
+        b_0.storeAddress(src.address);
+    };
+}
+
+export function loadMarketHistory(slice: Slice) {
+    const sc_0 = slice;
+    const _timestamp = sc_0.loadIntBig(257);
+    const _price = sc_0.loadIntBig(257);
+    const _action = sc_0.loadBit();
+    const _outcome = sc_0.loadUintBig(8);
+    const _address = sc_0.loadAddress();
+    return { $$type: 'MarketHistory' as const, timestamp: _timestamp, price: _price, action: _action, outcome: _outcome, address: _address };
+}
+
+export function loadTupleMarketHistory(source: TupleReader) {
+    const _timestamp = source.readBigNumber();
+    const _price = source.readBigNumber();
+    const _action = source.readBoolean();
+    const _outcome = source.readBigNumber();
+    const _address = source.readAddress();
+    return { $$type: 'MarketHistory' as const, timestamp: _timestamp, price: _price, action: _action, outcome: _outcome, address: _address };
+}
+
+export function loadGetterTupleMarketHistory(source: TupleReader) {
+    const _timestamp = source.readBigNumber();
+    const _price = source.readBigNumber();
+    const _action = source.readBoolean();
+    const _outcome = source.readBigNumber();
+    const _address = source.readAddress();
+    return { $$type: 'MarketHistory' as const, timestamp: _timestamp, price: _price, action: _action, outcome: _outcome, address: _address };
+}
+
+export function storeTupleMarketHistory(source: MarketHistory) {
+    const builder = new TupleBuilder();
+    builder.writeNumber(source.timestamp);
+    builder.writeNumber(source.price);
+    builder.writeBoolean(source.action);
+    builder.writeNumber(source.outcome);
+    builder.writeAddress(source.address);
+    return builder.build();
+}
+
+export function dictValueParserMarketHistory(): DictionaryValue<MarketHistory> {
+    return {
+        serialize: (src, builder) => {
+            builder.storeRef(beginCell().store(storeMarketHistory(src)).endCell());
+        },
+        parse: (src) => {
+            return loadMarketHistory(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type EditLog = {
+    $$type: 'EditLog';
+    version: bigint;
+    editor: Address;
+    field: string;
+    oldValue: string;
+    newValue: string;
+    reason: string;
+    timestamp: bigint;
+}
+
+export function storeEditLog(src: EditLog) {
+    return (builder: Builder) => {
+        const b_0 = builder;
+        b_0.storeUint(src.version, 8);
+        b_0.storeAddress(src.editor);
+        b_0.storeStringRefTail(src.field);
+        b_0.storeStringRefTail(src.oldValue);
+        const b_1 = new Builder();
+        b_1.storeStringRefTail(src.newValue);
+        b_1.storeStringRefTail(src.reason);
+        b_1.storeUint(src.timestamp, 64);
+        b_0.storeRef(b_1.endCell());
+    };
+}
+
+export function loadEditLog(slice: Slice) {
+    const sc_0 = slice;
+    const _version = sc_0.loadUintBig(8);
+    const _editor = sc_0.loadAddress();
+    const _field = sc_0.loadStringRefTail();
+    const _oldValue = sc_0.loadStringRefTail();
+    const sc_1 = sc_0.loadRef().beginParse();
+    const _newValue = sc_1.loadStringRefTail();
+    const _reason = sc_1.loadStringRefTail();
+    const _timestamp = sc_1.loadUintBig(64);
+    return { $$type: 'EditLog' as const, version: _version, editor: _editor, field: _field, oldValue: _oldValue, newValue: _newValue, reason: _reason, timestamp: _timestamp };
+}
+
+export function loadTupleEditLog(source: TupleReader) {
+    const _version = source.readBigNumber();
+    const _editor = source.readAddress();
+    const _field = source.readString();
+    const _oldValue = source.readString();
+    const _newValue = source.readString();
+    const _reason = source.readString();
+    const _timestamp = source.readBigNumber();
+    return { $$type: 'EditLog' as const, version: _version, editor: _editor, field: _field, oldValue: _oldValue, newValue: _newValue, reason: _reason, timestamp: _timestamp };
+}
+
+export function loadGetterTupleEditLog(source: TupleReader) {
+    const _version = source.readBigNumber();
+    const _editor = source.readAddress();
+    const _field = source.readString();
+    const _oldValue = source.readString();
+    const _newValue = source.readString();
+    const _reason = source.readString();
+    const _timestamp = source.readBigNumber();
+    return { $$type: 'EditLog' as const, version: _version, editor: _editor, field: _field, oldValue: _oldValue, newValue: _newValue, reason: _reason, timestamp: _timestamp };
+}
+
+export function storeTupleEditLog(source: EditLog) {
+    const builder = new TupleBuilder();
+    builder.writeNumber(source.version);
+    builder.writeAddress(source.editor);
+    builder.writeString(source.field);
+    builder.writeString(source.oldValue);
+    builder.writeString(source.newValue);
+    builder.writeString(source.reason);
+    builder.writeNumber(source.timestamp);
+    return builder.build();
+}
+
+export function dictValueParserEditLog(): DictionaryValue<EditLog> {
+    return {
+        serialize: (src, builder) => {
+            builder.storeRef(beginCell().store(storeEditLog(src)).endCell());
+        },
+        parse: (src) => {
+            return loadEditLog(src.loadRef().beginParse());
         }
     }
 }
@@ -1579,7 +1931,7 @@ function initBinaryMarket_init_args(src: BinaryMarket_init_args) {
 }
 
 async function BinaryMarket_init(data: MarketInit) {
-    const __code = Cell.fromHex('b5ee9c7241022c01000b8a00022cff008e88f4a413f4bcf2c80bed53208e8130e1ed43d90115020271020702012003050293ba9b0ed44d0d200018e37fa40d33f5902d1017054700020706d8b088b086d6d53668200b39af842561001c705f2f4f84210df10ce10bd10ac0b109a108907085550e30ddb3c57105f0f8160400122e812710a85610a90402a3b8e7eed44d0d200018e37fa40d33f5902d1017054700020706d8b088b086d6d53668200b39af842561001c705f2f4f84210df10ce10bd10ac0b109a108907085550e30d0f11100f550edb3c571057105f0e81606004a2481010b2259f40a6fa193fa003092306de281010b54451359f40a6fa193fa003092306de2020120080d020120090b0293b516dda89a1a400031c6ff481a67eb205a202e0a8e00040e0db16111610dadaa6cd04016735f084ac20038e0be5e9f08421be219c217a215816213421120e10aaa1c61bb678ae20be1f0160a00182e812710a856105610a0a9040293b57d3da89a1a400031c6ff481a67eb205a202e0a8e00040e0db16111610dadaa6cd04016735f084ac20038e0be5e9f08421be219c217a215816213421120e10aaa1c61bb678d998d8990160c0018547fed547fed547fed547fed0201200e100293b6457da89a1a400031c6ff481a67eb205a202e0a8e00040e0db16111610dadaa6cd04016735f084ac20038e0be5e9f08421be219c217a215816213421120e10aaa1c61bb678ae20be1f0160f00182f812710a856105610a0a90402012011130293b3ed7b5134348000638dfe9034cfd640b4405c151c00081c1b62c222c21b5b54d9a0802ce6be1095840071c17cbd3e108437c433842f442b02c426842241c2155438c376cf15c417c3e016120008f8276f100293b0e47b5134348000638dfe9034cfd640b4405c151c00081c1b62c222c21b5b54d9a0802ce6be1095840071c17cbd3e108437c433842f442b02c426842241c2155438c376cf15c417c3e0161400102f812710a82fa90404f601d072d721d200d200fa4021103450666f04f86102f862ed44d0d200018e37fa40d33f5902d1017054700020706d8b088b086d6d53668200b39af842561001c705f2f4f84210df10ce10bd10ac0b109a108907085550e30d1111935f0f5be00fd70d1ff2e082218210481337e6bae3022182101674727bbae302211617181a0090fa00fa00fa00d30ffa40d33fd200d2000192d200926d01e2fa40d401d0d33fd401d001d401d001f404f404d33fd33f3007111007107f107e107d107c107b107a107910785710550e016c31333337373737373702d401d001d401d001d33ffa40d30ffa00d307305210a88064a90466a15ca84fed103c104b105a085e330345152501fc31fa0030811ced29b3f2f4813030f8232bb9f2f48142a621c200f2f48200ea06f8416f24135f0322bef2f4530ba8812710a904a11da051bba90451dda153dba881010bf842245959f40a6fa193fa003092306de2206e923070de81010bf84202206ef2d0805004a010341024206e953059f4593098c801fa024133f441e21900d010df10be1d10ac109b108a107910681057104610354433c87f01ca00111055e0011110010ffa02500dfa02500bfa0219cb0f17ce15cb3f13ca00216eb3967f01ca00ca00947032ca00e2ce01c8cb3f02c8ce12cd02c8ce12cd12f40012f40013cb3fcb3fcdc9ed5402f882104d689170ba8ef131fa0030811ced29b3f2f4813030f8232bb9f2f48142a621c200f2f48200ea06f8416f24135f0322bef2f4530ba8812710a904a11ea051bba90451cca153bca881010bf84256105959f40a6fa193fa003092306de2206e923070de81010bf84202206ef2d0805004a00311100302111002e0211b1c00ce206e953059f4593098c801fa024133f441e25e3b551ac87f01ca00111055e0011110010ffa02500dfa02500bfa0219cb0f17ce15cb3f13ca00216eb3967f01ca00ca00947032ca00e2ce01c8cb3f02c8ce12cd02c8ce12cd12f40012f40013cb3fcb3fcdc9ed5402fa82107aab1b57ba8ef231fa0030811ced29b3f2f4813030f8232bb9f2f4f8422381010b2259f40a6fa193fa003092306de28200ee1b216eb3f2f48142a623c2009921206ef2d0805240bb9170e2f2f4111022a051eea90451ffa1530da8812710a904a153efa881010b1112206ef2d0805004a11025011111015250e0211d1e016e206e953059f4593098c801fa024133f441e2137f01111071036d03c8cf8580ca00cf8440ce01fa02806acf40f400c901fb005e3b1d551a2502fe82101ebcd0ddba8ef431fa0030811ced29b3f2f4813030f8232bb9f2f4f8422281010b2259f40a6fa193fa003092306de28200f911216eb3f2f48142a623c2009921206ef2d0805240bb9170e2f2f451f2a051eea90411105610a1530da8812710a904a156102fa881010b1111206ef2d0805004a11024011110015240e0211f200190206e953059f4593098c801fa024133f441e2127f500f71036d03c8cf8580ca00cf8440ce01fa02806acf40f400c901fb0010df10be0d10ac109b108a1079106810571046103544302504a68210ef42713dba8fc131373b05d200308200c241f8422ac705f2f48200a564f82329bef2f481793e07b317f2f47f26e30f70543ddd50ed10ac109b108a10891078105710461035044313e0218210cf090942ba2123252601b83b702581010bf4826fa5209502fa00305895316d326d01e2908e1b12a081010b54471359f4746fa5209502fa00305895316d326d01e2e85b81566021c200f2f42581010bf4826fa5209502fa00305895316d326d01e2908ae85f033b2200ba20c2008e3d52e0a822a9040781010b2270206e953059f4593098c801fa024133f441e27f54421970036d03c8cf8580ca00cf8440ce01fa02806acf40f400c901fb009130e281010b270259f4746fa5209502fa00305895316d326d01e201bc3c702a81010bf4826fa5209502fa00305895316d326d01e2908e1b12a081010b544c1359f4746fa5209502fa00305895316d326d01e2e85b8127e721c200f2f42a81010bf4826fa5209502fa00305895316d326d01e2908ae85f033a109a2400ba20c2008e3d52d0a822a9040c81010b2270206e953059f4593098c801fa024133f441e27f54421e71036d03c8cf8580ca00cf8440ce01fa02806acf40f400c901fb009130e281010b2c0259f4746fa5209502fa00305895316d326d01e200a2c87f01ca00111055e0011110010ffa02500dfa02500bfa0219cb0f17ce15cb3f13ca00216eb3967f01ca00ca00947032ca00e2ce01c8cb3f02c8ce12cd02c8ce12cd12f40012f40013cb3fcb3fcdc9ed540224e3020182100ba69751bae3025f0f5bf2c082272a02fe5b8200e33928f2f4f84227206ef2d0808e692181010b2259f40a6fa193fa003092306de281210e216eb39821206ef2d080c2009170e2f2f4206ef2d080561101a85610a9040281010b2270206e953059f4593098c801fa024133f441e27f500370036d03c8cf8580ca00cf8440ce01fa02806acf40f400c901fb00e30d10df282900d22281010b2259f40a6fa193fa003092306de281210e216eb39821206ef2d080c2009170e2f2f4206ef2d080561101a85610a9040381010b2270206e953059f4593098c801fa024133f441e27f500470036d03c8cf8580ca00cf8440ce01fa02806acf40f400c901fb0000a6551cc87f01ca00111055e0011110010ffa02500dfa02500bfa0219cb0f17ce15cb3f13ca00216eb3967f01ca00ca00947032ca00e2ce01c8cb3f02c8ce12cd02c8ce12cd12f40012f40013cb3fcb3fcdc9ed5401fcfa00308168c9f8428d08600564aaa7ec58143f3e7fcaf008ef78644c63c559a45589048156240144f28e1f94c705f2f482008ac8f8276f1022bcf2f48d08600564aaa7ec58143f3e7fcaf008ef78644c63c559a45589048156240144f28e1f94017f71036d4313c8cf8580ca00cf8440ce01fa02806acf40f400c901fb002b00aa10df551cc87f01ca00111055e0011110010ffa02500dfa02500bfa0219cb0f17ce15cb3f13ca00216eb3967f01ca00ca00947032ca00e2ce01c8cb3f02c8ce12cd02c8ce12cd12f40012f40013cb3fcb3fcdc9ed54691237cf');
+    const __code = Cell.fromHex('b5ee9c72410254010018e0000262ff008e88f4a413f4bcf2c80bed53208e9c30eda2edfb01d072d721d200d200fa4021103450666f04f86102f862e1ed43d9012a02027102150201200308020120040603d5b500dda89a1a400031db1b678ae3c2238223a2238223622382236223422362234223222342232223022322230222e2230222e222c222e222c222a222c222a2228222a22282226222822262224222622242222222422222220222222201e22201eaa1dc61db678d9e6d9e702b2d05000654743203d9b5361da89a1a400031db1b678ae3c2238223a2238223622382236223422362234223222342232223022322230222e2230222e222c222e222c222a222c222a2228222a22282226222822262224222622242222222422222220222222201e22201eaa1dc61db678ae20be1ed9c302b2d070014561c812710a8561ea904020120090f0201660a0c03e0a897ed44d0d200018ed8db3c571e111c111d111c111b111c111b111a111b111a1119111a11191118111911181117111811171116111711161115111611151114111511141113111411131112111311121111111211111110111111100f11100f550ee30edb3c571257105f0f50de5f0d2b2d0b0034561d812710a8561e561ea0a904561d812710a8561f561fa0a90403f8aa7eed44d0d200018ed8db3c571e111c111d111c111b111c111b111a111b111a1119111a11191118111911181117111811171116111711161115111611151114111511141113111411131112111311121111111211111110111111100f11100f550ee30e111d111e111d111c111d111c111b111c111b111a111b111a2b2d0d019c1119111a11191118111911181117111811171116111711161115111611151114111511141113111411131112111311121111111211111110111111100f11100f550edb3c571257105f0f50de5f0d0e004a2981010b2259f40a6fa193fa003092306de281010b544a1359f40a6fa193fa003092306de2020120101303f9b1b17b513434800063b636cf15c78447044744470446c4470446c4468446c4468446444684464446044644460445c4460445c4458445c4458445444584454445044544450444c4450444c4448444c44484444444844444440444444403c44403d543b8c38447444784474447044744470446c4470446c4468446c446a02b2d1101c01119111a11191118111911181117111811171116111711161115111611151114111511141113111411131112111311121111111211111110111111100f11100f550edb3c57105f0f6ce1206e92306d99206ef2d0806f276f07e2206e92306dde120088205611bb92306de17856100259f40f6fa192306ddf206e92306d8e27d0d307fa40d401d001d401d001d401d0d401d001d401d001d33f3010371036103510346c176f07e203d9b290bb513434800063b636cf15c78447044744470446c4470446c4468446c4468446444684464446044644460445c4460445c4458445c4458445444584454445044544450444c4450444c4448444c44484444444844444440444444403c44403d543b8c3b6cf15c417c3db38602b2d140002200201201622020120171c020148181a03d9afca76a268690000c76c6d9e2b8f088e088e888e088d888e088d888d088d888d088c888d088c888c088c888c088b888c088b888b088b888b088a888b088a888a088a888a0889888a088988890889888908888889088888880888888807888807aa8771876d9e2b882f87b670c02b2d1900022e03d9ac5b76a268690000c76c6d9e2b8f088e088e888e088d888e088d888d088d888d088c888d088c888c088c888c088b888c088b888b088b888b088a888b088a888a088a888a0889888a088988890889888908888889088888880888888807888807aa8771876d9e2b882f87b670c02b2d1b001a561c812710a8561e561ea0a9040201201d2004f9b2fa7b513434800063b636cf15c78447044744470446c4470446c4468446c4468446444684464446044644460445c4460445c4458445c4458445444584454445044544450444c4450444c4448444c44484444444844444440444444403c44403d543b8c3b6cf15c555c555c555c555c555c555c555c555c555c555c5602b2d1e1f0058561d561d561d561d561c561c561c561c561c561c561c561c561c561c561256125612561d561f561e561e1023008857155715571557155715571557155715571557155715571557155715571557155715571557150b11140b0a11130a091112090811110807111007106f105e104d103c558203d9b13efb513434800063b636cf15c78447044744470446c4470446c4468446c4468446444684464446044644460445c4460445c4458445c4458445444584454445044544450444c4450444c4448444c44484444444844444440444444403c44403d543b8c3b6cf15c417c3db38602b2d2100045619020120232503d9b6457da89a1a400031db1b678ae3c2238223a2238223622382236223422362234223222342232223022322230222e2230222e222c222e222c222a222c222a2228222a22282226222822262224222622242222222422222220222222201e22201eaa1dc61db678ae20be1ed9c302b2d24001a561d812710a8561e561ea0a904020120262803d9b3ed7b513434800063b636cf15c78447044744470446c4470446c4468446c4468446444684464446044644460445c4460445c4458445c4458445444584454445044544450444c4450444c4448444c44484444444844444440444444403c44403d543b8c3b6cf15c417c3db38602b2d270008f8276f1003d9b0e47b513434800063b636cf15c78447044744470446c4470446c4468446c4468446444684464446044644460445c4460445c4458445c4458445444584454445044544450444c4450444c4448444c44484444444844444440444444403c44403d543b8c3b6cf15c417c3db38602b2d290014561d812710a8561da90404fced44d0d200018ed8db3c571e111c111d111c111b111c111b111a111b111a1119111a11191118111911181117111811171116111711161115111611151114111511141113111411131112111311121111111211111110111111100f11100f550ee30e111f955f0f5f0f30e0111dd70d1ff2e082218210481337e6bae302212b2d2e3001f4fa00fa00fa00d30f810101d700fa40d33fd200d2000192d200926d01e2d401d0fa40d33fd401d001d401d001d401d001810101d700d430d0f404d72c01916d93fa4001e201d2000193d401d0916de201d2000193d401d0916de201d430d0d2000193d401d0916de201d2000195810101d700926d01e2f404f4042c00a8d33fd33f810101d700810101d700d430d0810101d700810101d700f404301115111e11151115111d11151115111c11151115111b11151115111a111511151119111511151118111511151117111511151116111500eefa40d33f5902d101705470005300706d8b662696e61727988b088b08256d6d6d6d6d6d6d6d5478885470006d8200b39af842561e01c705f2f4f842111b111d111b111a111c111a1119111b11191118111a11181117111911171118111611171116111511161115111411151114111311121111111055e001fa3138383838383a3a3f3f57105710571057100ad401d001d401d001d33ffa40d30ffa00d307d72c01916d93fa4001e201d430d0d2000193d401d0916de201d2000193d401d0916de201d2000193d430d092306de25255a88064a9045155a15350a8f82307111d0702111c0201111b0108111a08111711191117091118092f01ce0a11170a1114111611141113111511131112111411121111111311111110111211100c11110c0b11100b10df10be105d104c103b106a095e3410364005c87f01ca00111e111d111c111b111a111911181117111611151114111311121111111055e0db3cc9ed5451044a82101674727bbae3022182104d689170bae3022182107aab1b57bae3022182101ebcd0ddba3134373a01f4313807fa0030811ced5615b3f2f4813030f8235617b9f2f48142a621c200f2f48200ea06f8416f24135f0322bef2f45122a05112a0225619a8812710a9045133a10111180103a0810101f823561d812710a8561e561ea0a9047f71f842c855405045810101cf0012810101cf00ca00cb07cec902111f02561e013201fa206e953059f45a30944133f415e2111ca401111a0102a011185618a904111a561aa1561a5619a881010bf842285959f40a6fa193fa003092306de2206e923070de81010bf84202206ef2d0805004a010381028206e953059f4593098c801fa024133f441e2f823111b111d111b1119111c111906111b061118111a11183301ec061119061116111811161115111711151114111611141113111511131112111411121111111311111110111211100f11110f0e11100e10df10ce10bd10ac109b108a50891057104603455504c87f01ca00111e111d111c111b111a111911181117111611151114111311121111111055e0db3cc9ed545101f4313807fa0030811ced5615b3f2f4813030f8235617b9f2f48142a621c200f2f48200ea06f8416f24135f0322bef2f45122a05172a0225619a8812710a9045133a10111180103a0810101f823561c812710a8561e561ea0a9047f70f842c855405045810101cf0012810101cf00ca00cb07cec902111f02561e013501fa206e953059f45a30944133f415e2111ca401111b0102a011185618a90411195619a15618561aa881010bf842275959f40a6fa193fa003092306de2206e923070de81010bf84202206ef2d0805004a010371027206e953059f4593098c801fa024133f441e2f8231119111d1119111a111c111a05111b051118111a11183601e41116111811161115111711151114111611141113111511131112111411121111111311111110111211100f11110f0e11100e10df10ce10bd10ac109b108a09106817104610354004c87f01ca00111e111d111c111b111a111911181117111611151114111311121111111055e0db3cc9ed545101fe313807fa0030811ced5615b3f2f4813030f8235617b9f2f4f8422781010b2259f40a6fa193fa003092306de28200ee1b216eb3f2f48142a623c2009921206ef2d0805240bb9170e2f2f4561d23a0111c561ca904561d21a15166a05156a026561da8812710a9045177a101111c0107a0810101f8235621812710a8011122013802fc1121a001112001a9047071f84204112304c855405045810101cf0012810101cf00ca00cb07cec90211210201111e01562001206e953059f45a30944133f415e2111ea4561b561da881010b1121206ef2d0805004a11029011120015290206e953059f4593098c801fa024133f441e2177f500471036d03c8cf8580ca00893d3901e6cf16ce01fa02806acf40f400c901fb00f8231119111d1119111a111c111a06111b061118111a1118061119061116111811161115111711151114111611141113111511131112111411121111111311111110111211100f11110f0e11100e10df10ce10bd10ac109b108a48191057104603454550043ce302218210ef42713dbae302218210cf090942bae3022182100ba69751ba3b3f474901fe313807fa0030811ced5615b3f2f4813030f8235617b9f2f4f8422681010b2259f40a6fa193fa003092306de28200f911216eb3f2f48142a623c2009921206ef2d0805240bb9170e2f2f4561c23a0111c561ca904561e21a15166a051b6a026561da8812710a9045177a101111c0107a0810101f8235620812710a8011122013c02fc1121a001112001a9047070f84204112304c855405045810101cf0012810101cf00ca00cb07cec90211210201111e01562001206e953059f45a30944133f415e2111ea4561c561ca881010b1121206ef2d0805004a11028011120015280206e953059f4593098c801fa024133f441e2167f500471036d03c8cf8580ca00893d3e00011001e2cf16ce01fa02806acf40f400c901fb00f823111a111d111a1119111c111905111b051118111a1118051119051116111811161115111711151114111611141113111511131112111411121111111311111110111211100f11110f0e11100e10df10ce10bd10ac109b108a091068102755145003fe3157141113d200308200c241f8425618c705f2f48200a564f8235617bef2f481793e1115b301111501f2f47f5614e30f705300f82303111d0302111c0201111b011118111a11181117111911171116111811161115111711151115111611151114111511141112111411121111111311111110111211100f11110f0e11100e40424602bc702781010bf4826fa5209502fa00305895316d326d01e2908e1b12a081010b54491359f4746fa5209502fa00305895316d326d01e2e85b20c200e30338571957192481010bf4826fa5209502fa00305895316d326d01e2908ae85b355718434100bc20c2008e3e561b01a827a9040681010b2270206e953059f4593098c801fa024133f441e27f54421870036d03c8cf8580ca00cf8440ce01fa02806acf40f400c901fb009130e281010b260259f4746fa5209502fa00305895316d326d01e202c8702681010bf4826fa5209502fa00305895316d326d01e2908e1b12a081010b54481359f4746fa5209502fa00305895316d326d01e2e85b20c200e303385719571a2381010bf4826fa5209502fa00305895316d326d01e2908ae85b355717111611171116434501cc30111b111d111b111a111c111a1119111b11191118111a111811171119111711161118111611151117111511161114111511141112111411121111111311111110111211100f11110f0e11100e10df10ce10bd10ac109b108a10791068105710461035440302440158c87f01ca00111e111d111c111b111a111911181117111611151114111311121111111055e0db3cc9ed54db315100bc20c2008e3e561a01a827a9040581010b2270206e953059f4593098c801fa024133f441e27f54421771036d03c8cf8580ca00cf8440ce01fa02806acf40f400c901fb009130e281010b250259f4746fa5209502fa00305895316d326d01e2018210df10ce10bd10ac109b108a0910681057104640050403c87f01ca00111e111d111c111b111a111911181117111611151114111311121111111055e0db3cc9ed545102fa5b8200e3395615f2f4f8425614206ef2d0808e672681010b2259f40a6fa193fa003092306de281210e216eb39821206ef2d080c2009170e2f2f4206ef2d0805250a826a9040781010b2270206e953059f4593098c801fa024133f441e27f500870036d03c8cf8580ca00cf8440ce01fa02806acf40f400c901fb00e30d484b00ce2781010b2259f40a6fa193fa003092306de281210e216eb39821206ef2d080c2009170e2f2f4206ef2d0805250a826a9040881010b2270206e953059f4593098c801fa024133f441e27f500970036d03c8cf8580ca00cf8440ce01fa02806acf40f400c901fb000228e3020182108e8289ffbae3025f0f5f0f30f2c0824a4c01fe31fa00308168c9f8428d08600564aaa7ec58143f3e7fcaf008ef78644c63c559a45589048156240144f28e1f94c705f2f482008ac8f8276f1022bcf2f48d08600564aaa7ec58143f3e7fcaf008ef78644c63c559a45589048156240144f28e1f94017f71036d4313c8cf8580ca00cf8440ce01fa02806acf40f400c901fb004b01fc111b111d111b111a111c111a1119111b11191118111a11181117111911171116111811161115111711151114111611141113111511131112111411121111111311111110111211100f11110f0e11100e10df551cc87f01ca00111e111d111c111b111a111911181117111611151114111311121111111055e0db3cc9ed545102f2d401d001d401d001d430d08152c45618b3f2f481514df8428d08600564aaa7ec58143f3e7fcaf008ef78644c63c559a45589048156240144f28e1f94c705f2f4820084d48b87175657374696f6e8524001f90101f901ba917f8e188bd636c6172696669636174696f6e8524001f90101f901bae2f2f48952304d4e00107175657374696f6e01fe01f90101f901ba925612925611e21111a4208b87175657374696f6e8525001f90101f901ba935714228e218bd636c6172696669636174696f6e8525001f90101f901ba955713221113de1114e278f842f8232445161048031116034700c855605067cb0714ce02c8ce12cd01c8cecdc802c8ce12cd02c8ce12cd12cb3fcdc94f01ee103f02111002206e953059f45b30944133f417e2111b111d111b111a111c111a1119111b11191118111a11181117111911171116111811161115111711151114111611141113111511131112111411121111111311111110111211100d11110d0e111010bd10ac109b108a107910681057104610354403500154c87f01ca00111e111d111c111b111a111911181117111611151114111311121111111055e0db3cc9ed545102f601111e01111dfa0201111bfa02011119fa0201111701cb0f01111501810101cf0001111301ce01111101cb3f1fca002d6eb3977f01ca001dca00963d70500dca00e20bc8ce1acb3f08c8ce18cd06c8ce16cd04c8ce14cd12810101cf0001c8f40058206e9430cf84809201cee2226eb395327058ca00e30d226eb35253000e02c8cec958f40000d29702c8cec958f40095327058ca00e2c8236eb39803c8cec95003f4009633705003ca00e2246eb39a7f01ca0014810101cf009634705004ca00e214f40014f40014cb3f14cb3f14810101cf0014810101cf0004c8810101cf0016810101cf0014f40012cd13cd12cdcd776879fc');
     const builder = beginCell();
     builder.storeUint(0, 1);
     initBinaryMarket_init_args({ $$type: 'BinaryMarket_init_args', data })(builder);
@@ -1627,14 +1979,15 @@ export const BinaryMarket_errors = {
     7337: { message: "can't travel back in time" },
     7405: { message: "Market resolved" },
     8462: { message: "No winning tokens" },
-    10215: { message: "No NO shares" },
     12336: { message: "Market closed" },
     12925: { message: "Invalid probability" },
     15876: { message: "Min liquidity .1 TON" },
     17062: { message: "Invalid amount" },
-    22112: { message: "No YES shares" },
+    20813: { message: "Unauthorized editor" },
+    21188: { message: "Cannot edit resovled market" },
     26825: { message: "Only owner can withdraw" },
     31038: { message: "Already resolved" },
+    34004: { message: "Invalid field" },
     35528: { message: "Withdraw amount must to be strictly less than balance" },
     42340: { message: "Too early" },
     42709: { message: "Send atleast .1 TON + initial liquidity" },
@@ -1686,14 +2039,15 @@ export const BinaryMarket_errors_backward = {
     "can't travel back in time": 7337,
     "Market resolved": 7405,
     "No winning tokens": 8462,
-    "No NO shares": 10215,
     "Market closed": 12336,
     "Invalid probability": 12925,
     "Min liquidity .1 TON": 15876,
     "Invalid amount": 17062,
-    "No YES shares": 22112,
+    "Unauthorized editor": 20813,
+    "Cannot edit resovled market": 21188,
     "Only owner can withdraw": 26825,
     "Already resolved": 31038,
+    "Invalid field": 34004,
     "Withdraw amount must to be strictly less than balance": 35528,
     "Too early": 42340,
     "Send atleast .1 TON + initial liquidity": 42709,
@@ -1716,28 +2070,27 @@ const BinaryMarket_types: ABIType[] = [
     { "name": "StdAddress", "header": null, "fields": [{ "name": "workchain", "type": { "kind": "simple", "type": "int", "optional": false, "format": 8 } }, { "name": "address", "type": { "kind": "simple", "type": "uint", "optional": false, "format": 256 } }] },
     { "name": "VarAddress", "header": null, "fields": [{ "name": "workchain", "type": { "kind": "simple", "type": "int", "optional": false, "format": 32 } }, { "name": "address", "type": { "kind": "simple", "type": "slice", "optional": false } }] },
     { "name": "BasechainAddress", "header": null, "fields": [{ "name": "hash", "type": { "kind": "simple", "type": "int", "optional": true, "format": 257 } }] },
-    { "name": "Deploy", "header": 2490013878, "fields": [{ "name": "queryId", "type": { "kind": "simple", "type": "uint", "optional": false, "format": 64 } }] },
-    { "name": "DeployOk", "header": 2952335191, "fields": [{ "name": "queryId", "type": { "kind": "simple", "type": "uint", "optional": false, "format": 64 } }] },
-    { "name": "FactoryDeploy", "header": 1829761339, "fields": [{ "name": "queryId", "type": { "kind": "simple", "type": "uint", "optional": false, "format": 64 } }, { "name": "cashback", "type": { "kind": "simple", "type": "address", "optional": false } }] },
-    { "name": "MarketInit", "header": null, "fields": [{ "name": "factory", "type": { "kind": "simple", "type": "address", "optional": false } }, { "name": "marketId", "type": { "kind": "simple", "type": "uint", "optional": false, "format": 64 } }] },
-    { "name": "CreateMarket", "header": 1209219046, "fields": [{ "name": "question", "type": { "kind": "simple", "type": "string", "optional": false } }, { "name": "clarification", "type": { "kind": "simple", "type": "string", "optional": false } }, { "name": "closeTimestamp", "type": { "kind": "simple", "type": "uint", "optional": false, "format": 64 } }, { "name": "oracleAddr", "type": { "kind": "simple", "type": "address", "optional": false } }, { "name": "feeBps", "type": { "kind": "simple", "type": "uint", "optional": false, "format": 16 } }, { "name": "initialLiquidity", "type": { "kind": "simple", "type": "uint", "optional": false, "format": "coins" } }, { "name": "initialProbability", "type": { "kind": "simple", "type": "uint", "optional": false, "format": 8 } }] },
+    { "name": "CreateMarket", "header": 1209219046, "fields": [{ "name": "question", "type": { "kind": "simple", "type": "string", "optional": false } }, { "name": "clarification", "type": { "kind": "simple", "type": "string", "optional": false } }, { "name": "closeTimestamp", "type": { "kind": "simple", "type": "uint", "optional": false, "format": 64 } }, { "name": "oracleAddr", "type": { "kind": "simple", "type": "address", "optional": false } }, { "name": "feeBps", "type": { "kind": "simple", "type": "uint", "optional": false, "format": 16 } }, { "name": "initialLiquidity", "type": { "kind": "simple", "type": "uint", "optional": false, "format": "coins" } }, { "name": "initialProbability", "type": { "kind": "simple", "type": "uint", "optional": false, "format": 8 } }, { "name": "creator", "type": { "kind": "simple", "type": "address", "optional": true } }, { "name": "createdBy", "type": { "kind": "simple", "type": "string", "optional": true } }, { "name": "askedBy", "type": { "kind": "simple", "type": "string", "optional": true } }, { "name": "bannerImage", "type": { "kind": "simple", "type": "string", "optional": true } }] },
     { "name": "Withdraw", "header": 195467089, "fields": [{ "name": "amount", "type": { "kind": "simple", "type": "uint", "optional": false, "format": "coins" } }] },
-    { "name": "Factory$Data", "header": null, "fields": [{ "name": "nextMarketId", "type": { "kind": "simple", "type": "uint", "optional": false, "format": 64 } }] },
-    { "name": "MarketState", "header": null, "fields": [{ "name": "reserveYes", "type": { "kind": "simple", "type": "uint", "optional": false, "format": "coins" } }, { "name": "reserveNo", "type": { "kind": "simple", "type": "uint", "optional": false, "format": "coins" } }, { "name": "k", "type": { "kind": "simple", "type": "uint", "optional": false, "format": "coins" } }, { "name": "feeBps", "type": { "kind": "simple", "type": "uint", "optional": false, "format": 16 } }, { "name": "oracleAddr", "type": { "kind": "simple", "type": "address", "optional": false } }, { "name": "closeTimestamp", "type": { "kind": "simple", "type": "uint", "optional": false, "format": 64 } }, { "name": "resolved", "type": { "kind": "simple", "type": "bool", "optional": false } }, { "name": "outcome", "type": { "kind": "simple", "type": "bool", "optional": true } }, { "name": "factory", "type": { "kind": "simple", "type": "address", "optional": false } }, { "name": "marketId", "type": { "kind": "simple", "type": "uint", "optional": false, "format": 64 } }, { "name": "question", "type": { "kind": "simple", "type": "string", "optional": false } }, { "name": "clarification", "type": { "kind": "simple", "type": "string", "optional": false } }] },
-    { "name": "YesNoBalances", "header": null, "fields": [{ "name": "yes", "type": { "kind": "simple", "type": "int", "optional": true, "format": 257 } }, { "name": "no", "type": { "kind": "simple", "type": "int", "optional": true, "format": 257 } }] },
     { "name": "BuyYes", "header": 376730235, "fields": [{ "name": "amount", "type": { "kind": "simple", "type": "uint", "optional": false, "format": "coins" } }] },
     { "name": "BuyNo", "header": 1298698608, "fields": [{ "name": "amount", "type": { "kind": "simple", "type": "uint", "optional": false, "format": "coins" } }] },
     { "name": "SellYes", "header": 2058034007, "fields": [{ "name": "amount", "type": { "kind": "simple", "type": "uint", "optional": false, "format": "coins" } }] },
     { "name": "SellNo", "header": 515690717, "fields": [{ "name": "amount", "type": { "kind": "simple", "type": "uint", "optional": false, "format": "coins" } }] },
     { "name": "Resolve", "header": 4014108989, "fields": [{ "name": "outcome", "type": { "kind": "simple", "type": "bool", "optional": false } }] },
     { "name": "Redeem", "header": 3473475906, "fields": [{ "name": "addr", "type": { "kind": "simple", "type": "address", "optional": false } }] },
-    { "name": "BinaryMarket$Data", "header": null, "fields": [{ "name": "reserveYes", "type": { "kind": "simple", "type": "uint", "optional": false, "format": "coins" } }, { "name": "reserveNo", "type": { "kind": "simple", "type": "uint", "optional": false, "format": "coins" } }, { "name": "k", "type": { "kind": "simple", "type": "uint", "optional": false, "format": "coins" } }, { "name": "feeBps", "type": { "kind": "simple", "type": "uint", "optional": false, "format": 16 } }, { "name": "oracleAddr", "type": { "kind": "simple", "type": "address", "optional": false } }, { "name": "closeTimestamp", "type": { "kind": "simple", "type": "uint", "optional": false, "format": 64 } }, { "name": "resolved", "type": { "kind": "simple", "type": "bool", "optional": false } }, { "name": "outcome", "type": { "kind": "simple", "type": "bool", "optional": true } }, { "name": "factory", "type": { "kind": "simple", "type": "address", "optional": false } }, { "name": "marketId", "type": { "kind": "simple", "type": "uint", "optional": false, "format": 64 } }, { "name": "question", "type": { "kind": "simple", "type": "string", "optional": false } }, { "name": "clarification", "type": { "kind": "simple", "type": "string", "optional": false } }, { "name": "yesBalances", "type": { "kind": "dict", "key": "address", "value": "uint", "valueFormat": "coins" } }, { "name": "noBalances", "type": { "kind": "dict", "key": "address", "value": "uint", "valueFormat": "coins" } }, { "name": "winningTotalSupply", "type": { "kind": "simple", "type": "uint", "optional": false, "format": 64 } }, { "name": "winningPayoutPool", "type": { "kind": "simple", "type": "uint", "optional": false, "format": 64 } }] },
+    { "name": "EditMarketDetails", "header": 2390919679, "fields": [{ "name": "field", "type": { "kind": "simple", "type": "string", "optional": false } }, { "name": "newValue", "type": { "kind": "simple", "type": "string", "optional": false } }, { "name": "reason", "type": { "kind": "simple", "type": "string", "optional": false } }] },
+    { "name": "MarketState", "header": null, "fields": [{ "name": "reserveYes", "type": { "kind": "simple", "type": "uint", "optional": false, "format": "coins" } }, { "name": "reserveNo", "type": { "kind": "simple", "type": "uint", "optional": false, "format": "coins" } }, { "name": "k", "type": { "kind": "simple", "type": "uint", "optional": false, "format": "coins" } }, { "name": "feeBps", "type": { "kind": "simple", "type": "uint", "optional": false, "format": 16 } }, { "name": "oracleAddr", "type": { "kind": "simple", "type": "address", "optional": false } }, { "name": "closeTimestamp", "type": { "kind": "simple", "type": "uint", "optional": false, "format": 64 } }, { "name": "resolved", "type": { "kind": "simple", "type": "bool", "optional": false } }, { "name": "outcome", "type": { "kind": "simple", "type": "bool", "optional": true } }, { "name": "factory", "type": { "kind": "simple", "type": "address", "optional": false } }, { "name": "marketId", "type": { "kind": "simple", "type": "uint", "optional": false, "format": 64 } }, { "name": "marketType", "type": { "kind": "simple", "type": "string", "optional": false } }, { "name": "question", "type": { "kind": "simple", "type": "string", "optional": false } }, { "name": "clarification", "type": { "kind": "simple", "type": "string", "optional": false } }, { "name": "version", "type": { "kind": "simple", "type": "uint", "optional": false, "format": 8 } }, { "name": "totalVolume", "type": { "kind": "simple", "type": "int", "optional": false, "format": 257 } }, { "name": "yesVolume", "type": { "kind": "simple", "type": "int", "optional": false, "format": 257 } }, { "name": "noVolume", "type": { "kind": "simple", "type": "int", "optional": false, "format": 257 } }, { "name": "creator", "type": { "kind": "simple", "type": "address", "optional": true } }, { "name": "createdBy", "type": { "kind": "simple", "type": "string", "optional": true } }, { "name": "askedBy", "type": { "kind": "simple", "type": "string", "optional": true } }, { "name": "bannerImage", "type": { "kind": "simple", "type": "string", "optional": true } }] },
+    { "name": "YesNoBalances", "header": null, "fields": [{ "name": "yes", "type": { "kind": "simple", "type": "int", "optional": true, "format": 257 } }, { "name": "no", "type": { "kind": "simple", "type": "int", "optional": true, "format": 257 } }] },
+    { "name": "Probabilities", "header": null, "fields": [{ "name": "yes", "type": { "kind": "simple", "type": "int", "optional": false, "format": 257 } }, { "name": "no", "type": { "kind": "simple", "type": "int", "optional": false, "format": 257 } }] },
+    { "name": "MarketVolume", "header": null, "fields": [{ "name": "totalVolume", "type": { "kind": "simple", "type": "int", "optional": false, "format": 257 } }, { "name": "yesVolume", "type": { "kind": "simple", "type": "int", "optional": false, "format": 257 } }, { "name": "noVolume", "type": { "kind": "simple", "type": "int", "optional": false, "format": 257 } }] },
+    { "name": "BinaryMarket$Data", "header": null, "fields": [{ "name": "reserveYes", "type": { "kind": "simple", "type": "uint", "optional": false, "format": "coins" } }, { "name": "reserveNo", "type": { "kind": "simple", "type": "uint", "optional": false, "format": "coins" } }, { "name": "k", "type": { "kind": "simple", "type": "uint", "optional": false, "format": "coins" } }, { "name": "feeBps", "type": { "kind": "simple", "type": "uint", "optional": false, "format": 16 } }, { "name": "collectedFees", "type": { "kind": "simple", "type": "int", "optional": false, "format": 257 } }, { "name": "oracleAddr", "type": { "kind": "simple", "type": "address", "optional": false } }, { "name": "closeTimestamp", "type": { "kind": "simple", "type": "uint", "optional": false, "format": 64 } }, { "name": "resolved", "type": { "kind": "simple", "type": "bool", "optional": false } }, { "name": "outcome", "type": { "kind": "simple", "type": "bool", "optional": true } }, { "name": "factory", "type": { "kind": "simple", "type": "address", "optional": false } }, { "name": "marketId", "type": { "kind": "simple", "type": "uint", "optional": false, "format": 64 } }, { "name": "marketType", "type": { "kind": "simple", "type": "string", "optional": false } }, { "name": "question", "type": { "kind": "simple", "type": "string", "optional": false } }, { "name": "clarification", "type": { "kind": "simple", "type": "string", "optional": false } }, { "name": "version", "type": { "kind": "simple", "type": "int", "optional": false, "format": 257 } }, { "name": "editHistory", "type": { "kind": "dict", "key": "uint", "keyFormat": 8, "value": "EditLog", "valueFormat": "ref" } }, { "name": "creator", "type": { "kind": "simple", "type": "address", "optional": true } }, { "name": "createdBy", "type": { "kind": "simple", "type": "string", "optional": true } }, { "name": "askedBy", "type": { "kind": "simple", "type": "string", "optional": true } }, { "name": "bannerImage", "type": { "kind": "simple", "type": "string", "optional": true } }, { "name": "lastActive", "type": { "kind": "simple", "type": "int", "optional": true, "format": 257 } }, { "name": "yesBalances", "type": { "kind": "dict", "key": "address", "value": "uint", "valueFormat": "coins" } }, { "name": "noBalances", "type": { "kind": "dict", "key": "address", "value": "uint", "valueFormat": "coins" } }, { "name": "winningTotalSupply", "type": { "kind": "simple", "type": "uint", "optional": false, "format": 64 } }, { "name": "winningPayoutPool", "type": { "kind": "simple", "type": "uint", "optional": false, "format": 64 } }, { "name": "totalVolume", "type": { "kind": "simple", "type": "int", "optional": false, "format": 257 } }, { "name": "yesVolume", "type": { "kind": "simple", "type": "int", "optional": false, "format": 257 } }, { "name": "noVolume", "type": { "kind": "simple", "type": "int", "optional": false, "format": 257 } }, { "name": "nextActionId", "type": { "kind": "simple", "type": "int", "optional": false, "format": 257 } }, { "name": "marketHistory", "type": { "kind": "dict", "key": "int", "value": "MarketHistory", "valueFormat": "ref" } }] },
+    { "name": "MarketInit", "header": null, "fields": [{ "name": "factory", "type": { "kind": "simple", "type": "address", "optional": false } }, { "name": "marketId", "type": { "kind": "simple", "type": "uint", "optional": false, "format": 64 } }] },
+    { "name": "Factory$Data", "header": null, "fields": [{ "name": "nextMarketId", "type": { "kind": "simple", "type": "uint", "optional": false, "format": 64 } }] },
+    { "name": "MarketHistory", "header": null, "fields": [{ "name": "timestamp", "type": { "kind": "simple", "type": "int", "optional": false, "format": 257 } }, { "name": "price", "type": { "kind": "simple", "type": "int", "optional": false, "format": 257 } }, { "name": "action", "type": { "kind": "simple", "type": "bool", "optional": false } }, { "name": "outcome", "type": { "kind": "simple", "type": "uint", "optional": false, "format": 8 } }, { "name": "address", "type": { "kind": "simple", "type": "address", "optional": false } }] },
+    { "name": "EditLog", "header": null, "fields": [{ "name": "version", "type": { "kind": "simple", "type": "uint", "optional": false, "format": 8 } }, { "name": "editor", "type": { "kind": "simple", "type": "address", "optional": false } }, { "name": "field", "type": { "kind": "simple", "type": "string", "optional": false } }, { "name": "oldValue", "type": { "kind": "simple", "type": "string", "optional": false } }, { "name": "newValue", "type": { "kind": "simple", "type": "string", "optional": false } }, { "name": "reason", "type": { "kind": "simple", "type": "string", "optional": false } }, { "name": "timestamp", "type": { "kind": "simple", "type": "uint", "optional": false, "format": 64 } }] },
 ]
 
 const BinaryMarket_opcodes = {
-    "Deploy": 2490013878,
-    "DeployOk": 2952335191,
-    "FactoryDeploy": 1829761339,
     "CreateMarket": 1209219046,
     "Withdraw": 195467089,
     "BuyYes": 376730235,
@@ -1746,26 +2099,39 @@ const BinaryMarket_opcodes = {
     "SellNo": 515690717,
     "Resolve": 4014108989,
     "Redeem": 3473475906,
+    "EditMarketDetails": 2390919679,
 }
 
 const BinaryMarket_getters: ABIGetter[] = [
     { "name": "yesProportion", "methodId": 119339, "arguments": [], "returnType": { "kind": "simple", "type": "int", "optional": false, "format": 257 } },
     { "name": "noPropotion", "methodId": 100534, "arguments": [], "returnType": { "kind": "simple", "type": "int", "optional": false, "format": 257 } },
+    { "name": "probabilities", "methodId": 84119, "arguments": [], "returnType": { "kind": "simple", "type": "Probabilities", "optional": false } },
     { "name": "getPriceYes", "methodId": 76208, "arguments": [], "returnType": { "kind": "simple", "type": "int", "optional": false, "format": 257 } },
     { "name": "getPriceNo", "methodId": 127889, "arguments": [], "returnType": { "kind": "simple", "type": "int", "optional": false, "format": 257 } },
     { "name": "getMarketState", "methodId": 109545, "arguments": [], "returnType": { "kind": "simple", "type": "MarketState", "optional": false } },
     { "name": "getUserBalances", "methodId": 85630, "arguments": [{ "name": "addr", "type": { "kind": "simple", "type": "address", "optional": false } }], "returnType": { "kind": "simple", "type": "YesNoBalances", "optional": false } },
     { "name": "marketBalance", "methodId": 126901, "arguments": [], "returnType": { "kind": "simple", "type": "int", "optional": false, "format": 257 } },
+    { "name": "changeLogs", "methodId": 100244, "arguments": [], "returnType": { "kind": "dict", "key": "uint", "keyFormat": 8, "value": "EditLog", "valueFormat": "ref" } },
+    { "name": "changeLog", "methodId": 91845, "arguments": [{ "name": "version", "type": { "kind": "simple", "type": "int", "optional": false, "format": 257 } }], "returnType": { "kind": "simple", "type": "EditLog", "optional": true } },
+    { "name": "marketVolume", "methodId": 67590, "arguments": [], "returnType": { "kind": "simple", "type": "MarketVolume", "optional": false } },
+    { "name": "fees", "methodId": 111867, "arguments": [], "returnType": { "kind": "simple", "type": "int", "optional": false, "format": 257 } },
+    { "name": "history", "methodId": 96834, "arguments": [], "returnType": { "kind": "dict", "key": "int", "value": "MarketHistory", "valueFormat": "ref" } },
 ]
 
 export const BinaryMarket_getterMapping: { [key: string]: string } = {
     'yesProportion': 'getYesProportion',
     'noPropotion': 'getNoPropotion',
+    'probabilities': 'getProbabilities',
     'getPriceYes': 'getGetPriceYes',
     'getPriceNo': 'getGetPriceNo',
     'getMarketState': 'getGetMarketState',
     'getUserBalances': 'getGetUserBalances',
     'marketBalance': 'getMarketBalance',
+    'changeLogs': 'getChangeLogs',
+    'changeLog': 'getChangeLog',
+    'marketVolume': 'getMarketVolume',
+    'fees': 'getFees',
+    'history': 'getHistory',
 }
 
 const BinaryMarket_receivers: ABIReceiver[] = [
@@ -1777,6 +2143,7 @@ const BinaryMarket_receivers: ABIReceiver[] = [
     { "receiver": "internal", "message": { "kind": "typed", "type": "Resolve" } },
     { "receiver": "internal", "message": { "kind": "typed", "type": "Redeem" } },
     { "receiver": "internal", "message": { "kind": "typed", "type": "Withdraw" } },
+    { "receiver": "internal", "message": { "kind": "typed", "type": "EditMarketDetails" } },
 ]
 
 export const MIN_LIQUIDITY = 100000000n;
@@ -1817,7 +2184,7 @@ export class BinaryMarket implements Contract {
         this.init = init;
     }
 
-    async send(provider: ContractProvider, via: Sender, args: { value: bigint, bounce?: boolean | null | undefined }, message: CreateMarket | BuyYes | BuyNo | SellYes | SellNo | Resolve | Redeem | Withdraw) {
+    async send(provider: ContractProvider, via: Sender, args: { value: bigint, bounce?: boolean | null | undefined }, message: CreateMarket | BuyYes | BuyNo | SellYes | SellNo | Resolve | Redeem | Withdraw | EditMarketDetails) {
 
         let body: Cell | null = null;
         if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'CreateMarket') {
@@ -1844,6 +2211,9 @@ export class BinaryMarket implements Contract {
         if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'Withdraw') {
             body = beginCell().store(storeWithdraw(message)).endCell();
         }
+        if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'EditMarketDetails') {
+            body = beginCell().store(storeEditMarketDetails(message)).endCell();
+        }
         if (body === null) { throw new Error('Invalid message type'); }
 
         await provider.internal(via, { ...args, body: body });
@@ -1861,6 +2231,13 @@ export class BinaryMarket implements Contract {
         const builder = new TupleBuilder();
         const source = (await provider.get('noPropotion', builder.build())).stack;
         const result = source.readBigNumber();
+        return result;
+    }
+
+    async getProbabilities(provider: ContractProvider) {
+        const builder = new TupleBuilder();
+        const source = (await provider.get('probabilities', builder.build())).stack;
+        const result = loadGetterTupleProbabilities(source);
         return result;
     }
 
@@ -1897,6 +2274,43 @@ export class BinaryMarket implements Contract {
         const builder = new TupleBuilder();
         const source = (await provider.get('marketBalance', builder.build())).stack;
         const result = source.readBigNumber();
+        return result;
+    }
+
+    async getChangeLogs(provider: ContractProvider) {
+        const builder = new TupleBuilder();
+        const source = (await provider.get('changeLogs', builder.build())).stack;
+        const result = Dictionary.loadDirect(Dictionary.Keys.Uint(8), dictValueParserEditLog(), source.readCellOpt());
+        return result;
+    }
+
+    async getChangeLog(provider: ContractProvider, version: bigint) {
+        const builder = new TupleBuilder();
+        builder.writeNumber(version);
+        const source = (await provider.get('changeLog', builder.build())).stack;
+        const result_p = source.readTupleOpt();
+        const result = result_p ? loadTupleEditLog(result_p) : null;
+        return result;
+    }
+
+    async getMarketVolume(provider: ContractProvider) {
+        const builder = new TupleBuilder();
+        const source = (await provider.get('marketVolume', builder.build())).stack;
+        const result = loadGetterTupleMarketVolume(source);
+        return result;
+    }
+
+    async getFees(provider: ContractProvider) {
+        const builder = new TupleBuilder();
+        const source = (await provider.get('fees', builder.build())).stack;
+        const result = source.readBigNumber();
+        return result;
+    }
+
+    async getHistory(provider: ContractProvider) {
+        const builder = new TupleBuilder();
+        const source = (await provider.get('history', builder.build())).stack;
+        const result = Dictionary.loadDirect(Dictionary.Keys.BigInt(257), dictValueParserMarketHistory(), source.readCellOpt());
         return result;
     }
 

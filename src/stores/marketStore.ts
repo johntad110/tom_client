@@ -78,7 +78,7 @@ export const useMarketStore = create<MarketState>()(
                     case 'liquidity':
                         return b.totalLiquidity - a.totalLiquidity;
                     case 'volume':
-                        return b.volume - a.volume;
+                        return b.totalVolume - a.totalVolume;
                     default:
                         return 0;
                 }
