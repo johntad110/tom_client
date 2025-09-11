@@ -2,20 +2,10 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { StarIcon } from '@heroicons/react/24/solid';
 import { useTelegramStore } from '../../stores/telegramStore';
+import type { Market } from '../../types/market';
 
-type MarketCardProps = {
-    market: {
-        id: string;
-        question: string;
-        status: 'open' | 'closed' | 'resolving' | 'resolved';
-        probability: number;
-        totalLiquidity: number;
-        isNew?: boolean;
-        bannerImage?: string;
-    };
-};
 
-const MarketCard = ({ market }: MarketCardProps) => {
+const MarketCard = ({ market, isNew }: { market: Market; isNew: boolean }) => {
     const { webApp } = useTelegramStore();
     const theme = webApp?.themeParams || {};
 
@@ -110,7 +100,7 @@ const MarketCard = ({ market }: MarketCardProps) => {
                     </div>
 
                     {/* "New" indicator if applicable */}
-                    {market.isNew && (
+                    {isNew && (
                         <div className="flex items-center justify-end mt-2">
                             <div
                                 className="flex items-center px-2 py-1 rounded-md"

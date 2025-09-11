@@ -27,7 +27,7 @@ const HomePage = () => {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.05, duration: 0.3 }}
                             >
-                                <MarketCard market={market} />
+                                <MarketCard market={market} isNew={true} />
                             </motion.div>
                         ))
                     ) : (
