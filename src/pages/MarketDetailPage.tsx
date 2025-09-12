@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import MarketHeader from '../components/market/MarketHeader';
@@ -18,6 +18,7 @@ import TradeModal from '../components/TradeModal';
 import { ScaleLoader } from 'react-spinners';
 
 const MarketDetailPage = () => {
+    const navigate = useNavigate();
     const { id } = useParams();
     const { getMarketById } = useMarketStore();
     const { marketAddresses } = useFactoryStore();
@@ -53,7 +54,7 @@ const MarketDetailPage = () => {
         }
 
         backButton.show();
-        backButton.onClick(() => history.back());
+        backButton.onClick(() => navigate(-1));
 
         return () => {
             backButton.hide();
