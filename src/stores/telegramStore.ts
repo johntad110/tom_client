@@ -1,21 +1,9 @@
 import { create } from "zustand";
-import type { IWebApp } from "../types/telegram";
-
-type TelegramUser = {
-    id: number;
-    first_name: string;
-    last_name?: string;
-    username?: string;
-    language_code?: string;
-    photo_url?: string;
-    is_premium?: boolean;
-    auth_date?: number;
-    hash?: string;
-};
+import type { IWebApp, IWebAppUser } from "../types/telegram";
 
 type TelegramStore = {
     webApp: IWebApp | null;
-    user: TelegramUser | null;
+    user: IWebAppUser | null;
     init: () => void;
     backButton: {
         show: () => void;

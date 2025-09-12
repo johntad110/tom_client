@@ -7,7 +7,6 @@ type UserState = {
     isConnected: boolean;
     walletAddress: string | null;
     nickname: string;
-    bio: string;
     profileImage: string | null;
     balance: number;
     isLoading: boolean;
@@ -24,15 +23,14 @@ export const useUserStore = create<UserState>()(
             isConnected: false,
             walletAddress: null,
             nickname: "Octo T-raider",
-            bio: "Crypto enthusiast and prediction market expert",
             profileImage: null,
             balance: 0,
             isLoading: false,
             error: null,
             updateWalletState: (state) => set(state),
 
-            updateProfile: ({ nickname, bio }) => {
-                set({ nickname, bio });
+            updateProfile: ({ nickname }) => {
+                set({ nickname });
             },
 
             setToken: (token) => set({ token: token })
@@ -41,7 +39,6 @@ export const useUserStore = create<UserState>()(
             name: 'user-storage',
             partialize: (state) => ({
                 nickname: state.nickname,
-                bio: state.bio,
                 profileImage: state.profileImage
             })
         }
