@@ -22,7 +22,8 @@ export default function ResourcesSection() {
     const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
     const [copiedResource, setCopiedResource] = useState<string | null>(null);
 
-    const handleResourceCopy = (text: string) => {
+    const handleResourceCopy = async (text: string) => {
+        await navigator.clipboard.writeText(text)
         setCopiedResource(text);
         setTimeout(() => setCopiedResource(null), 2000);
     };
