@@ -72,7 +72,6 @@ export const useAppStatusStore = create<AppStatus>((set, get) => ({
 
                     useUserStore.getState().updateProfile({
                         nickname: user.nickname,
-                        bio: user.bio || useUserStore.getState().bio,
                     });
 
                     useUserStore.getState().setToken(`${token}`)

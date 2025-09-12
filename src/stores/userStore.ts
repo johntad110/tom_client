@@ -12,7 +12,7 @@ type UserState = {
     isLoading: boolean;
     error: string | null;
     updateWalletState: (state: Partial<Pick<UserState, 'isConnected' | 'walletAddress' | 'isLoading'>>) => void;
-    updateProfile: (updates: { nickname: string; bio: string }) => void;
+    updateProfile: (updates: { nickname: string; }) => void;
     setToken: (toekn: string) => void;
 };
 
