@@ -69,9 +69,9 @@ export default function ResourcesSection() {
                 {
                     title: 'How It Works',
                     description: 'Learn about our trading system',
-                    url: '',
-                    active: false,
-                    external: true
+                    url: '/onboarding',
+                    active: true,
+                    external: false
                 },
                 {
                     title: 'Getting Started Guide',

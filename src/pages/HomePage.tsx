@@ -4,11 +4,22 @@ import { useMarketStore } from '../stores/marketStore';
 import LoadingShimmer from '../components/home/LoadingShimmer';
 import SearchBar from '../components/home/SearchBar';
 import { useTelegramStore } from '../stores/telegramStore';
+import HowItWorksButton from '../components/HowItWorksButton';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const HomePage = () => {
+    const navigate = useNavigate();
     const { filteredMarkets, loading, applyFilters } = useMarketStore();
     const { webApp } = useTelegramStore();
     const theme = webApp?.themeParams;
+
+    useEffect(() => {
+        const onboardingCompleted = localStorage.getItem('onboardingCompleted')
+        if (onboardingCompleted !== 'true') {
+            navigate("/onboarding");
+        }
+    }, [])
 
     if (loading) { return <LoadingShimmer />; }
 
@@ -19,6 +30,7 @@ const HomePage = () => {
             className="min-h-screen"
         >
             <SearchBar />
+            <HowItWorksButton />
 
             <div className="max-w-md mx-auto space-y-3">
                 <AnimatePresence>

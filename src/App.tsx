@@ -8,6 +8,7 @@ import MarketDetailPage from "./pages/MarketDetailPage"
 import { GlobalLoader } from "./components/GlobalLoader"
 import { useAppStatusStore } from "./stores/appStatusStore"
 import { useEffect } from "react"
+import OnboardingPage from "./pages/OnboardingPage"
 
 
 const router = createBrowserRouter([
@@ -19,6 +20,7 @@ const router = createBrowserRouter([
       { path: 'market-detail/:id', element: <MarketDetailPage /> },
       { path: 'portfolio', element: <PortfolioPage /> },
       { path: 'profile', element: <ProfilePage /> },
+      { path: 'onboarding', element: <OnboardingPage /> },
     ],
     errorElement: <NotFoundPage />
   }
