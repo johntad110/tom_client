@@ -54,7 +54,7 @@ const MarketDetailPage = () => {
         }
 
         backButton.show();
-        backButton.onClick(() => navigate(-1));
+        backButton.onClick(() => navigate("/"));
 
         return () => {
             backButton.hide();
