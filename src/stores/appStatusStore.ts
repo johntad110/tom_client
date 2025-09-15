@@ -44,7 +44,11 @@ export const useAppStatusStore = create<AppStatus>((set, get) => ({
         // That's if we habe the webApp object 
         // if we don't have it... we won't have Retry button in the first place...
         const webApp = useTelegramStore.getState().webApp;
-        if (webApp) { webApp?.MainButton.hide() }
+        if (webApp) {
+            webApp?.MainButton.hide();
+            // uk what why don't we initialize tg related things here...
+            webApp?.setHeaderColor(webApp.themeParams.bg_color); // on some mobile versions header is another color
+        }
 
         console.groupCollapsed('[AppStatus] Starting app initialization');
         try {
@@ -220,7 +224,7 @@ export const useAppStatusStore = create<AppStatus>((set, get) => ({
         set({ initialized: false });
         get().initializeApp();
     },
-    setForwardNavigation(forwardData) { 
+    setForwardNavigation(forwardData) {
         if (forwardData) {
             set({ forwardUser: { forward: true, forwardTo: forwardData.forwardTo, action: forwardData.action } });
         } else {
