@@ -9,6 +9,11 @@ import config from "../config";
 import { useUserStore } from "./userStore";
 
 type AppStatus = {
+    forwardUser: {
+        forward: boolean; // if true we forward the user
+        forwardTo?: string; // market id
+        action?: 1 | 0; // 1 = buy, 0 = sell
+    }
     initialized: boolean;
     errors: {
         telegram: boolean;
@@ -19,9 +24,11 @@ type AppStatus = {
     };
     initializeApp: () => Promise<void>;
     retryInitialization: () => void;
+    setForwardNavigation: (forwardData: { forwardTo: string; action: 0 | 1 } | null) => void;
 };
 
 export const useAppStatusStore = create<AppStatus>((set, get) => ({
+    forwardUser: { forward: false, },
     initialized: false,
     errors: {
         telegram: false,
@@ -166,6 +173,25 @@ export const useAppStatusStore = create<AppStatus>((set, get) => ({
             if (!errors.telegram && !errors.auth && !errors.tonClient) {
                 console.log('[AppStatus] No critical errors - marking app as initialized');
                 set({ initialized: true });
+
+                // After successfully initializing the appwithout erros 
+                // if there is a startapp parameter passed with a JSON strign and 
+                // specific (the `a` and `m fields` ) fields are present it means user's oppened the app from 
+                // either buy YES or NO button ... so navigate the user to market detail page and 
+                // activate the respective popup.
+                const startapp = webApp?.initDataUnsafe.start_param;
+
+                try {
+                    if (startapp) {
+                        const decoded = atob(startapp);
+                        const parsed = JSON.parse(decoded);
+                        const action = (parsed?.a === 1 || parsed?.a === 0) ? parsed.a : null;
+                        set({ forwardUser: { forward: true, forwardTo: parsed.m, action: action } });
+                    }
+                } catch (error) {
+                    // Ignore any errors and don't do anything
+                }
+
             } else {
                 console.warn('[AppStatus] Critical errors detected - app not initialized');
                 console.warn('Telegram error:', errors.telegram);
@@ -193,5 +219,12 @@ export const useAppStatusStore = create<AppStatus>((set, get) => ({
         console.log('[AppStatus] Retrying initialization');
         set({ initialized: false });
         get().initializeApp();
-    }
+    },
+    setForwardNavigation(forwardData) { 
+        if (forwardData) {
+            set({ forwardUser: { forward: true, forwardTo: forwardData.forwardTo, action: forwardData.action } });
+        } else {
+            set({ forwardUser: { forward: false } });
+        }
+    },
 }));

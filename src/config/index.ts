@@ -9,7 +9,8 @@ export interface AppConfig {
         endpoints: {
             auth: {
                 telegram: string;
-            }
+            },
+            marketShare: string;
         }
     }
 }
@@ -24,6 +25,7 @@ const config: AppConfig = {
         baseUrl: import.meta.env.VITE_API_BASE_URL!,
         endpoints: {
             auth: { telegram: '/auth/telegram' },
+            marketShare: '/share-market',
         }
     }
 };

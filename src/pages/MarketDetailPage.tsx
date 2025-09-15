@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import MarketHeader from '../components/market/MarketHeader';
@@ -20,6 +20,7 @@ import { ScaleLoader } from 'react-spinners';
 const MarketDetailPage = () => {
     const navigate = useNavigate();
     const { id } = useParams();
+    const [searchParams] = useSearchParams();
     const { getMarketById } = useMarketStore();
     const { marketAddresses } = useFactoryStore();
     const marketAddress = marketAddresses[(id !== undefined) ? Number(id) : 0]
@@ -34,6 +35,13 @@ const MarketDetailPage = () => {
     const [userIntent, setUserIntent] = useState<'BUY_YES' | 'BUY_NO' | 'SELL_YES' | 'SELL_NO'>("BUY_YES");
 
     useEffect(() => {
+        const actionParam = searchParams.get('action');
+        if (actionParam) {
+            setModalOpen(true);
+            if (actionParam === '1') { setUserIntent('BUY_YES'); }
+            else if (actionParam === '0') { setUserIntent('BUY_NO'); }
+        }
+
         mainButton?.setParams({ text: "Buy YES", has_shine_effect: true });
         if (market?.status !== "open") { mainButton?.disable(); }
         else { mainButton?.enable(); }
@@ -61,7 +69,7 @@ const MarketDetailPage = () => {
             mainButton?.hide()
             secondaryButton?.hide()
         }
-    }, [id, getMarketById, backButton, marketAddress]);
+    }, [id, getMarketById, backButton, marketAddress, searchParams]);
 
     if (!market) {
         return (
@@ -85,7 +93,7 @@ const MarketDetailPage = () => {
             <div className="max-w-md mx-auto space-y-2">
                 <MarketHeader market={market} isNew={true} />
                 {market.resolutionDate && <CountdownTimer resolutionDate={market.resolutionDate} marketStatus={market.status} />}
-                <PriceChart history={market.history} priceNow={market.probabilities.yes} />
+                <PriceChart priceNow={market.probabilities.yes} market={market} />
                 <PositionSection marketId={market.id} setUserIntent={setUserIntent} setModalOpen={setModalOpen} marketOpen={market.status === "open"} />
                 {market.status === 'open' && <TradePanel market={market} />}
                 <AboutSection description={market.description} />

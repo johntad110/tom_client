@@ -11,7 +11,8 @@ import {
 } from 'recharts';
 import { useTelegramStore } from '../../stores/telegramStore';
 import { ArrowUpIcon, ArrowDownIcon, PlusIcon, MinusIcon } from '@heroicons/react/24/solid';
-import type { MarketHistory } from '../../types/market';
+import type { Market } from '../../types/market';
+import ShareButton from '../ShareButtton';
 
 const timeRanges = [
     { label: '1H', value: '1h' },
@@ -58,10 +59,11 @@ const CustomTooltip = ({ active, payload, label, theme }: any) => {
     return null;
 };
 
-const PriceChart = ({ history, priceNow, }: { history: MarketHistory[]; priceNow: number; }) => {
+const PriceChart = ({ priceNow, market }: { priceNow: number; market: Market }) => {
     const [timeRange, setTimeRange] = useState('all');
     const { webApp } = useTelegramStore();
     const theme = webApp?.themeParams;
+    const history = market.history;
 
     const processedData = useMemo(() => {
         const now = Math.floor(Date.now() / 1000);
@@ -203,6 +205,7 @@ const PriceChart = ({ history, priceNow, }: { history: MarketHistory[]; priceNow
             className="p-4"
             style={{ background: theme?.bg_color }}
         >
+            <ShareButton market={market} chartData={processedData} />
             {/* Price information */}
             <div className='mb-4'>
                 <div
@@ -210,7 +213,7 @@ const PriceChart = ({ history, priceNow, }: { history: MarketHistory[]; priceNow
                     style={{ color: theme?.text_color }}
                 >
                     {(priceInfo.currentChance * 100).toFixed(1)}%
-                    <p className='text-lg font-light' style={{ color: theme?.hint_color}}>YES</p>
+                    <p className='text-lg font-light' style={{ color: theme?.hint_color }}>YES</p>
                 </div>
                 <div className='flex gap-2 items-center mt-1'>
                     <div

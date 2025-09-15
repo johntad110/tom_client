@@ -76,6 +76,8 @@ export interface IWebApp {
     ready: () => void;
     expand: () => void;
     close: () => void;
+
+    showPopup: (params: IPopupParams) => void;
 }
 
 /**
@@ -133,6 +135,18 @@ export interface ILocationManager {
     init: (callback?: Function) => ILocationManager;
     getLocation: (callback: Function) => ILocationManager;
     openSettings: Function; // Note that this method can be called only in response to user interaction with the Mini App interface (e.g., a click inside the Mini App or on the main button).
+}
+
+export interface IPopupParams {
+    title: string;
+    message: string
+    buttons: IPopupButton[];
+}
+
+export interface IPopupButton {
+    id?: string;
+    type?: "default" | "ok" | "close" | "cancel" | "destructive"; // set to `default` by default
+    text?: string; // requierd if type is default or destructive.
 }
 
 export interface IBottomButton {
