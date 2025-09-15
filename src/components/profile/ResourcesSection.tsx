@@ -132,8 +132,8 @@ export default function ResourcesSection() {
                 {
                     title: 'Terms of Service',
                     description: 'Our platform rules and guidelines',
-                    url: '',
-                    active: false,
+                    url: 'https://telegram.org/tos/mini-apps',
+                    active: true,
                     external: true
                 }
             ]
