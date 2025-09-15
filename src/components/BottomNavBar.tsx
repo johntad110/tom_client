@@ -22,7 +22,7 @@ const BottomNavBar = () => {
     ];
 
     const theme = webApp?.themeParams || {};
-    const navBgColor = theme.bottom_bar_bg_color || theme.bg_color || "#ffffff";
+    const navBgColor = theme.bg_color || "#ffffff";
     const textColor = theme.text_color || "#000000";
     const activeTextColor = theme.text_color || theme.accent_text_color || "#007aff";
 
