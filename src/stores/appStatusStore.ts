@@ -15,6 +15,8 @@ type AppStatus = {
         action?: 1 | 0; // 1 = buy, 0 = sell
     }
     initialized: boolean;
+    initializationProgress: number;
+    initializationStage: string;
     errors: {
         telegram: boolean;
         auth: boolean;
@@ -30,6 +32,8 @@ type AppStatus = {
 export const useAppStatusStore = create<AppStatus>((set, get) => ({
     forwardUser: { forward: false, },
     initialized: false,
+    initializationProgress: 0,
+    initializationStage: 'Starting...',
     errors: {
         telegram: false,
         auth: false,
@@ -53,15 +57,21 @@ export const useAppStatusStore = create<AppStatus>((set, get) => ({
         console.groupCollapsed('[AppStatus] Starting app initialization');
         try {
             console.log('[AppStatus] Resetting error states');
-            set({ errors: { telegram: false, auth: false, tonClient: false, factory: false, markets: false } });
+            set({
+                errors: { telegram: false, auth: false, tonClient: false, factory: false, markets: false },
+                initializationProgress: 0,
+                initializationStage: 'Starting...',
+            });
 
             console.log('[AppStatus] Initializing Telegram');
+            set({ initializationProgress: 10, initializationStage: 'Connecting to Telegram...', });
             try {
                 await useTelegramStore.getState().init();
                 console.log('[AppStatus] Telegram initialized successfully');
 
                 // if tg init successfull let's attempt auth
                 console.log('[AppStatus] Attempting Telegram authentiation');
+                set({ initializationProgress: 30, initializationStage: 'Authenticating...', });
                 try {
                     const webApp = useTelegramStore.getState().webApp;
                     if (!webApp) throw new Error('Telegram WebApp not available');
@@ -104,6 +114,7 @@ export const useAppStatusStore = create<AppStatus>((set, get) => ({
             }
 
             console.log('[AppStatus] Initializing TON client');
+            set({ initializationProgress: 50, initializationStage: 'Connecting to TON network...', });
             let client;
             try {
                 const endpoint = await getHttpEndpoint({ network: config.network });
@@ -117,6 +128,7 @@ export const useAppStatusStore = create<AppStatus>((set, get) => ({
 
             if (client) {
                 console.log('[AppStatus] Initializing Factory');
+                set({ initializationProgress: 70, initializationStage: 'Loading contracts...', });
                 try {
                     const factoryContract = new Factory(Address.parse(config.contractAddresses.factory));
                     const openedContract = client.open(factoryContract) as OpenedContract<Factory>;
@@ -157,6 +169,7 @@ export const useAppStatusStore = create<AppStatus>((set, get) => ({
 
             if (client) {
                 console.log('[AppStatus] Loading markets with client:', client);
+                set({ initializationProgress: 85, initializationStage: 'Loading markets..።' })
                 try {
                     await useMarketStore.getState().fetchMarkets(client);
                     console.log('[AppStatus] Markets loaded successfully');
@@ -176,7 +189,11 @@ export const useAppStatusStore = create<AppStatus>((set, get) => ({
 
             if (!errors.telegram && !errors.auth && !errors.tonClient) {
                 console.log('[AppStatus] No critical errors - marking app as initialized');
-                set({ initialized: true });
+                set({
+                    initialized: true,
+                    initializationProgress: 100,
+                    initializationStage: 'Ready!',
+                });
 
                 // After successfully initializing the appwithout erros 
                 // if there is a startapp parameter passed with a JSON strign and 
