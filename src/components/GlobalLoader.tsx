@@ -2,11 +2,13 @@ import { useAppStatusStore } from "../stores/appStatusStore";
 import { useTelegramStore } from "../stores/telegramStore";
 import { ScaleLoader } from "react-spinners";
 import { useEffect, useState } from "react";
+import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 
 export const GlobalLoader = () => {
     const { initialized, errors, retryInitialization, initializationProgress, initializationStage } = useAppStatusStore();
     const { webApp } = useTelegramStore()
     const [animatedProgress, setAnimatedProgress] = useState(0);
+    const [showErrorDetails, setShowErrorDetails] = useState(false);
 
     useEffect(() => {
         const timer = setTimeout(() => { setAnimatedProgress(initializationProgress); }, 100);
@@ -15,14 +17,38 @@ export const GlobalLoader = () => {
 
     if (initialized) return null;
 
+    const getErrorMessage = () => {
+        if (errors.telegram) return "Oops! Telegram went on a coffee break ☕";
+        if (errors.auth) return "Whoops! Our handshake got tangled 🤝";
+        if (errors.tonClient) return "TON network is taking a nap 💤";
+        if (errors.factory) return "Our factory workers are on strike 🏭";
+        if (errors.markets) return "Markets decided to play hide and seek 🎯";
+        return "Something mysterious happened... 🧙‍♂️";
+    };
+
+    const getErrorDetails = () => {
+        const details = [];
+        if (errors.telegram) details.push("• Failed to connect to Telegram");
+        if (errors.auth) details.push("• Authentication didn't work out");
+        if (errors.tonClient) details.push("• TON network connection failed");
+        if (errors.factory) details.push("• Smart contract factory issues");
+        if (errors.markets) details.push("• Market data loading failed");
+        return details;
+    };
+
+    const hasErrors = errors.telegram || errors.auth || errors.tonClient || errors.factory || errors.markets;
+
     return (
         <div className="fixed inset-0 z-50">
             <div className="absolute inset-0 z-10 flex flex-col items-center justify-center p-4"
                 style={{ backgroundColor: webApp?.themeParams.bg_color }}>
 
-                {(!errors.telegram && !errors.auth && !errors.tonClient) && (
+                {/* Progress bar container */}
+                {!hasErrors && (
                     <div className="w-full max-w-xs mb-6">
-                        <div className="text-xs text-center mb-2 text-gray-400">
+                        <div
+                            className="text-xs text-center mb-2"
+                            style={{ color: webApp?.themeParams.hint_color }} >
                             {initializationStage}
                         </div>
                         <div
@@ -39,29 +65,99 @@ export const GlobalLoader = () => {
                                 }}
                             />
                         </div>
-                        <div className="text-xs text-center mt-1 text-gray-400">
+                        <div
+                            className="text-xs text-center mt-1"
+                            style={{ color: webApp?.themeParams.hint_color }}
+                        >
                             {Math.round(animatedProgress)}%
                         </div>
                     </div>
                 )}
 
-                {(!errors.telegram && !errors.auth && !errors.tonClient) && <ScaleLoader color={webApp?.themeParams.hint_color} />}
+                {/* Loading spinner */}
+                {!hasErrors && (
+                    <ScaleLoader color={webApp?.themeParams.hint_color} />
+                )}
 
-                {(errors.telegram || errors.auth || errors.tonClient) && (
-                    <div className="p-4 rounded-lg mb-4 w-full text-gray-400 flex flex-col items-center">
-                        <h3 className="text-sm mb-2 text-center">sth ain't working.🤔</h3>
-                        <h3 className="text-sm mb-2 text-center">🤷‍♂️ idk why, but let's Retry.</h3>
+                {/* Error display */}
+                {hasErrors && (
+                    <div className="w-full max-w-md p-6 rounded-lg text-center">
+                        {/* Main humorous error message */}
+                        <div className="mb-4">
+                            <div
+                                className="text-lg font-medium mb-2"
+                                style={{ color: webApp?.themeParams.text_color }}
+                            >
+                                {getErrorMessage()}
+                            </div>
+                            <div
+                                className="text-sm"
+                                style={{ color: webApp?.themeParams.hint_color }}
+                            >
+                                Don't worry, even robots need reboots sometimes! 🤖
+                            </div>
+                        </div>
 
-                        {/* We will show this button if we have telegram error.
-                        Because having telegram error means we don't have a webApp object. 
-                        And if we don't have a webApp object the `MainButton` cannot be shown.
-                        But if we do have `webApp`, we are using the `MainButton` for retry in the 
-                        `appStatusStore` error handling section. */}
+                        {/* Collapsible error details */}
+                        <div className="mb-4">
+                            <button
+                                onClick={() => setShowErrorDetails(!showErrorDetails)}
+                                className="flex items-center justify-center w-full text-sm px-4 py-2 rounded-lg transition-colors"
+                                style={{
+                                    backgroundColor: webApp?.themeParams.secondary_bg_color,
+                                    color: webApp?.themeParams.hint_color
+                                }}
+                            >
+                                <span className="mr-2">See what went wrong</span>
+                                {showErrorDetails ? (
+                                    <ChevronUpIcon className="w-4 h-4" />
+                                ) : (
+                                    <ChevronDownIcon className="w-4 h-4" />
+                                )}
+                            </button>
+
+                            {showErrorDetails && (
+                                <div
+                                    className="mt-2 p-3 rounded-lg text-left text-sm"
+                                    style={{
+                                        backgroundColor: webApp?.themeParams.secondary_bg_color,
+                                        color: webApp?.themeParams.text_color
+                                    }}
+                                >
+                                    {getErrorDetails().map((detail, index) => (
+                                        <div key={index} className="mb-1 last:mb-0">
+                                            {detail}
+                                        </div>
+                                    ))}
+                                    <div className="mt-2 text-xs opacity-75">
+                                        (Don't panic! This is just for the tech wizards 🧙‍♂️)
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Retry button for non-Telegram errors */}
                         {errors.telegram && (
                             <button
                                 onClick={() => retryInitialization()}
-                                className="w-full text-white mt-4 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors"
-                            >Retry</button>
+                                className="w-full px-4 py-3 rounded-lg font-medium transition-all duration-200 hover:scale-105 active:scale-95"
+                                style={{
+                                    backgroundColor: webApp?.themeParams.button_color,
+                                    color: webApp?.themeParams.button_text_color || '#ffffff'
+                                }}
+                            >
+                                Give it another shot! 🎯
+                            </button>
+                        )}
+
+                        {/* For non-Telegram errors, we show a different message since MainButton handles retry */}
+                        {!errors.telegram && (
+                            <div
+                                className="text-xs mt-3"
+                                style={{ color: webApp?.themeParams.hint_color }}
+                            >
+                                The retry button should appear below... if it's playing hide and seek too! 👇
+                            </div>
                         )}
                     </div>
                 )}
