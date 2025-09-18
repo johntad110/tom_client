@@ -85,7 +85,7 @@ const MarketCard = ({ market, isNew }: { market: Market; isNew: boolean }) => {
                     <div className="mb-3">
                         <div
                             className="h-1.5 rounded-full overflow-hidden"
-                            style={{ backgroundColor: theme.section_separator_color || '#3a3a3a' }}
+                            style={{ backgroundColor: theme.bg_color || '#3a3a3a' }}
                         >
                             <motion.div
                                 className="h-full rounded-full"
