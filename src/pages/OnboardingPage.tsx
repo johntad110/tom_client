@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useCallback } from 'react';
+import { motion, type PanInfo } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useTelegramStore } from '../stores/telegramStore';
 import { ChevronLeftIcon, ChevronRightIcon, XMarkIcon } from '@heroicons/react/24/outline';
@@ -7,6 +7,7 @@ import { useOnboarding } from '../hooks/useOnboarding';
 
 const OnboardingPage = () => {
     const [currentStep, setCurrentStep] = useState(0);
+    const [dragDirection, setDragDirection] = useState<'left' | 'right' | null>(null);
     const navigate = useNavigate();
     const { user } = useTelegramStore();
     const { webApp } = useTelegramStore();
@@ -51,24 +52,47 @@ const OnboardingPage = () => {
         }
     ];
 
-    const nextStep = () => {
+    const nextStep = useCallback(() => {
         if (currentStep < onboardingSteps.length - 1) {
             setCurrentStep(currentStep + 1);
         } else {
             markOnboardingCompleted();
             navigate('/');
         }
-    };
+    }, [currentStep, onboardingSteps.length, markOnboardingCompleted, navigate]);
 
-    const prevStep = () => {
+    const prevStep = useCallback(() => {
         if (currentStep > 0) {
             setCurrentStep(currentStep - 1);
         }
-    };
+    }, [currentStep]);
 
     const skipOnboarding = () => {
         markOnboardingCompleted();
         navigate('/');
+    };
+
+    const handleDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+        const { offset, velocity } = info;
+
+        // If drag is significant enough, change step
+        if (Math.abs(offset.x) > 100 || Math.abs(velocity.x) > 500) {
+            if (offset.x > 0 || velocity.x > 0) {
+                // Swipe right - go to previous step
+                prevStep();
+            } else {
+                // Swipe left - go to next step
+                nextStep();
+            }
+        }
+        setDragDirection(null);
+    };
+
+    const handleDrag = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+        const { offset } = info;
+        if (Math.abs(offset.x) > 20) {
+            setDragDirection(offset.x > 0 ? 'right' : 'left');
+        }
     };
 
     const current = onboardingSteps[currentStep];
@@ -105,14 +129,15 @@ const OnboardingPage = () => {
                     </div>
                 </div>
 
-                {/* Comic Panel */}
+                {/* Swipeable Comic Panel */}
                 <motion.div
                     key={currentStep}
-                    initial={{ scale: 0.9, opacity: 0, rotateY: -5 }}
-                    animate={{ scale: 1, opacity: 1, rotateY: 0 }}
-                    exit={{ scale: 1.1, opacity: 0, rotateY: 5 }}
-                    transition={{ duration: 0.5 }}
-                    className="flex-1 relative mb-6 rounded-2xl overflow-hidden border-4 border-white/20"
+                    drag="x"
+                    dragConstraints={{ left: 0, right: 0 }}
+                    onDrag={handleDrag}
+                    onDragEnd={handleDragEnd}
+                    whileTap={{ cursor: "grabbing" }}
+                    className="flex-1 relative mb-6 rounded-2xl overflow-hidden border-4 border-white/20 cursor-grab active:cursor-grabbing"
                     style={{
                         boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
                         perspective: '1000px'
@@ -120,6 +145,22 @@ const OnboardingPage = () => {
                 >
                     {/* Comic panel border effect */}
                     <div className="absolute inset-0 border-2 border-white/10 rounded-xl pointer-events-none" />
+
+                    {/* Next/Previous Step Previews */}
+                    {dragDirection && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 0.3 }}
+                            className="absolute inset-0 flex items-center justify-center"
+                        >
+                            {dragDirection === 'left' && currentStep < onboardingSteps.length - 1 && (
+                                <div className="text-white text-lg font-bold">Next →</div>
+                            )}
+                            {dragDirection === 'right' && currentStep > 0 && (
+                                <div className="text-white text-lg font-bold">← Previous</div>
+                            )}
+                        </motion.div>
+                    )}
 
                     <img
                         src={current.image}
@@ -204,6 +245,17 @@ const OnboardingPage = () => {
                         )}
                     </motion.button>
                 </div>
+
+                {/* Swipe Hint */}
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 0.7 }}
+                    transition={{ delay: 2 }}
+                    className="text-center mt-4 text-sm"
+                    style={{ color: theme?.hint_color }}
+                >
+                    ← Swipe to navigate →
+                </motion.div>
 
                 {/* Skip for new users */}
                 {currentStep === 0 && (
