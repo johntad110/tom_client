@@ -11,6 +11,7 @@ export interface AppConfig {
                 telegram: string;
             },
             marketShare: string;
+            updateWallet: string;
         }
     }
 }
@@ -26,6 +27,7 @@ const config: AppConfig = {
         endpoints: {
             auth: { telegram: '/auth/telegram' },
             marketShare: '/share-market',
+            updateWallet: '/update-wallet',
         }
     }
 };
