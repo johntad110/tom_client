@@ -43,15 +43,13 @@ const MarketDetailPage = () => {
         }
 
         mainButton?.setParams({ text: "Buy YES", has_shine_effect: true });
-        if (market?.status !== "open") { mainButton?.disable(); }
-        else { mainButton?.enable(); }
         mainButton?.onClick(() => { setUserIntent("BUY_YES"); setModalOpen(true); });
+        mainButton?.enable();
         mainButton?.show();
 
         secondaryButton?.setParams({ text: "Buy NO", has_shine_effect: true, position: "right", color: webApp?.themeParams.secondary_bg_color });
-        if (market?.status !== "open") { secondaryButton?.disable(); }
-        else { secondaryButton?.enable(); }
         secondaryButton?.onClick(() => { setUserIntent("BUY_NO"); setModalOpen(true); });
+        secondaryButton?.enable();
         secondaryButton?.show();
 
         if (id) {
