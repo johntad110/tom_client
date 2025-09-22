@@ -111,7 +111,7 @@ const TradeModal = ({
             let message;
             message = beginCell()
                 .storeUint(opcode, 32)
-                .storeCoins(amount)
+                .storeCoins(toNano(String(amount)))
                 .endCell();
 
             await sender.send({
