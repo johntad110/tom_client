@@ -1,6 +1,6 @@
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import MarketHeader from '../components/market/MarketHeader';
 import PriceChart from '../components/market/PriceChart';
 import PositionSection from '../components/market/PositionSection';
@@ -26,6 +26,7 @@ const MarketDetailPage = () => {
     const marketAddress = marketAddresses[(id !== undefined) ? Number(id) : 0]
     const [market, setMarket] = useState<Market | null>(null);
     const { backButton } = useTelegram();
+    const tradePanelRef = useRef<HTMLDivElement>(null);
 
     const { webApp } = useTelegramStore();
     const mainButton = webApp?.MainButton;
@@ -34,21 +35,35 @@ const MarketDetailPage = () => {
     const [isModalOpen, setModalOpen] = useState(false);
     const [userIntent, setUserIntent] = useState<'BUY_YES' | 'BUY_NO' | 'SELL_YES' | 'SELL_NO'>("BUY_YES");
 
+    const scrollToTradePanel = () => {
+        if (tradePanelRef.current) {
+            tradePanelRef.current.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+            tradePanelRef.current.style.transition = 'all .5s ease';
+            tradePanelRef.current.style.boxShadow = `0 0 0 6px ${webApp?.themeParams.button_color}`;
+            setTimeout(() => {
+                if (tradePanelRef.current) { tradePanelRef.current.style.boxShadow = 'none'; }
+            }, 1000);
+        }
+    };
+
     useEffect(() => {
         const actionParam = searchParams.get('action');
         if (actionParam) {
-            setModalOpen(true);
+            setTimeout(() => { scrollToTradePanel(); }, 500);
             if (actionParam === '1') { setUserIntent('BUY_YES'); }
             else if (actionParam === '0') { setUserIntent('BUY_NO'); }
         }
 
         mainButton?.setParams({ text: "Buy YES", has_shine_effect: true });
-        mainButton?.onClick(() => { setUserIntent("BUY_YES"); setModalOpen(true); });
+        mainButton?.onClick(() => { setUserIntent("BUY_YES"); scrollToTradePanel(); });
         mainButton?.enable();
         mainButton?.show();
 
         secondaryButton?.setParams({ text: "Buy NO", has_shine_effect: true, position: "right", color: webApp?.themeParams.secondary_bg_color });
-        secondaryButton?.onClick(() => { setUserIntent("BUY_NO"); setModalOpen(true); });
+        secondaryButton?.onClick(() => { setUserIntent("BUY_NO"); scrollToTradePanel(); });
         secondaryButton?.enable();
         secondaryButton?.show();
 
@@ -93,7 +108,7 @@ const MarketDetailPage = () => {
                 {market.resolutionDate && <CountdownTimer resolutionDate={market.resolutionDate} marketStatus={market.status} />}
                 <PriceChart priceNow={market.probabilities.yes} market={market} />
                 <PositionSection marketId={market.id} setUserIntent={setUserIntent} setModalOpen={setModalOpen} marketOpen={market.status === "open"} />
-                {market.status === 'open' && <TradePanel market={market} />}
+                {market.status !== 'open' && (<div ref={tradePanelRef}> <TradePanel market={market} /> </div>)}
                 <AboutSection description={market.description} />
                 <OverviewSection market={market} />
                 <ContractLinks marketAddress={marketAddress} oracleAddress={market.oracleAddr.toString()} />
