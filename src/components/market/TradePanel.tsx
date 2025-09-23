@@ -30,7 +30,7 @@ const TradePanel = ({ market }: { market: Market }) => {
         return tonAmount / currentPrice;
     }, [tonAmount, currentPrice]);
 
-    const quickAmounts = [0.1, 0.5, 1, 5, 10, 50, 100];
+    const quickAmounts = [0.5, 1, 5, 10, 50, 100];
 
     const handleQuickAmount = (amount: number) => {
         setTonAmount(amount);
