@@ -108,7 +108,7 @@ const MarketDetailPage = () => {
                 {market.resolutionDate && <CountdownTimer resolutionDate={market.resolutionDate} marketStatus={market.status} />}
                 <PriceChart priceNow={market.probabilities.yes} market={market} />
                 <PositionSection marketId={market.id} setUserIntent={setUserIntent} setModalOpen={setModalOpen} marketOpen={market.status === "open"} />
-                {market.status !== 'open' && (<div ref={tradePanelRef}> <TradePanel market={market} /> </div>)}
+                {market.status === 'open' && (<div ref={tradePanelRef}> <TradePanel market={market} /> </div>)}
                 <AboutSection description={market.description} />
                 <OverviewSection market={market} />
                 <ContractLinks marketAddress={marketAddress} oracleAddress={market.oracleAddr.toString()} />
