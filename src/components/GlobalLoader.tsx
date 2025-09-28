@@ -15,7 +15,74 @@ export const GlobalLoader = () => {
         return () => clearTimeout(timer);
     }, [initializationProgress]);
 
-    if (initialized) return null;
+    // Beta is over - show thank you message instead of null
+    if (initialized) {
+        return (
+            <div className="fixed inset-0 z-50">
+                <div className="absolute inset-0 z-10 flex flex-col items-center justify-center p-4"
+                    style={{ backgroundColor: webApp?.themeParams.bg_color }}>
+
+                    <div className="w-full max-w-md p-6 rounded-lg text-center">
+                        {/* Thank you message */}
+                        <div className="mb-6">
+                            <div
+                                className="text-2xl font-bold mb-4"
+                                style={{ color: webApp?.themeParams.text_color }}
+                            >
+                                🎉 Beta Testing Complete! 🎉
+                            </div>
+                            <div
+                                className="text-lg mb-4"
+                                style={{ color: webApp?.themeParams.text_color }}
+                            >
+                                A huge thank you to all our amazing beta testers!
+                            </div>
+                            <div
+                                className="text-sm mb-2"
+                                style={{ color: webApp?.themeParams.hint_color }}
+                            >
+                                Your feedback and support during our wild testing phase has been invaluable.
+                            </div>
+                        </div>
+
+                        {/* Launch information */}
+                        <div className="mb-6 p-4 rounded-lg"
+                            style={{
+                                backgroundColor: webApp?.themeParams.secondary_bg_color,
+                                border: `1px solid ${webApp?.themeParams.hint_color}20`
+                            }}>
+                            <div
+                                className="text-sm font-medium mb-2"
+                                style={{ color: webApp?.themeParams.text_color }}
+                            >
+                                Want to know when we launch?
+                            </div>
+                            <div
+                                className="text-sm mb-3"
+                                style={{ color: webApp?.themeParams.hint_color }}
+                            >
+                                Follow us for updates and launch announcements:
+                            </div>
+                            <div
+                                className="text-base font-semibold"
+                                style={{ color: webApp?.themeParams.button_color }}
+                            >
+                                t.me/opn_mkt
+                            </div>
+                        </div>
+
+                        {/* Additional thank you message */}
+                        <div
+                            className="text-xs italic"
+                            style={{ color: webApp?.themeParams.hint_color }}
+                        >
+                            Thank you for helping us build something amazing! ✨
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     const getErrorMessage = () => {
         if (errors.telegram) return "Oops! Telegram went on a coffee break ☕";
